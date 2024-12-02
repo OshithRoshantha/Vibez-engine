@@ -1,5 +1,6 @@
 package com.vibez.engine.Security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.Customizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,7 @@ import com.vibez.engine.Service.CustomUserDetailsService;
 @EnableWebSecurity
 public class SecurityConfig{
 
+    @Autowired
     private CustomUserDetailsService userDetailsService;
 
     @Bean
