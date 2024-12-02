@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.vibez.engine.Model.User;
 import com.vibez.engine.Repository.UserRepo;
+import com.vibez.engine.Service.UserService;
 
 @Service
 public class UserImplement implements UserService {

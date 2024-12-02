@@ -5,5 +5,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import com.vibez.engine.Model.User;
 
 public interface UserRepo extends MongoRepository<User, ObjectId>{
-    
+    User findByEmail(String email);
 }
