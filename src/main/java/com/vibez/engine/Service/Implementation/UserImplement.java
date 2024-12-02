@@ -24,7 +24,8 @@ public class UserImplement implements UserService {
         if (user == null) {
             return false;
         }
-        return user.getPassword().equals(password);
+        boolean passwordMatch = BCrypt.checkpw(password, user.getPassword());
+        return passwordMatch;
     }
 
     public User getUserProfile(String email) {
