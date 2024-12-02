@@ -4,6 +4,6 @@ import com.vibez.engine.Model.User;
 
 public interface  UserService {
     User createUser(User newUser);
-    boolean authenticateUser(String email, String password);
+    String authenticateUser(User existingUser);
     User getUserProfile(String email);
 }

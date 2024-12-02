@@ -33,9 +33,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Boolean> authenticateUser(@RequestBody User user) {
-        boolean authenticated = userService.authenticateUser(user.getEmail(), user.getPassword());
-        return ResponseEntity.ok(authenticated);
+    public ResponseEntity<String> authenticateUser(@RequestBody User exsistingUser) {
+        String accessToken = userService.authenticateUser(exsistingUser);
+        return ResponseEntity.ok(accessToken);
     }
 
     @GetMapping("/profile")

@@ -9,12 +9,16 @@ import org.springframework.stereotype.Service;
 
 import com.vibez.engine.Model.User;
 import com.vibez.engine.Repository.UserRepo;
+import com.vibez.engine.Service.JwtService;
 import com.vibez.engine.Service.UserService;
 
 @Service
 public class UserImplement implements UserService {
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private JwtService jwtService;
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -27,16 +31,16 @@ public class UserImplement implements UserService {
         return userRepo.save(newUser);
     }
 
-    public boolean authenticateUser(String email, String password) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+    public String authenticateUser(User existingUser) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(existingUser.getEmail(),existingUser.getPassword()));
         if (authentication.isAuthenticated()) {
-            return true;
+            return jwtService.generateToken(existingUser.getEmail());
         }
-        return false;
+        return "Failed";
     }
 
     public User getUserProfile(String email) {
         return userRepo.findByEmail(email);
-    }
+    } 
     
 }
