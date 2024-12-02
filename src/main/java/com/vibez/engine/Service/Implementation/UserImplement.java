@@ -1,7 +1,7 @@
 package com.vibez.engine.Service.Implementation;
 
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import com.vibez.engine.Model.User;
@@ -25,6 +25,10 @@ public class UserImplement implements UserService {
             return false;
         }
         return user.getPassword().equals(password);
+    }
+
+    public User getUserProfile(String email) {
+        return userRepo.findByEmail(email);
     }
     
 }
