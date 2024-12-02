@@ -4,36 +4,30 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Parent configuration -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.1.4</version>
-        <relativePath/> <!-- Disable relative path resolution -->
+        <relativePath/>
     </parent>
 
-    <!-- Project metadata -->
     <groupId>com.vibez</groupId>
     <artifactId>engine</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Vibez Engine</name>
     <description>Spring Boot messaging application project</description>
 
-    <!-- Project properties -->
     <properties>
         <java.version>17</java.version>
         <spring-boot.version>3.1.4</spring-boot.version>
     </properties>
 
-    <!-- Dependencies -->
     <dependencies>
-        <!-- Spring Boot Starter Web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- Spring Boot Starter MongoDB -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
@@ -44,8 +38,29 @@
             <artifactId>spring-security-core</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+        </dependency>
 
-        <!-- Testing dependencies -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -53,7 +68,6 @@
         </dependency>
     </dependencies>
 
-    <!-- Build plugins -->
     <build>
         <plugins>
             <plugin>
@@ -63,3 +77,4 @@
         </plugins>
     </build>
 </project>
+
