@@ -1,7 +1,10 @@
 package com.vibez.engine.Service.Implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.vibez.engine.Model.User;
@@ -13,19 +16,23 @@ public class UserImplement implements UserService {
     @Autowired
     private UserRepo userRepo;
 
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
     public User createUser(User newUser) {
-        String hashedPassword = BCrypt.hashpw(newUser.getPassword(), BCrypt.gensalt());
+        String hashedPassword = encoder.encode(newUser.getPassword());
         newUser.setPassword(hashedPassword);
         return userRepo.save(newUser);
     }
 
     public boolean authenticateUser(String email, String password) {
-        User user = userRepo.findByEmail(email);
-        if (user == null) {
-            return false;
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+        if (authentication.isAuthenticated()) {
+            return true;
         }
-        boolean passwordMatch = BCrypt.checkpw(password, user.getPassword());
-        return passwordMatch;
+        return false;
     }
 
     public User getUserProfile(String email) {
