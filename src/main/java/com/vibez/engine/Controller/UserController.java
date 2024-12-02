@@ -16,9 +16,9 @@ public class UserController {
     private UserService userService;
     
     @PostMapping("/register")
-    public ResponseEntity<User> createUser(@RequestBody User newUser) {
-        User user = userService.createUser(newUser);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<String> createUser(@RequestBody User newUser) {
+        userService.createUser(newUser);
+        return ResponseEntity.ok("Account Created!");
     }
 
     @PostMapping("/auth")
