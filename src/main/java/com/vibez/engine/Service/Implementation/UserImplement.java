@@ -41,7 +41,7 @@ public class UserImplement implements UserService {
         if (authentication.isAuthenticated()) {
             return jwtService.generateToken(existingUser.getEmail());
         }
-        return "Failed";
+        return "Authentication failed";
     }
 
     public User getUserProfile(String email) {
