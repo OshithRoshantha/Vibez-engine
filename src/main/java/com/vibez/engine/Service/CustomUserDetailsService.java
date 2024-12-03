@@ -19,7 +19,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         public UserDetails loadUserByUsername(String email){
         User user = userRepo.findByEmail(email);
         return new org.springframework.security.core.userdetails.User(
-            user.getUserName(), 
+            user.getEmail(), 
             user.getPassword(), 
             Collections.emptyList());
     }
