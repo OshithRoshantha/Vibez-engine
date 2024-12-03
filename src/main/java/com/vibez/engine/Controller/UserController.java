@@ -21,15 +21,14 @@ public class UserController {
     private UserService userService;
     
     @PostMapping("/register")
-    public ResponseEntity<String> createUser(@RequestBody User newUser) {
+    public ResponseEntity<Boolean> createUser(@RequestBody User newUser) {
         if (newUser.getProfilePicture() == "" || newUser.getProfilePicture() == null) { 
             newUser.setProfilePicture(DEFAULT_PROFILE_PICTURE);
         }
         if (newUser.getAbout() == "" || newUser.getAbout() == null) {
             newUser.setAbout(DEFAULT_AB);
         }
-        userService.createUser(newUser);
-        return ResponseEntity.ok("Account Created!");
+        return ResponseEntity.ok(userService.createUser(newUser));
     }
 
     @PostMapping("/login")

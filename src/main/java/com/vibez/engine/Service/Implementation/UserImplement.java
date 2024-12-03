@@ -24,15 +24,20 @@ public class UserImplement implements UserService {
     AuthenticationManager authenticationManager;
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
-
-    public User createUser(User newUser) {
+    
+    public boolean createUser(User newUser) {
+        User existingUser = userRepo.findByEmail(newUser.getEmail());
+        if (existingUser != null) {
+            return false;
+        }
         String hashedPassword = encoder.encode(newUser.getPassword());
         newUser.setPassword(hashedPassword);
-        return userRepo.save(newUser);
+        userRepo.save(newUser);
+        return true;
     }
 
     public String authenticateUser(User existingUser) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(existingUser.getEmail(),existingUser.getPassword()));
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(existingUser.getEmail(), existingUser.getPassword()));
         if (authentication.isAuthenticated()) {
             return jwtService.generateToken(existingUser.getEmail());
         }

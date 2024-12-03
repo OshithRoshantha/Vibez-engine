@@ -3,7 +3,7 @@ package com.vibez.engine.Service;
 import com.vibez.engine.Model.User;
 
 public interface  UserService {
-    User createUser(User newUser);
+    boolean createUser(User newUser);
     String authenticateUser(User existingUser);
     User getUserProfile(String email);
 }
