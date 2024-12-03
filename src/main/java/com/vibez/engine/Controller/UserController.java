@@ -21,21 +21,20 @@ public class UserController {
     private UserService userService;
     
     @PostMapping("/register")
-    public ResponseEntity<String> createUser(@RequestBody User newUser) {
+    public ResponseEntity<Boolean> createUser(@RequestBody User newUser) {
         if (newUser.getProfilePicture() == "" || newUser.getProfilePicture() == null) { 
             newUser.setProfilePicture(DEFAULT_PROFILE_PICTURE);
         }
         if (newUser.getAbout() == "" || newUser.getAbout() == null) {
             newUser.setAbout(DEFAULT_AB);
         }
-        userService.createUser(newUser);
-        return ResponseEntity.ok("Account Created!");
+        return ResponseEntity.ok(userService.createUser(newUser));
     }
 
-    @PostMapping("/auth")
-    public ResponseEntity<Boolean> authenticateUser(@RequestBody User user) {
-        boolean authenticated = userService.authenticateUser(user.getEmail(), user.getPassword());
-        return ResponseEntity.ok(authenticated);
+    @PostMapping("/login")
+    public ResponseEntity<String> authenticateUser(@RequestBody User exsistingUser) {
+        String accessToken = userService.authenticateUser(exsistingUser);
+        return ResponseEntity.ok(accessToken);
     }
 
     @GetMapping("/profile")
