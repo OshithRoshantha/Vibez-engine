@@ -1,18 +1,21 @@
 package com.vibez.engine.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtService {
+    @Value("${jwt.secret.key}")
+    private String secretKey;
 
     @SuppressWarnings("deprecation")
     public String generateToken(String email) {
@@ -28,7 +31,6 @@ public class JwtService {
     }
 
     private Key getSecretKey() {
-        return Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
-    
 }
