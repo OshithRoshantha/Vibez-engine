@@ -48,4 +48,15 @@ public class UserImplement implements UserService {
         return userRepo.findByEmail(email);
     } 
     
+    public boolean updateProfile(User user) {
+        User existingUser = userRepo.findByEmail(user.getEmail());
+        if (existingUser == null) {
+            return false;
+        }
+        existingUser.setUserName(user.getUserName());
+        existingUser.setProfilePicture(user.getProfilePicture());
+        existingUser.setAbout(user.getAbout());
+        userRepo.save(existingUser);
+        return true;
+    }
 }

@@ -6,4 +6,5 @@ public interface  UserService {
     boolean createUser(User newUser);
     String authenticateUser(User existingUser);
     User getUserProfile(String email);
+    boolean updateProfile(User user);
 }
