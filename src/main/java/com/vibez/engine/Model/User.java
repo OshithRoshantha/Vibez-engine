@@ -15,7 +15,7 @@ public class User {
     private String password; 
     private String profilePicture; 
     private String about; 
-    private List<String> friendIds; 
+    private List<ObjectId> friendshipIds; 
     private List<ObjectId> groupIds;
     
     public String getUserName() {
@@ -48,11 +48,11 @@ public class User {
     public void setAbout(String about) {
         this.about = about;
     }
-    public List<String> getFriendIds() {
-        return friendIds;
+    public List<ObjectId> getFriendshipIds() {
+        return friendshipIds;
     }
-    public void setFriendIds(List<String> friendIds) {
-        this.friendIds = friendIds;
+    public void setFriendshipIds(List<ObjectId> friendshipIds) {
+        this.friendshipIds = friendshipIds;
     }
     public List<ObjectId> getGroupIds() {
         return groupIds;

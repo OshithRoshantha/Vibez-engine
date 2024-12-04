@@ -1,11 +1,8 @@
 package com.vibez.engine.Controller;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -57,34 +54,6 @@ public class UserController {
     @PutMapping("/profile/update")
     public ResponseEntity<Boolean> updateProfile(@RequestBody User user) {
         return ResponseEntity.ok(userService.updateProfile(user));
-    }
-
-    @PutMapping("/profile/addFriend/{friendEmail}")
-    public ResponseEntity<Boolean> addFriend(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String friendEmail) {
-        String jwtToken = token.replace("Bearer ", "");
-        String email = jwtService.extractUserEmail(jwtToken); 
-        return ResponseEntity.ok(userService.addFriend(email, friendEmail));
-    }
-
-    @DeleteMapping("/profile/removeFriend/{friendEmail}")
-    public ResponseEntity<Boolean> removeFriend(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String friendEmail) {
-        String jwtToken = token.replace("Bearer ", "");
-        String email = jwtService.extractUserEmail(jwtToken); 
-        return ResponseEntity.ok(userService.removeFriend(email,friendEmail));
-    }
-
-    @PutMapping("/profile/addGroup/{groupId}")
-    public ResponseEntity<Boolean> addGroup(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable ObjectId groupId) {
-        String jwtToken = token.replace("Bearer ", "");
-        String email = jwtService.extractUserEmail(jwtToken); 
-        return ResponseEntity.ok(userService.addGroup(email, groupId));
-    }
-
-    @DeleteMapping("/profile/removeGroup/{groupId}")
-    public ResponseEntity<Boolean> removeGroup(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable ObjectId groupId) {
-        String jwtToken = token.replace("Bearer ", "");
-        String email = jwtService.extractUserEmail(jwtToken); 
-        return ResponseEntity.ok(userService.removeGroup(email, groupId));
     }
 
 }
