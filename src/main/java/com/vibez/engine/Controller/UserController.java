@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vibez.engine.Model.User;
@@ -35,7 +34,7 @@ public class UserController {
         if (newUser.getProfilePicture() == "" || newUser.getProfilePicture() == null) { 
             newUser.setProfilePicture(DEFAULT_PROFILE_PICTURE);
         }
-        if (newUser.getAbout() == "" || newUser.getAbout() == null) {
+        if (StringUtils.isEmpty(newUser.getAbout())) {
             newUser.setAbout(DEFAULT_AB);
         }
         return ResponseEntity.ok(userService.createUser(newUser));
@@ -74,14 +73,14 @@ public class UserController {
         return ResponseEntity.ok(userService.removeFriend(email,friendEmail));
     }
 
-    @PutMapping("/profile/addGroup/{userId}/{groupId}")
+    @PutMapping("/profile/addGroup/{groupId}")
     public ResponseEntity<Boolean> addGroup(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable ObjectId groupId) {
         String jwtToken = token.replace("Bearer ", "");
         String email = jwtService.extractUserEmail(jwtToken); 
         return ResponseEntity.ok(userService.addGroup(email, groupId));
     }
 
-    @DeleteMapping("/profile/removeGroup/{userId}/{groupId}")
+    @DeleteMapping("/profile/removeGroup/{groupId}")
     public ResponseEntity<Boolean> removeGroup(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable ObjectId groupId) {
         String jwtToken = token.replace("Bearer ", "");
         String email = jwtService.extractUserEmail(jwtToken); 
