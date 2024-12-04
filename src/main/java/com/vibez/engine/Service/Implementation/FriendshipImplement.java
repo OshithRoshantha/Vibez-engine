@@ -54,6 +54,9 @@ public class FriendshipImplement implements FriendshipService {
 
     public String acceptFriendRequest(ObjectId userId, ObjectId friendId) {
         Friendship friendship = friendshipRepo.findByUserIdAndFriendId(userId, friendId);
+        if (friendship == null) {
+            friendship = friendshipRepo.findByUserIdAndFriendId(friendId, userId);
+        }
         if ("PENDING".equals(friendship.getStatus())) {
             friendship.setStatus("ACCEPTED");
             friendshipRepo.save(friendship);
