@@ -4,6 +4,8 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Document(collection = "friendships")
 public class Friendship {
     @Id
@@ -12,27 +14,37 @@ public class Friendship {
     private ObjectId friendId;    
     private String status; 
     
-    public ObjectId getFriendshipId() {
-        return friendshipId;
+    @JsonProperty("friendshipId")
+    public String getFriendshipId() {
+        return friendshipId != null ? friendshipId.toHexString() : null;
     }
-    public void setFriendshipId(ObjectId friendshipId) {
-        this.friendshipId = friendshipId;
+
+    public void setFriendshipId(String friendshipId) {
+        this.friendshipId = new ObjectId(friendshipId);
     }
-    public ObjectId getUserId() {
-        return userId;
+
+    @JsonProperty("userId")
+    public String getUserId() {
+        return userId != null ? userId.toHexString() : null;
     }
-    public void setUserId(ObjectId userId) {
-        this.userId = userId;
+
+    public void setUserId(String userId) {
+        this.userId = new ObjectId(userId);
     }
-    public ObjectId getFriendId() {
-        return friendId;
+
+    @JsonProperty("friendId")
+    public String getFriendId() {
+        return friendId != null ? friendId.toHexString() : null;
     }
-    public void setFriendId(ObjectId friendId) {
-        this.friendId = friendId;
+
+    public void setFriendId(String friendId) {
+        this.friendId = new ObjectId(friendId);
     }
+
     public String getStatus() {
         return status;
     }
+
     public void setStatus(String status) {
         this.status = status;
     }
