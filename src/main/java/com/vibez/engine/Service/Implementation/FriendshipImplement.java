@@ -22,8 +22,8 @@ public class FriendshipImplement implements FriendshipService {
     @Autowired
     private UserRepo userRepo;
 
-    public Friendship sendFriendRequest(ObjectId userId, ObjectId friendId) {
-        if (friendshipRepo.findByUserIdAndFriendId(userId, friendId) == null) {
+    public String sendFriendRequest(ObjectId userId, ObjectId friendId) {
+        if (friendshipRepo.findByUserIdAndFriendId(userId, friendId) == null && friendshipRepo.findByUserIdAndFriendId(friendId, userId) == null) {
             Friendship friendship = new Friendship();
             friendship.setUserId(userId);
             friendship.setFriendId(friendId);
@@ -46,9 +46,9 @@ public class FriendshipImplement implements FriendshipService {
             friend.getFriendshipIds().add(friendshipId);
             userRepo.save(user);
             userRepo.save(friend);
-            return friendship;
+            return "Friend request sent";	
         }
-        return null; 
+        return "Friend request already sent"; 
     }
     
 

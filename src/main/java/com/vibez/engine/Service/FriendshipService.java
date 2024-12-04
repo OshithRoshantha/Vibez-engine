@@ -7,7 +7,7 @@ import org.bson.types.ObjectId;
 import com.vibez.engine.Model.Friendship;
 
 public interface FriendshipService {
-    Friendship sendFriendRequest(ObjectId userId, ObjectId friendId);
+    String sendFriendRequest(ObjectId userId, ObjectId friendId);
     Friendship acceptFriendRequest(ObjectId userId, ObjectId friendId);
     Friendship rejectFriendRequest(ObjectId userId, ObjectId friendId);
     Friendship blockFriend(ObjectId userId, ObjectId friendId);

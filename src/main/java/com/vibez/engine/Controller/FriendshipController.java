@@ -20,12 +20,9 @@ public class FriendshipController {
     private FriendshipService friendshipService;
 
     @PostMapping("/friends/send/{userId}/{friendId}")
-    public ResponseEntity<Friendship> sendFriendRequest(@PathVariable ObjectId userId, @PathVariable ObjectId friendId) {
-        Friendship friendship = friendshipService.sendFriendRequest(userId, friendId);
-        if (friendship != null) {
-            return ResponseEntity.ok(friendship);
-        }
-        return ResponseEntity.status(400).body(null);
+    public ResponseEntity<String> sendFriendRequest(@PathVariable ObjectId userId, @PathVariable ObjectId friendId) {
+        String friendshipStatus = friendshipService.sendFriendRequest(userId, friendId);
+        return ResponseEntity.ok(friendshipStatus);
     }
 
     @PostMapping("/friends/accept/{userId}/{friendId}")
