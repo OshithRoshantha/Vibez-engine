@@ -1,14 +1,17 @@
 package com.vibez.engine.Controller;
 
+import java.util.List;
+
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.vibez.engine.Model.Friendship;
 import com.vibez.engine.Service.FriendshipService;
-
-import java.util.List;
 
 @RestController
 public class FriendshipController {
@@ -62,8 +65,5 @@ public class FriendshipController {
     public ResponseEntity<List<Friendship>> getPendingRequests(@PathVariable ObjectId userId) {
         List<Friendship> pendingRequests = friendshipService.getPendingRequests(userId);
         return ResponseEntity.ok(pendingRequests);
-    }
-
-
-
+    }    
 }
