@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vibez.engine.Model.Friendship;
@@ -25,13 +26,10 @@ public class FriendshipController {
         return ResponseEntity.ok(friendshipStatus);
     }
 
-    @PostMapping("/friends/accept/{userId}/{friendId}")
-    public ResponseEntity<Friendship> acceptFriendRequest(@PathVariable ObjectId userId, @PathVariable ObjectId friendId) {
-        Friendship friendship = friendshipService.acceptFriendRequest(userId, friendId);
-        if (friendship != null) {
-            return ResponseEntity.ok(friendship);
-        }
-        return ResponseEntity.status(400).body(null);
+    @PutMapping ("/friends/accept/{userId}/{friendId}")
+    public ResponseEntity<String> acceptFriendRequest(@PathVariable ObjectId userId, @PathVariable ObjectId friendId) {
+        String friendshipStatus = friendshipService.acceptFriendRequest(userId, friendId);
+        return ResponseEntity.ok(friendshipStatus);
     }
 
     @PostMapping("/friends/reject/{userId}/{friendId}")

@@ -52,13 +52,14 @@ public class FriendshipImplement implements FriendshipService {
     }
     
 
-    public Friendship acceptFriendRequest(ObjectId userId, ObjectId friendId) {
+    public String acceptFriendRequest(ObjectId userId, ObjectId friendId) {
         Friendship friendship = friendshipRepo.findByUserIdAndFriendId(userId, friendId);
-        if (friendship != null && friendship.getStatus() == "PENDING") {
+        if ("PENDING".equals(friendship.getStatus())) {
             friendship.setStatus("ACCEPTED");
-            return friendshipRepo.save(friendship);
+            friendshipRepo.save(friendship);
+            return "Friend request accepted";
         }
-        return null; 
+        return "Friend request not found"; 
     }
 
     public Friendship rejectFriendRequest(ObjectId userId, ObjectId friendId) {
