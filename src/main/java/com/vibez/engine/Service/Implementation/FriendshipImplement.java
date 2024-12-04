@@ -92,10 +92,10 @@ public class FriendshipImplement implements FriendshipService {
     }
 
     public List<Friendship> getFriends(ObjectId userId) {
-        return friendshipRepo.findByUserIdAndStatus(userId, "ACCEPTED");
+        return friendshipRepo.findByMatchStatusAndUserIdOrFriendId("ACCEPTED", userId);
     }
 
     public List<Friendship> getPendingRequests(ObjectId userId) {
-        return friendshipRepo.findByUserIdAndStatus(userId, "PENDING");
+        return friendshipRepo.findByMatchStatusAndUserIdOrFriendId("PENDING", userId);
     }
 }
