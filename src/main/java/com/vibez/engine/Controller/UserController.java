@@ -78,14 +78,14 @@ public class UserController {
     public ResponseEntity<Boolean> addGroup(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable ObjectId groupId) {
         String jwtToken = token.replace("Bearer ", "");
         String email = jwtService.extractUserEmail(jwtToken); 
-        return ResponseEntity.ok(userService.addGroup(userId, groupId));
+        return ResponseEntity.ok(userService.addGroup(email, groupId));
     }
 
     @DeleteMapping("/profile/removeGroup/{userId}/{groupId}")
     public ResponseEntity<Boolean> removeGroup(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable ObjectId groupId) {
         String jwtToken = token.replace("Bearer ", "");
         String email = jwtService.extractUserEmail(jwtToken); 
-        return ResponseEntity.ok(userService.removeGroup(userId, groupId));
+        return ResponseEntity.ok(userService.removeGroup(email, groupId));
     }
 
 }
