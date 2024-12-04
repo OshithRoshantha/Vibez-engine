@@ -48,7 +48,7 @@ public class FriendshipImplement implements FriendshipService {
             userRepo.save(friend);
             return "Friend request sent";	
         }
-        return "Friend request already sent"; 
+        return "Not Allowed"; 
     }
     
 
@@ -62,7 +62,7 @@ public class FriendshipImplement implements FriendshipService {
             friendshipRepo.save(friendship);
             return "Friend request accepted";
         }
-        return "Friend already accepted"; 
+        return "Not Allowed"; 
     }
 
     public String rejectFriendRequest(ObjectId userId, ObjectId friendId) {
@@ -75,7 +75,7 @@ public class FriendshipImplement implements FriendshipService {
             friendshipRepo.save(friendship);
             return "Friend request rejected";
         }
-        return "Friend request not found"; 
+        return "Not Allowed"; 
     }
 
     public String blockFriend(ObjectId userId, ObjectId friendId) {
@@ -88,7 +88,7 @@ public class FriendshipImplement implements FriendshipService {
             friendshipRepo.save(friendship);
             return "Friend blocked";
         }
-        return "Friend not found";
+        return "Not Allowed";
     }
 
     public List<Friendship> getFriends(ObjectId userId) {
