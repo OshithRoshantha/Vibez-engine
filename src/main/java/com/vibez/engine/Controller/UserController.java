@@ -34,7 +34,7 @@ public class UserController {
         if (newUser.getProfilePicture() == "" || newUser.getProfilePicture() == null) { 
             newUser.setProfilePicture(DEFAULT_PROFILE_PICTURE);
         }
-        if (StringUtils.isEmpty(newUser.getAbout())) {
+        if (newUser.getAbout() == "" || newUser.getAbout() == null) {
             newUser.setAbout(DEFAULT_AB);
         }
         return ResponseEntity.ok(userService.createUser(newUser));
