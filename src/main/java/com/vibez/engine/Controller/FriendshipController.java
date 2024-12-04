@@ -32,22 +32,16 @@ public class FriendshipController {
         return ResponseEntity.ok(friendshipStatus);
     }
 
-    @PostMapping("/friends/reject/{userId}/{friendId}")
-    public ResponseEntity<Friendship> rejectFriendRequest(@PathVariable ObjectId userId, @PathVariable ObjectId friendId) {
-        Friendship friendship = friendshipService.rejectFriendRequest(userId, friendId);
-        if (friendship != null) {
-            return ResponseEntity.ok(friendship);
-        }
-        return ResponseEntity.status(400).body(null);
+    @PutMapping("/friends/reject/{userId}/{friendId}")
+    public ResponseEntity<String> rejectFriendRequest(@PathVariable ObjectId userId, @PathVariable ObjectId friendId) {
+        String friendshipStatus = friendshipService.rejectFriendRequest(userId, friendId);
+        return ResponseEntity.ok(friendshipStatus);
     }
 
-    @PostMapping("/friends/block/{userId}/{friendId}")
-    public ResponseEntity<Friendship> blockFriend(@PathVariable ObjectId userId, @PathVariable ObjectId friendId) {
-        Friendship friendship = friendshipService.blockFriend(userId, friendId);
-        if (friendship != null) {
-            return ResponseEntity.ok(friendship);
-        }
-        return ResponseEntity.status(400).body(null);
+    @PutMapping("/friends/block/{userId}/{friendId}")
+    public ResponseEntity<String> blockFriend(@PathVariable ObjectId userId, @PathVariable ObjectId friendId) {
+        String friendshipStatus = friendshipService.blockFriend(userId, friendId);
+        return ResponseEntity.ok(friendshipStatus);
     }
 
     @GetMapping("/friends/{userId}")

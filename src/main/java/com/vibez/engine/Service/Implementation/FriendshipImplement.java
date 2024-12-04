@@ -62,25 +62,33 @@ public class FriendshipImplement implements FriendshipService {
             friendshipRepo.save(friendship);
             return "Friend request accepted";
         }
+        return "Friend already accepted"; 
+    }
+
+    public String rejectFriendRequest(ObjectId userId, ObjectId friendId) {
+        Friendship friendship = friendshipRepo.findByUserIdAndFriendId(userId, friendId);
+        if (friendship == null) {
+            friendship = friendshipRepo.findByUserIdAndFriendId(friendId, userId);
+        }
+        if ("PENDING".equals(friendship.getStatus())) {
+            friendship.setStatus("REJECTED");
+            friendshipRepo.save(friendship);
+            return "Friend request rejected";
+        }
         return "Friend request not found"; 
     }
 
-    public Friendship rejectFriendRequest(ObjectId userId, ObjectId friendId) {
+    public String blockFriend(ObjectId userId, ObjectId friendId) {
         Friendship friendship = friendshipRepo.findByUserIdAndFriendId(userId, friendId);
-        if (friendship != null && friendship.getStatus() == "PENDING") {
-            friendship.setStatus("REJECTED");
-            return friendshipRepo.save(friendship);
+        if (friendship == null) {
+            friendship = friendshipRepo.findByUserIdAndFriendId(friendId, userId);
         }
-        return null; 
-    }
-
-    public Friendship blockFriend(ObjectId userId, ObjectId friendId) {
-        Friendship friendship = friendshipRepo.findByUserIdAndFriendId(userId, friendId);
-        if (friendship != null && friendship.getStatus() == "ACCEPTED") {
+        if ("ACCEPTED".equals(friendship.getStatus())) {
             friendship.setStatus("BLOCKED");
-            return friendshipRepo.save(friendship);
+            friendshipRepo.save(friendship);
+            return "Friend blocked";
         }
-        return null;
+        return "Friend not found";
     }
 
     public List<Friendship> getFriends(ObjectId userId) {
