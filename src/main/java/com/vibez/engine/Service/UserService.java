@@ -1,7 +1,5 @@
 package com.vibez.engine.Service;
 
-import org.bson.types.ObjectId;
-
 import com.vibez.engine.Model.User;
 
 public interface  UserService {
