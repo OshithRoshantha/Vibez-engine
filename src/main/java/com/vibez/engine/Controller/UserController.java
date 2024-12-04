@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vibez.engine.Model.User;
+import com.vibez.engine.Service.JwtService;
 import com.vibez.engine.Service.UserService;
 
 
@@ -23,6 +25,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private JwtService jwtService;
     
     @PostMapping("/register")
     public ResponseEntity<Boolean> createUser(@RequestBody User newUser) {
@@ -42,8 +47,10 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<User> getUserProfile(@RequestBody User user) {
-        User userProfile = userService.getUserProfile(user.getEmail());
+    public ResponseEntity<User> getUserProfile(@RequestHeader(value = "Authorization", required = true) String token) {
+        String jwtToken = token.replace("Bearer ", "");
+        String email = jwtService.extractUserEmail(jwtToken); 
+        User userProfile = userService.getUserProfile(email);
         return ResponseEntity.ok(userProfile);
     }
 
