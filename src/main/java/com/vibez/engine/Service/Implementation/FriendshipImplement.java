@@ -1,12 +1,15 @@
 package com.vibez.engine.Service.Implementation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vibez.engine.Model.Friendship;
+import com.vibez.engine.Model.User;
 import com.vibez.engine.Repository.FriendshipRepo;
+import com.vibez.engine.Repository.UserRepo;
 import com.vibez.engine.Service.FriendshipService;
 
 public class FriendshipImplement implements FriendshipService {
@@ -14,12 +17,32 @@ public class FriendshipImplement implements FriendshipService {
     @Autowired
     private FriendshipRepo friendshipRepo;
 
+    @Autowired
+    private UserRepo userRepo;
+
     public Friendship sendFriendRequest(ObjectId userId, ObjectId friendId) {
         if (friendshipRepo.findByUserIdAndFriendId(userId, friendId) == null) {
             Friendship friendship = new Friendship();
             friendship.setUserId(userId);
             friendship.setFriendId(friendId);
             friendship.setStatus("PENDING");
+            ObjectId friendshipId = friendship.getFriendshipId();
+
+            User user = userRepo.findByUserId(userId);
+            User friend = userRepo.findByUserId(friendId);
+
+            if (user.getFriendshipIds() == null) {
+                user.setFriendshipIds(new ArrayList<>());
+            }
+            user.getFriendshipIds().add(friendshipId);
+
+            if (friend.getFriendshipIds() == null) {
+                friend.setFriendshipIds(new ArrayList<>());
+            }
+            friend.getFriendshipIds().add(friendshipId);
+
+            userRepo.save(user);
+            userRepo.save(friend);
             return friendshipRepo.save(friendship);
         }
         return null; 
