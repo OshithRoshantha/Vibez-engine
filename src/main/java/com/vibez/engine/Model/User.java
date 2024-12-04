@@ -6,7 +6,6 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Document(collection = "users")
 public class User {
@@ -17,16 +16,15 @@ public class User {
     private String password; 
     private String profilePicture; 
     private String about; 
-    private List<String> friendshipIds; 
-    private List<String> groupIds;
+    private List<ObjectId> friendshipIds; 
+    private List<ObjectId> groupIds;
 
-    @JsonProperty("userId")
-    public String getUserId(){
-        return userId != null ? userId.toHexString() : null;
+    public ObjectId getUserId(){
+        return userId;
     }
 
-    public void setUserId(String userId){
-        this.userId = new ObjectId(userId);
+    public void setUserId(ObjectId userId){
+        this.userId = userId;
     }
 
     public String getUserName() {
@@ -69,19 +67,19 @@ public class User {
         this.about = about;
     }
 
-    public List<String> getFriendshipIds() {
+    public List<ObjectId> getFriendshipIds() {
         return friendshipIds;
     }
 
-    public void setFriendshipIds(List<String> friendshipIds) {
+    public void setFriendshipIds(List<ObjectId> friendshipIds) {
         this.friendshipIds = friendshipIds;
     }
 
-    public List<String> getGroupIds() {
+    public List<ObjectId> getGroupIds() {
         return groupIds;
     }
 
-    public void setGroupIds(List<String> groupIds) {
+    public void setGroupIds(List<ObjectId> groupIds) {
         this.groupIds = groupIds;
     }
 }

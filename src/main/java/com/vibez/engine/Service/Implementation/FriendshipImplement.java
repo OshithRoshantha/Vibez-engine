@@ -25,12 +25,12 @@ public class FriendshipImplement implements FriendshipService {
     public Friendship sendFriendRequest(ObjectId userId, ObjectId friendId) {
         if (friendshipRepo.findByUserIdAndFriendId(userId, friendId) == null) {
             Friendship friendship = new Friendship();
-            friendship.setUserId(userId.toHexString());
-            friendship.setFriendId(friendId.toHexString());
+            friendship.setUserId(userId);
+            friendship.setFriendId(friendId);
             friendship.setStatus("PENDING");
     
             friendship = friendshipRepo.save(friendship);
-            String friendshipId = friendship.getFriendshipId();
+            ObjectId friendshipId = friendship.getFriendshipId();
     
             User user = userRepo.findByUserId(userId);
             User friend = userRepo.findByUserId(friendId);
