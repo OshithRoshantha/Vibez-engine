@@ -1,0 +1,69 @@
+package com.vibez.engine.Controller;
+
+import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import com.vibez.engine.Model.Friendship;
+import com.vibez.engine.Service.FriendshipService;
+
+import java.util.List;
+
+@RestController
+public class FriendshipController {
+    
+    @Autowired
+    private FriendshipService friendshipService;
+
+    @PostMapping("/friends/send/{userId}/{friendId}")
+    public ResponseEntity<Friendship> sendFriendRequest(@PathVariable ObjectId userId, @PathVariable ObjectId friendId) {
+        Friendship friendship = friendshipService.sendFriendRequest(userId, friendId);
+        if (friendship != null) {
+            return ResponseEntity.ok(friendship);
+        }
+        return ResponseEntity.status(400).body(null);
+    }
+
+    @PostMapping("/friends/accept/{userId}/{friendId}")
+    public ResponseEntity<Friendship> acceptFriendRequest(@PathVariable ObjectId userId, @PathVariable ObjectId friendId) {
+        Friendship friendship = friendshipService.acceptFriendRequest(userId, friendId);
+        if (friendship != null) {
+            return ResponseEntity.ok(friendship);
+        }
+        return ResponseEntity.status(400).body(null);
+    }
+
+    @PostMapping("/friends/reject/{userId}/{friendId}")
+    public ResponseEntity<Friendship> rejectFriendRequest(@PathVariable ObjectId userId, @PathVariable ObjectId friendId) {
+        Friendship friendship = friendshipService.rejectFriendRequest(userId, friendId);
+        if (friendship != null) {
+            return ResponseEntity.ok(friendship);
+        }
+        return ResponseEntity.status(400).body(null);
+    }
+
+    @PostMapping("/friends/block/{userId}/{friendId}")
+    public ResponseEntity<Friendship> blockFriend(@PathVariable ObjectId userId, @PathVariable ObjectId friendId) {
+        Friendship friendship = friendshipService.blockFriend(userId, friendId);
+        if (friendship != null) {
+            return ResponseEntity.ok(friendship);
+        }
+        return ResponseEntity.status(400).body(null);
+    }
+
+    @GetMapping("/friends/{userId}")
+    public ResponseEntity<List<Friendship>> getFriends(@PathVariable ObjectId userId) {
+        List<Friendship> friends = friendshipService.getFriends(userId);
+        return ResponseEntity.ok(friends);
+    }
+
+    @GetMapping("/friends/pending/{userId}")
+    public ResponseEntity<List<Friendship>> getPendingRequests(@PathVariable ObjectId userId) {
+        List<Friendship> pendingRequests = friendshipService.getPendingRequests(userId);
+        return ResponseEntity.ok(pendingRequests);
+    }
+
+
+
+}
