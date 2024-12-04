@@ -1,11 +1,14 @@
 package com.vibez.engine.Controller;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vibez.engine.Model.User;
@@ -48,4 +51,25 @@ public class UserController {
     public ResponseEntity<Boolean> updateProfile(@RequestBody User user) {
         return ResponseEntity.ok(userService.updateProfile(user));
     }
+
+    @PutMapping("/profile/addFriend/{userId}/{friendId}")
+    public ResponseEntity<Boolean> addFriend(@RequestParam ObjectId userId, @RequestParam ObjectId friendId) {
+        return ResponseEntity.ok(userService.addFriend(userId, friendId));
+    }
+
+    @DeleteMapping("/profile/removeFriend/{userId}/{friendId}")
+    public ResponseEntity<Boolean> removeFriend(@RequestParam ObjectId userId, @RequestParam ObjectId friendId) {
+        return ResponseEntity.ok(userService.removeFriend(userId, friendId));
+    }
+
+    @PutMapping("/profile/addGroup/{userId}/{groupId}")
+    public ResponseEntity<Boolean> addGroup(@RequestParam ObjectId userId, @RequestParam ObjectId groupId) {
+        return ResponseEntity.ok(userService.addGroup(userId, groupId));
+    }
+
+    @DeleteMapping("/profile/removeGroup/{userId}/{groupId}")
+    public ResponseEntity<Boolean> removeGroup(@RequestParam ObjectId userId, @RequestParam ObjectId groupId) {
+        return ResponseEntity.ok(userService.removeGroup(userId, groupId));
+    }
+
 }

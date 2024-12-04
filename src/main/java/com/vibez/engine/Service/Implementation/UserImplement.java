@@ -1,5 +1,6 @@
 package com.vibez.engine.Service.Implementation;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -57,6 +58,52 @@ public class UserImplement implements UserService {
         existingUser.setProfilePicture(user.getProfilePicture());
         existingUser.setAbout(user.getAbout());
         userRepo.save(existingUser);
+        return true;
+    }
+
+    public boolean addFriend(ObjectId userId, ObjectId friendId) {
+        User user = userRepo.findByUserId(userId);
+        User friend = userRepo.findByUserId(friendId);
+        if (user == null || friend == null) {
+            return false;
+        }
+        user.getFriendIds().add(friendId);
+        friend.getFriendIds().add(userId);
+        userRepo.save(user);
+        userRepo.save(friend);
+        return true;
+    }
+
+    public boolean removeFriend(ObjectId userId, ObjectId friendId) {
+        User user = userRepo.findByUserId(userId);
+        User friend = userRepo.findByUserId(friendId);
+        if (user == null || friend == null) {
+            return false;
+        }
+        user.getFriendIds().remove(friendId);
+        friend.getFriendIds().remove(userId);
+        userRepo.save(user);
+        userRepo.save(friend);
+        return true;
+    }
+
+    public boolean addGroup(ObjectId userId, ObjectId groupId) {
+        User user = userRepo.findByUserId(userId);
+        if (user == null) {
+            return false;
+        }
+        user.getGroupIds().add(groupId);
+        userRepo.save(user);
+        return true;
+    }
+
+    public boolean removeGroup(ObjectId userId, ObjectId groupId) {
+        User user = userRepo.findByUserId(userId);
+        if (user == null) {
+            return false;
+        }
+        user.getGroupIds().remove(groupId);
+        userRepo.save(user);
         return true;
     }
 }
