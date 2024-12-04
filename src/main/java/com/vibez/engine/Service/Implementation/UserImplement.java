@@ -61,34 +61,34 @@ public class UserImplement implements UserService {
         return true;
     }
 
-    public boolean addFriend(ObjectId userId, ObjectId friendId) {
-        User user = userRepo.findByUserId(userId);
-        User friend = userRepo.findByUserId(friendId);
+    public boolean addFriend(String email, String friendEmail) {
+        User user = userRepo.findByEmail(email);
+        User friend = userRepo.findByEmail(friendEmail);
         if (user == null || friend == null) {
             return false;
         }
-        user.getFriendIds().add(friendId);
-        friend.getFriendIds().add(userId);
+        user.getFriendIds().add(friend.getEmail());
+        friend.getFriendIds().add(user.getEmail());
         userRepo.save(user);
         userRepo.save(friend);
         return true;
     }
 
-    public boolean removeFriend(ObjectId userId, ObjectId friendId) {
-        User user = userRepo.findByUserId(userId);
-        User friend = userRepo.findByUserId(friendId);
+    public boolean removeFriend(String email, String friendEmail) {
+        User user = userRepo.findByEmail(email);
+        User friend = userRepo.findByEmail(friendEmail);
         if (user == null || friend == null) {
             return false;
         }
-        user.getFriendIds().remove(friendId);
-        friend.getFriendIds().remove(userId);
+        user.getFriendIds().remove(friend.getEmail());
+        friend.getFriendIds().remove(user.getEmail());
         userRepo.save(user);
         userRepo.save(friend);
         return true;
     }
 
-    public boolean addGroup(ObjectId userId, ObjectId groupId) {
-        User user = userRepo.findByUserId(userId);
+    public boolean addGroup(String email, ObjectId groupId) {
+        User user = userRepo.findByEmail(email);
         if (user == null) {
             return false;
         }
@@ -97,8 +97,8 @@ public class UserImplement implements UserService {
         return true;
     }
 
-    public boolean removeGroup(ObjectId userId, ObjectId groupId) {
-        User user = userRepo.findByUserId(userId);
+    public boolean removeGroup(String email, ObjectId groupId) {
+        User user = userRepo.findByEmail(email);
         if (user == null) {
             return false;
         }

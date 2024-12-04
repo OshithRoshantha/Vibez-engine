@@ -9,8 +9,8 @@ public interface  UserService {
     String authenticateUser(User existingUser);
     User getUserProfile(String email);
     boolean updateProfile(User user);
-    boolean addFriend(ObjectId userId, ObjectId friendId);
-    boolean removeFriend(ObjectId userId, ObjectId friendId);
-    boolean addGroup(ObjectId userId, ObjectId groupId);
-    boolean removeGroup(ObjectId userId, ObjectId groupId);
+    boolean addFriend(String email, String friendEmail);
+    boolean removeFriend(String email, String friendEmail);
+    boolean addGroup(String email, ObjectId groupId);
+    boolean removeGroup(String email, ObjectId groupId);
 }

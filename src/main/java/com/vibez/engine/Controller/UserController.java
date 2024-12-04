@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -59,23 +60,31 @@ public class UserController {
         return ResponseEntity.ok(userService.updateProfile(user));
     }
 
-    @PutMapping("/profile/addFriend/{userId}/{friendId}")
-    public ResponseEntity<Boolean> addFriend(@RequestParam ObjectId userId, @RequestParam ObjectId friendId) {
-        return ResponseEntity.ok(userService.addFriend(userId, friendId));
+    @PutMapping("/profile/addFriend/{friendEmail}")
+    public ResponseEntity<Boolean> addFriend(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String friendEmail) {
+        String jwtToken = token.replace("Bearer ", "");
+        String email = jwtService.extractUserEmail(jwtToken); 
+        return ResponseEntity.ok(userService.addFriend(email, friendEmail));
     }
 
-    @DeleteMapping("/profile/removeFriend/{userId}/{friendId}")
-    public ResponseEntity<Boolean> removeFriend(@RequestParam ObjectId userId, @RequestParam ObjectId friendId) {
-        return ResponseEntity.ok(userService.removeFriend(userId, friendId));
+    @DeleteMapping("/profile/removeFriend/{friendEmail}")
+    public ResponseEntity<Boolean> removeFriend(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String friendEmail) {
+        String jwtToken = token.replace("Bearer ", "");
+        String email = jwtService.extractUserEmail(jwtToken); 
+        return ResponseEntity.ok(userService.removeFriend(email,friendEmail));
     }
 
     @PutMapping("/profile/addGroup/{userId}/{groupId}")
-    public ResponseEntity<Boolean> addGroup(@RequestParam ObjectId userId, @RequestParam ObjectId groupId) {
+    public ResponseEntity<Boolean> addGroup(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable ObjectId groupId) {
+        String jwtToken = token.replace("Bearer ", "");
+        String email = jwtService.extractUserEmail(jwtToken); 
         return ResponseEntity.ok(userService.addGroup(userId, groupId));
     }
 
     @DeleteMapping("/profile/removeGroup/{userId}/{groupId}")
-    public ResponseEntity<Boolean> removeGroup(@RequestParam ObjectId userId, @RequestParam ObjectId groupId) {
+    public ResponseEntity<Boolean> removeGroup(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable ObjectId groupId) {
+        String jwtToken = token.replace("Bearer ", "");
+        String email = jwtService.extractUserEmail(jwtToken); 
         return ResponseEntity.ok(userService.removeGroup(userId, groupId));
     }
 
