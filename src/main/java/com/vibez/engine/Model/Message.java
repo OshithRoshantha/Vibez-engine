@@ -16,4 +16,60 @@ public class Message {
     private String message;
     private LocalDateTime timestamp;
     private boolean isRead;
+
+    public ObjectId getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(ObjectId messageId) {
+        this.messageId = messageId;
+    }
+
+    public ObjectId getSenderId() {
+        return senderId;
+    }
+
+    public void setSenderId(ObjectId senderId) {
+        this.senderId = senderId;
+    }
+
+    public ObjectId getReceiverId() {
+        return receiverId;
+    }
+
+    public void setReceiverId(ObjectId receiverId) {
+        this.receiverId = receiverId;
+    }
+
+    public ObjectId getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(ObjectId groupId) {
+        this.groupId = groupId;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public boolean isRead() {
+        return isRead;
+    }
+
+    public void setRead(boolean isRead) {
+        this.isRead = isRead;
+    }
 }

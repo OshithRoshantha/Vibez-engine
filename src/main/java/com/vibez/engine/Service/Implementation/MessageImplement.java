@@ -26,10 +26,13 @@ public class MessageImplement implements MessageService {
     }
 
     public List<Message> getGroupMessages(ObjectId groupId){
-
+        return messageRepo.findByGroupId(groupId);
     }
 
-    public void markAsRead(ObjectId messageId){
-
+    public String markAsRead(ObjectId messageId){
+        Message message = messageRepo.findByMessageId(messageId);
+        message.setRead(true);
+        messageRepo.save(message);
+        return "Message marked as read";
     }
 }
