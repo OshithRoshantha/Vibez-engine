@@ -1,5 +1,6 @@
 package com.vibez.engine.Service.Implementation;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -16,7 +17,9 @@ public class MessageImplement implements MessageService {
     @Autowired
     private MessageRepo messageRepo;
 
-    public boolean  saveMessage(Message message){
+    public boolean saveMessage(Message message){
+        message.setRead(false);
+        message.setTimestamp(LocalDateTime.now());
         message = messageRepo.save(message);
         return true;
     }
