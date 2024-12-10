@@ -16,9 +16,9 @@ public class MessageImplement implements MessageService {
     @Autowired
     private MessageRepo messageRepo;
 
-    public String saveMessage(Message message){
+    public boolean  saveMessage(Message message){
         message = messageRepo.save(message);
-        return "Message saved";
+        return true;
     }
 
     public List<Message> getDirectMessages(ObjectId senderId, ObjectId receiverId){
@@ -29,10 +29,13 @@ public class MessageImplement implements MessageService {
         return messageRepo.findByGroupId(groupId);
     }
 
-    public String markAsRead(ObjectId messageId){
+    public boolean markAsRead(ObjectId messageId){
         Message message = messageRepo.findByMessageId(messageId);
+        if(message == null){
+            return false;
+        }
         message.setRead(true);
         messageRepo.save(message);
-        return "Message marked as read";
+        return true;
     }
 }
