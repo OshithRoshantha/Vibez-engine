@@ -1,5 +1,6 @@
 package com.vibez.engine.Model;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -15,4 +16,5 @@ public class Groups {
     private String groupDescription;
     private ObjectId creatorId;
     private List<ObjectId> memberIds;
+    private LocalDateTime creationDate;
 }
