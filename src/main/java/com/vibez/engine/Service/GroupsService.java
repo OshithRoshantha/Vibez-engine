@@ -7,7 +7,7 @@ import org.bson.types.ObjectId;
 import com.vibez.engine.Model.Groups;
 
 public interface GroupsService {
-    boolean createGroup(Groups newGroup);
+    boolean createGroup(Groups newGroup, ObjectId creatorId);
     boolean addUserToGroup(ObjectId groupId, ObjectId newUser);
     boolean removeUserFromGroup(ObjectId groupId, ObjectId existingUser);
     List<Groups> getGroupsByUser(ObjectId user);

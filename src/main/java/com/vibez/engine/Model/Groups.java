@@ -15,7 +15,7 @@ public class Groups {
     private String groupName;
     private String groupDesc;
     private ObjectId creatorId;
-    private List<ObjectId> memberIds;
+    private List<ObjectId> memberId;
     private LocalDateTime creationDate;
 
     public ObjectId getGroupId() {
@@ -58,12 +58,12 @@ public class Groups {
         this.creatorId = creatorId;
     }
 
-    public List<ObjectId> getMemberIds() {
-        return memberIds;
+    public List<ObjectId> getMemberId() {
+        return memberId;
     }
 
-    public void setMemberIds(List<ObjectId> memberIds) {
-        this.memberIds = memberIds;
+    public void setMemberId(List<ObjectId> memberIds) {
+        this.memberId = memberIds;
     }
 
     public LocalDateTime getCreationDate() {

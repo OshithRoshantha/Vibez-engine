@@ -22,9 +22,9 @@ public class GroupController {
     @Autowired
     private GroupsService groupsService;
     
-    @PostMapping("group/create")
-    public ResponseEntity<Boolean> createGroup(@RequestBody Groups newGroup){
-        return ResponseEntity.ok(groupsService.createGroup(newGroup));    
+    @PostMapping("group/create/{creatorId}")
+    public ResponseEntity<Boolean> createGroup(@RequestBody Groups newGroup, @PathVariable ObjectId creatorId){
+        return ResponseEntity.ok(groupsService.createGroup(newGroup, creatorId));    
     }
 
     @PostMapping("group/{groupId}/{addedUser}")
