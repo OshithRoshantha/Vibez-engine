@@ -15,7 +15,7 @@ public class GoogleAuthService {
     @Autowired
     private UserService userService;
 
-    public String GoogleAuth(String email, String password, String name, String picture) {
+    public boolean createAccountByGoogle(String email, String password, String name, String picture) {
         User user = userRepo.findByEmail(email);
         if (user == null) {
             User newUser = new User();
@@ -25,9 +25,9 @@ public class GoogleAuthService {
             newUser.setProfilePicture(picture);
             userService.createUser(newUser);
             userService.createUser(newUser);
-            return "User created";
+            return true;
         } 
-        return userService.authenticateUser(user);
+        return false;
     }
     
 }

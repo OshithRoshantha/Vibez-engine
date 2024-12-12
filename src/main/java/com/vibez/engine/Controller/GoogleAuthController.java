@@ -15,12 +15,13 @@ public class GoogleAuthController {
     @Autowired
     private GoogleAuthService googleAuthService;
 
-    @PostMapping("/googleAuth")
-    public ResponseEntity<String> GoogleAuth(@RequestBody Map<String, String> request) {
-        String email = request.get("email");
-        String name = request.get("name");
-        String picture = request.get("picture");
-        String password = request.get("sub");
-        return ResponseEntity.ok(googleAuthService.GoogleAuth(email, password, name, picture));
-    } 
+    @PostMapping("/googleAuth/Check")
+    public ResponseEntity<Boolean> GoogleAuth(@RequestBody Map<String, Object> request) {
+        String email = (String) request.get("email");
+        String name = (String) request.get("name");
+        String picture = (String) request.get("picture");
+        String password = (String) request.get("sub");
+        return ResponseEntity.ok(googleAuthService.createAccountByGoogle(email, password, name, picture));
+    }
+    
 }
