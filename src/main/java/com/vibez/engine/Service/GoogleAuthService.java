@@ -15,7 +15,9 @@ public class GoogleAuthService {
     @Autowired
     private UserService userService;
 
-    public boolean createAccountByGoogle(String email, String password, String name, String picture) {
+
+    //if the user does not exist in the database, return true and create a new user, otherwise return false
+    public boolean checkAccountByGoogle(String email, String password, String name, String picture) {
         User user = userRepo.findByEmail(email);
         if (user == null) {
             User newUser = new User();

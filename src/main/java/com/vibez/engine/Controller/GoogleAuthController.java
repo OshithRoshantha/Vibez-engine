@@ -21,7 +21,7 @@ public class GoogleAuthController {
         String name = (String) request.get("name");
         String picture = (String) request.get("picture");
         String password = (String) request.get("sub");
-        return ResponseEntity.ok(googleAuthService.createAccountByGoogle(email, password, name, picture));
+        return ResponseEntity.ok(googleAuthService.checkAccountByGoogle(email, password, name, picture));
     }
     
 }
