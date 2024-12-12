@@ -17,7 +17,10 @@ public class GoogleAuthController {
 
     @PostMapping("/googleAuth")
     public ResponseEntity<String> GoogleAuth(@RequestBody Map<String, String> request) {
-        String token = request.get("token");
-        return ResponseEntity.ok(googleAuthService.GoogleAuth(token));
+        String email = request.get("email");
+        String name = request.get("name");
+        String picture = request.get("picture");
+        String password = request.get("sub");
+        return ResponseEntity.ok(googleAuthService.GoogleAuth(email, password, name, picture));
     } 
 }
