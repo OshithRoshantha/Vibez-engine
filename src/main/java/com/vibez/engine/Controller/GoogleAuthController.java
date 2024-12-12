@@ -1,9 +1,11 @@
 package com.vibez.engine.Controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vibez.engine.Service.GoogleAuthService;
@@ -13,8 +15,9 @@ public class GoogleAuthController {
     @Autowired
     private GoogleAuthService googleAuthService;
 
-    @PostMapping("/googleAuth/{googleToken}")
-    public ResponseEntity<String> GoogleAuth(@PathVariable String token) {
+    @PostMapping("/googleAuth")
+    public ResponseEntity<String> GoogleAuth(@RequestBody Map<String, String> request) {
+        String token = request.get("token");
         return ResponseEntity.ok(googleAuthService.GoogleAuth(token));
     } 
 }
