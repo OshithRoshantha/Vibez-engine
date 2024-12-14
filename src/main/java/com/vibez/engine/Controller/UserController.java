@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @PutMapping("/profile/update")
-    public ResponseEntity<Boolean> updateProfile(@RequestBody User user) {
+    public ResponseEntity<Boolean> updateProfile(@RequestHeader(value = "Authorization", required = true) @RequestBody User user) {
         return ResponseEntity.ok(userService.updateProfile(user));
     }
 
