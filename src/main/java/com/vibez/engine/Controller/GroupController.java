@@ -31,32 +31,32 @@ public class GroupController {
     }
 
     @PostMapping("group/{groupId}/{addedUser}")
-    public ResponseEntity<Boolean> addUserToGroup(@RequestHeader(value = "Authorization", required = true) @PathVariable ObjectId groupId, @PathVariable ObjectId addedUser){
+    public ResponseEntity<Boolean> addUserToGroup(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable ObjectId groupId, @PathVariable ObjectId addedUser){
         return ResponseEntity.ok(groupsService.addUserToGroup(groupId, addedUser));
     }
 
     @DeleteMapping("group/{groupId}/{addedUser}")
-    public ResponseEntity<Boolean> removeUserFromGroup(@RequestHeader(value = "Authorization", required = true) @PathVariable ObjectId groupId, @PathVariable ObjectId addedUser){
+    public ResponseEntity<Boolean> removeUserFromGroup(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable ObjectId groupId, @PathVariable ObjectId addedUser){
         return ResponseEntity.ok(groupsService.removeUserFromGroup(groupId, addedUser));
     }
 
     @GetMapping("group/{userId}")
-    public ResponseEntity<List<Groups>> getGroupsByUser(@RequestHeader(value = "Authorization", required = true) @PathVariable ObjectId userId){
+    public ResponseEntity<List<Groups>> getGroupsByUser(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable ObjectId userId){
         return ResponseEntity.ok(groupsService.getGroupsByUser(userId));
     }
 
     @PutMapping("group/name/{groupId}/{newName}")
-    public ResponseEntity<Boolean> changeGroupName(@RequestHeader(value = "Authorization", required = true) @PathVariable ObjectId groupId, @PathVariable String newName){
+    public ResponseEntity<Boolean> changeGroupName(@RequestHeader(value = "Authorization", required = true)  String token,  @PathVariable ObjectId groupId, @PathVariable String newName){
         return ResponseEntity.ok(groupsService.changeGroupName(groupId, newName));
     }
 
     @PutMapping("group/desc/{groupId}/{newDesc}")
-    public ResponseEntity<Boolean> changeGroupDesc(@RequestHeader(value = "Authorization", required = true) @PathVariable ObjectId groupId, @PathVariable String newDesc){
+    public ResponseEntity<Boolean> changeGroupDesc(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable ObjectId groupId, @PathVariable String newDesc){
         return ResponseEntity.ok(groupsService.changeGroupDescp(groupId, newDesc));
     }
 
     @PutMapping("group/icon/{groupId}/{newIcon}")
-    public ResponseEntity<Boolean> changeGroupIcon(@RequestHeader(value = "Authorization", required = true) @PathVariable ObjectId groupId, @PathVariable String newIcon){
+    public ResponseEntity<Boolean> changeGroupIcon(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable ObjectId groupId, @PathVariable String newIcon){
         return ResponseEntity.ok(groupsService.changeGroupIcon(groupId, newIcon));
     }
 }

@@ -25,22 +25,22 @@ public class MessageController {
     private MessageService messageService;
 
     @PostMapping("/message/send")
-    public  ResponseEntity<Boolean> sendMessage(@RequestHeader(value = "Authorization", required = true) @RequestBody Message message) {
+    public  ResponseEntity<Boolean> sendMessage(@RequestHeader(value = "Authorization", required = true) String token, @RequestBody Message message) {
         return ResponseEntity.ok(messageService.saveMessage(message));
     }
     
     @PutMapping("/message/markAsRead/{messageId}")
-    public ResponseEntity<Boolean> markAsRead(@RequestHeader(value = "Authorization", required = true) @PathVariable ObjectId messageId) {
+    public ResponseEntity<Boolean> markAsRead(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable ObjectId messageId) {
         return ResponseEntity.ok(messageService.markAsRead(messageId));
     }
 
     @GetMapping("/message/direct/{senderId}/{receiverId}")
-    public ResponseEntity<List<Message>> getDirectMessages(@RequestHeader(value = "Authorization", required = true) @PathVariable ObjectId senderId, @PathVariable ObjectId receiverId) {
+    public ResponseEntity<List<Message>> getDirectMessages(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable ObjectId senderId, @PathVariable ObjectId receiverId) {
         return ResponseEntity.ok(messageService.getDirectMessages(senderId, receiverId));
     }
 
     @GetMapping("/message/group/{groupId}")
-    public ResponseEntity<List<Message>> getGroupMessages(@RequestHeader(value = "Authorization", required = true) @PathVariable ObjectId groupId) {
+    public ResponseEntity<List<Message>> getGroupMessages(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable ObjectId groupId) {
         return ResponseEntity.ok(messageService.getGroupMessages(groupId));
     }
 }
