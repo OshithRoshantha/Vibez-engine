@@ -5,6 +5,7 @@ import java.util.List;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,14 +25,23 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
 
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+
     @PostMapping("/message/send")
-    public  ResponseEntity<Message> sendMessage(@RequestHeader(value = "Authorization", required = true) String token, @RequestBody Message message) {
-        return ResponseEntity.ok(messageService.saveMessage(message));
+    public ResponseEntity<Message> sendMessage(@RequestHeader(value = "Authorization", required = true) String token, @RequestBody Message message) {
+        Message savedMessage = messageService.saveMessage(message);
+        messagingTemplate.convertAndSend("/topic/messages", savedMessage);
+        return ResponseEntity.ok(savedMessage);
     }
-    
+
     @PutMapping("/message/markAsRead/{messageId}")
     public ResponseEntity<Boolean> markAsRead(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable ObjectId messageId) {
-        return ResponseEntity.ok(messageService.markAsRead(messageId));
+        boolean result = messageService.markAsRead(messageId);
+        if (result) {
+            messagingTemplate.convertAndSend("/topic/messages/read", messageId);
+        }
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/message/direct/{senderId}/{receiverId}")
