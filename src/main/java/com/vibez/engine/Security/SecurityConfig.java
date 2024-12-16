@@ -37,7 +37,9 @@ public class SecurityConfig{
                 "/swagger-ui/**",
                 "/vibez/googleAuth/**",
                 "/vibez/register",
-                "/vibez/login"
+                "/vibez/login",
+                "/**",
+                "/ws/**"
             )
             .permitAll()  
             .anyRequest()
