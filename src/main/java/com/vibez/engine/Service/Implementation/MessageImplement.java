@@ -17,11 +17,11 @@ public class MessageImplement implements MessageService {
     @Autowired
     private MessageRepo messageRepo;
 
-    public boolean saveMessage(Message message){
+    public Message saveMessage(Message message){
         message.setRead(false);
         message.setTimestamp(LocalDateTime.now());
         message = messageRepo.save(message);
-        return true;
+        return message;
     }
 
     public List<Message> getDirectMessages(ObjectId senderId, ObjectId receiverId){

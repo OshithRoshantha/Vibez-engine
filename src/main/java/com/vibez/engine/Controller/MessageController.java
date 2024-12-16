@@ -25,7 +25,7 @@ public class MessageController {
     private MessageService messageService;
 
     @PostMapping("/message/send")
-    public  ResponseEntity<Boolean> sendMessage(@RequestHeader(value = "Authorization", required = true) String token, @RequestBody Message message) {
+    public  ResponseEntity<Message> sendMessage(@RequestHeader(value = "Authorization", required = true) String token, @RequestBody Message message) {
         return ResponseEntity.ok(messageService.saveMessage(message));
     }
     
