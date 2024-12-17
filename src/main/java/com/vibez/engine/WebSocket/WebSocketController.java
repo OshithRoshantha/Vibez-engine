@@ -1,4 +1,4 @@
-package com.vibez.engine.WebSocket;
+/*package com.vibez.engine.WebSocket;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,4 +79,4 @@ public class WebSocketController extends TextWebSocketHandler {
             messagingTemplate.convertAndSend("/topic/friendship/" + friendId, friendship);
         }
     }
-}
+}*/
