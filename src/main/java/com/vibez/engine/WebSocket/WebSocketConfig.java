@@ -17,14 +17,14 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(vibezHandler(), "/vibez-websocket")
+        registry.addHandler(WebSocketController(), "/vibez-websocket")
                 .setAllowedOrigins("*")
                 .addInterceptors(jwtHandshakeInterceptor);
     }
 
     @Bean
-    public WebSocketHandler vibezHandler() {
-        return new VibezHandler();
+    public WebSocketHandler WebSocketController() {
+        return new WebSocketController();
     }
 }
 
