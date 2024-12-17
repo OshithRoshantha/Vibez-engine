@@ -17,7 +17,7 @@ public class Marketplace {
     private double price;
     private String location;
     private List<String> productPhotos;
-    private boolean visibleToCommunity;
+    private boolean visibleToFriends;
 
     public ObjectId getProductId() {
         return productId;
@@ -83,11 +83,11 @@ public class Marketplace {
         this.productPhotos = productPhotos;
     }
 
-    public boolean isVisibleToCommunity() {
-        return visibleToCommunity;
+    public boolean isVisibleToFriends() {
+        return visibleToFriends;
     }
 
-    public void setVisibleToCommunity(boolean visibleToCommunity) {
-        this.visibleToCommunity = visibleToCommunity;
+    public void setVisibleToFriends(boolean visibleToFriends) {
+        this.visibleToFriends = visibleToFriends;
     }    
 }

@@ -35,8 +35,8 @@ public class MarketplaceController {
     }
 
     @GetMapping("/product/{friendIds}")
-    public ResponseEntity<List<Marketplace>> getCommunityAndFriendsVisibleItems(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable List<ObjectId> friendIds) {
-        return ResponseEntity.ok(marketplaceService.getCommunityAndFriendsVisibleItems(friendIds));
+    public ResponseEntity<List<Marketplace>> getCommunityAndFriendsVisibleItems(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable ObjectId friendId) {
+        return ResponseEntity.ok(marketplaceService.getProductsExcludingHiddenByFriends(friendId));
     }
 
     @GetMapping("/product/share/{productId}")

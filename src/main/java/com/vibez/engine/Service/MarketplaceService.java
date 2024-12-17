@@ -9,6 +9,6 @@ import com.vibez.engine.Model.Marketplace;
 public interface MarketplaceService {
     boolean addtem(Marketplace newItem);
     Marketplace getItemById(ObjectId productId);
-    List<Marketplace> getCommunityAndFriendsVisibleItems(List<ObjectId> frienIds);
+    List<Marketplace> getProductsExcludingHiddenByFriends(ObjectId userId);
     String generateShareableLink(ObjectId itemId);
 }
