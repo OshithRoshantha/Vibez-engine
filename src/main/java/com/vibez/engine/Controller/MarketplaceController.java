@@ -1,7 +1,12 @@
 package com.vibez.engine.Controller;
 
+import java.util.List;
+
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,9 +24,24 @@ public class MarketplaceController {
     @Autowired
     private MarketplaceService marketplaceService;
 
-    @PostMapping("/item")
-    public ResponseEntity<Boolean> addSellProduct(@RequestHeader(value = "Authorization", required = true)  String token, @RequestBody Marketplace newItem) {
-        return ResponseEntity.ok(marketplaceService.addtem(newItem)); 
+    @PostMapping("/product")
+    public ResponseEntity<Boolean> addSellProduct(@RequestHeader(value = "Authorization", required = true)  String token, @RequestBody Marketplace newProduct) {
+        return ResponseEntity.ok(marketplaceService.addtem(newProduct)); 
+    }
+
+    @GetMapping("/product/{productId}")
+    public ResponseEntity<Marketplace> getItemById(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable ObjectId productId) {
+        return ResponseEntity.ok(marketplaceService.getItemById(productId));
+    }
+
+    @GetMapping("/product/{friendIds}")
+    public ResponseEntity<List<Marketplace>> getCommunityAndFriendsVisibleItems(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable List<ObjectId> friendIds) {
+        return ResponseEntity.ok(marketplaceService.getCommunityAndFriendsVisibleItems(friendIds));
+    }
+
+    @GetMapping("/product/share/{productId}")
+    public ResponseEntity<String> generateShareableLink(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable ObjectId productId) {
+        return ResponseEntity.ok(marketplaceService.generateShareableLink(productId));
     }
 
 }
