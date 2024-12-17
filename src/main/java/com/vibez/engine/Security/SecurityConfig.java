@@ -38,6 +38,7 @@ public class SecurityConfig{
                 "/vibez/googleAuth/**",
                 "/vibez/register",
                 "/vibez/login",
+                "/vibez-websocket/**",
                 "/**",
                 "/ws/**"
             )
