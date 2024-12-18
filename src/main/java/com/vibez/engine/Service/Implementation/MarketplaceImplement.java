@@ -36,7 +36,7 @@ public class MarketplaceImplement implements MarketplaceService {
         List<Friendship> friends = friendshipService.getFriends(userId);
         List<ObjectId> friendIds = new ArrayList<>();
         for (Friendship friend : friends) {
-            friendIds.add(friend.getFriendId());
+            friendIds.add(friend.getUserId());
         }
         return marketplaceRepo.findAllSellingProducts(friendIds);
     }
