@@ -8,9 +8,10 @@ import org.springframework.data.mongodb.repository.Query;
 
 import com.vibez.engine.Model.Marketplace;
 
-public interface MarketplaceRepo extends MongoRepository <Marketplace, ObjectId> {
+public interface MarketplaceRepo extends MongoRepository<Marketplace, ObjectId> {
     List<Marketplace> findBySellerId(ObjectId sellerId);
     Marketplace findByProductId(ObjectId productId);
+
     @Query("""
         {
           $or: [

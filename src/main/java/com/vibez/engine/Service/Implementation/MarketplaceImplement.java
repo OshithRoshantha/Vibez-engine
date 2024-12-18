@@ -9,40 +9,39 @@ import org.springframework.stereotype.Service;
 
 import com.vibez.engine.Model.Friendship;
 import com.vibez.engine.Model.Marketplace;
-import com.vibez.engine.Model.User;
 import com.vibez.engine.Repository.MarketplaceRepo;
 import com.vibez.engine.Service.FriendshipService;
 import com.vibez.engine.Service.MarketplaceService;
 
 @Service
-public class MarketplaceImplement implements MarketplaceService{
+public class MarketplaceImplement implements MarketplaceService {
 
     @Autowired
     private MarketplaceRepo marketplaceRepo;
 
     @Autowired
     private FriendshipService friendshipService;
-    
-    public boolean addtem(Marketplace newProduct){
+
+    public boolean addItem(ObjectId sellerId, Marketplace newProduct) {
+        newProduct.setSellerId(sellerId);
         marketplaceRepo.save(newProduct);
         return true;
     }
 
-    public Marketplace getItemById(ObjectId productId){
-        Marketplace sellItem = marketplaceRepo.findByProductId(productId);
-        return sellItem;
+    public Marketplace getItemById(ObjectId productId) {
+        return marketplaceRepo.findByProductId(productId);
     }
 
-    public List<Marketplace> getProductsExcludingHiddenByFriends(ObjectId userId){
+    public List<Marketplace> getProductsExcludingHiddenByFriends(ObjectId userId) {
         List<Friendship> friends = friendshipService.getFriends(userId);
         List<ObjectId> friendIds = new ArrayList<>();
-        for(Friendship friend : friends){
+        for (Friendship friend : friends) {
             friendIds.add(friend.getFriendId());
         }
         return marketplaceRepo.findProductsExcludingFriends(friendIds);
     }
 
-    public String generateShareableLink(ObjectId productId){
+    public String generateShareableLink(ObjectId productId) {
         return "https://vibez.com/marketplace/item/" + productId.toHexString();
     }
 }

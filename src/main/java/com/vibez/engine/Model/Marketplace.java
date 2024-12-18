@@ -12,7 +12,7 @@ public class Marketplace {
     private ObjectId productId;
     private ObjectId sellerId;
     private String productTitle;
-    private String productDescp;
+    private String productDesc; 
     private String condition;
     private double price;
     private String location;
@@ -43,12 +43,12 @@ public class Marketplace {
         this.productTitle = productTitle;
     }
 
-    public String getProductDescp() {
-        return productDescp;
+    public String getProductDesc() {
+        return productDesc;
     }
 
-    public void setProductDescp(String productDescp) {
-        this.productDescp = productDescp;
+    public void setProductDesc(String productDesc) {
+        this.productDesc = productDesc;
     }
 
     public String getCondition() {
@@ -89,5 +89,6 @@ public class Marketplace {
 
     public void setVisibleToFriends(boolean visibleToFriends) {
         this.visibleToFriends = visibleToFriends;
-    }    
+    }
+
 }

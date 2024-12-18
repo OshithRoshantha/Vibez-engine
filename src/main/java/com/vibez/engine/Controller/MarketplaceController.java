@@ -24,17 +24,17 @@ public class MarketplaceController {
     @Autowired
     private MarketplaceService marketplaceService;
 
-    @PostMapping("/product")
-    public ResponseEntity<Boolean> addSellProduct(@RequestHeader(value = "Authorization", required = true)  String token, @RequestBody Marketplace newProduct) {
-        return ResponseEntity.ok(marketplaceService.addtem(newProduct)); 
+    @PostMapping("/product/add/{sellerId}")
+    public ResponseEntity<Boolean> addSellProduct(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable ObjectId sellerId, @RequestBody Marketplace newProduct) {
+        return ResponseEntity.ok(marketplaceService.addItem(sellerId, newProduct)); 
     }
 
-    @GetMapping("/product/{productId}")
+    @GetMapping("/product/find/{productId}")
     public ResponseEntity<Marketplace> getItemById(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable ObjectId productId) {
         return ResponseEntity.ok(marketplaceService.getItemById(productId));
     }
 
-    @GetMapping("/product/{friendIds}")
+    @GetMapping("/product/findAll/{friendIds}")
     public ResponseEntity<List<Marketplace>> getCommunityAndFriendsVisibleItems(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable ObjectId friendId) {
         return ResponseEntity.ok(marketplaceService.getProductsExcludingHiddenByFriends(friendId));
     }
