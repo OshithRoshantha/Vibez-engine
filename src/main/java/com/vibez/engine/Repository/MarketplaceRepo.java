@@ -9,9 +9,10 @@ import org.springframework.data.mongodb.repository.Query;
 import com.vibez.engine.Model.Marketplace;
 
 public interface MarketplaceRepo extends MongoRepository<Marketplace, ObjectId> {
-    List<Marketplace> findBySellerId(ObjectId sellerId);
-    Marketplace findByProductId(ObjectId productId);
+  List<Marketplace> findBySellerId(ObjectId sellerId);
+  Marketplace findByProductId(ObjectId productId);
 
-    @Query("{ 'sellerId': { $nin: ?0 } }")
-    List<Marketplace> findProductsExcludingFriends(List<ObjectId> friendIds);
+  @Query("{ $or: [ { 'visibleToFriends': true }, { 'sellerId': { $nin: ?0 } } ] }")
+  List<Marketplace> findAllSellingProducts(List<ObjectId> friendIds);
+  
 }

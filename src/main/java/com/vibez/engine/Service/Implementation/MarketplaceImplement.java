@@ -38,7 +38,7 @@ public class MarketplaceImplement implements MarketplaceService {
         for (Friendship friend : friends) {
             friendIds.add(friend.getFriendId());
         }
-        return marketplaceRepo.findProductsExcludingFriends(friendIds);
+        return marketplaceRepo.findAllSellingProducts(friendIds);
     }
 
     public String generateShareableLink(ObjectId productId) {
