@@ -26,7 +26,7 @@ public class GroupController {
     private GroupsService groupsService;
     
     @PostMapping("group/create/{creatorId}")
-    public ResponseEntity<Boolean> createGroup(@RequestHeader(value = "Authorization", required = true) @RequestBody Groups newGroup, @PathVariable ObjectId creatorId){
+    public ResponseEntity<Boolean> createGroup(@RequestHeader(value = "Authorization", required = true) String token, @RequestBody Groups newGroup, @PathVariable ObjectId creatorId){
         return ResponseEntity.ok(groupsService.createGroup(newGroup, creatorId));    
     }
 
