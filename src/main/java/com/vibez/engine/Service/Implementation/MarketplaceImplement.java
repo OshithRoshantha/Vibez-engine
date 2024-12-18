@@ -42,6 +42,6 @@ public class MarketplaceImplement implements MarketplaceService {
     }
 
     public String generateShareableLink(ObjectId productId) {
-        return "https://vibez.com/marketplace/item/" + productId.toHexString();
+        return "http://localhost:8080/vibez/product/find/" + productId.toHexString();
     }
 }
