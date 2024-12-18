@@ -90,5 +90,4 @@ public class Marketplace {
     public void setVisibleToFriends(boolean visibleToFriends) {
         this.visibleToFriends = visibleToFriends;
     }
-
 }

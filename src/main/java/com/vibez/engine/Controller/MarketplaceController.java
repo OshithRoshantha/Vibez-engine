@@ -8,14 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vibez.engine.Model.Marketplace;
 import com.vibez.engine.Service.MarketplaceService;
-
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 @RequestMapping("/vibez")
@@ -34,9 +33,9 @@ public class MarketplaceController {
         return ResponseEntity.ok(marketplaceService.getItemById(productId));
     }
 
-    @GetMapping("/product/findAll/{friendIds}")
-    public ResponseEntity<List<Marketplace>> getCommunityAndFriendsVisibleItems(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable ObjectId friendId) {
-        return ResponseEntity.ok(marketplaceService.getProductsExcludingHiddenByFriends(friendId));
+    @GetMapping("/product/findAll/{userId}")
+    public ResponseEntity<List<Marketplace>> getCommunityAndFriendsVisibleItems(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable ObjectId userId) {
+        return ResponseEntity.ok(marketplaceService.getProductsExcludingHiddenByFriends(userId));
     }
 
     @GetMapping("/product/share/{productId}")

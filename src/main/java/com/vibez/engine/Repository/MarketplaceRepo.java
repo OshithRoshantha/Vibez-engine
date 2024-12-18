@@ -12,16 +12,6 @@ public interface MarketplaceRepo extends MongoRepository<Marketplace, ObjectId> 
     List<Marketplace> findBySellerId(ObjectId sellerId);
     Marketplace findByProductId(ObjectId productId);
 
-    @Query("""
-        {
-          $or: [
-            { "visibleToFriends": true },
-            {
-              "visibleToFriends": false,
-              "sellerId": { $nin: ?0 }
-            }
-          ]
-        }
-        """)
+    @Query("{ 'sellerId': { $nin: ?0 } }")
     List<Marketplace> findProductsExcludingFriends(List<ObjectId> friendIds);
 }
