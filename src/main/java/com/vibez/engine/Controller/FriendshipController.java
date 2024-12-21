@@ -35,7 +35,7 @@ public class FriendshipController {
 
     @PutMapping("/friends/reject/{friendshipId}")
     public ResponseEntity<String> rejectFriendRequest(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String friendshipId) {
-        String friendshipStatus = friendshipService.rejectFriendRequest(friendshipId);
+        String friendshipStatus = friendshipService.unFriend(friendshipId);
         return ResponseEntity.ok(friendshipStatus);
     }
 

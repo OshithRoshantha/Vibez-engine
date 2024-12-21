@@ -58,29 +58,26 @@ public class FriendshipImplement implements FriendshipService {
         if ("PENDING".equals(friendship.getStatus())) {
             friendship.setStatus("ACCEPTED");
             friendshipRepo.save(friendship);
-            return "Friend request accepted";
+            return friendshipId;
         }
         return "Not Allowed"; 
     }
 
-    public String rejectFriendRequest(String friendshipId) {
+    public String unFriend(String friendshipId) {
         Friendship friendship = friendshipRepo.findByFriendshipId(friendshipId);
-        if ("PENDING".equals(friendship.getStatus())) {
+        if ("ACCEPTED".equals(friendship.getStatus())) {
             friendship.setStatus("REJECTED");
             friendshipRepo.save(friendship);
-            return "Friend request rejected";
+            return friendshipId;
         }
         return "Not Allowed"; 
     }
 
     public String blockFriend(String friendshipId) {
         Friendship friendship = friendshipRepo.findByFriendshipId(friendshipId);
-        if ("ACCEPTED".equals(friendship.getStatus())) {
-            friendship.setStatus("BLOCKED");
-            friendshipRepo.save(friendship);
-            return "Friend blocked";
-        }
-        return "Not Allowed";
+        friendship.setStatus("BLOCKED");
+        friendshipRepo.save(friendship);
+        return friendshipId;
     }
 
     public List<String> getFriends(String userId) {
