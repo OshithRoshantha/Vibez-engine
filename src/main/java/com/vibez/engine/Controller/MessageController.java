@@ -25,7 +25,7 @@ public class MessageController {
 
     @PostMapping("/message/send")
     public  ResponseEntity<Message> sendMessage(@RequestHeader(value = "Authorization", required = true) String token, @RequestBody Message message) {
-        return ResponseEntity.ok(messageService.saveMessage(message));
+        return ResponseEntity.ok(messageService.sendMessage(message));
     }
     
     @PutMapping("/message/markAsRead/{messageId}")
@@ -36,10 +36,5 @@ public class MessageController {
     @GetMapping("/message/direct/{senderId}/{receiverId}")
     public ResponseEntity<List<String>> getDirectMessages(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String senderId, @PathVariable String receiverId) {
         return ResponseEntity.ok(messageService.getDirectMessages(senderId, receiverId));
-    }
-
-    @GetMapping("/message/group/{groupId}")
-    public ResponseEntity<List<String>> getGroupMessages(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String groupId) {
-        return ResponseEntity.ok(messageService.getGroupMessages(groupId));
     }
 }

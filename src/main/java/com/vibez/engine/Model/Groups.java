@@ -2,27 +2,26 @@ package com.vibez.engine.Model;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "groups")
 public class Groups {
     @Id
-    private ObjectId groupId;
+    private String groupId;
     private String groupIcon;
     private String groupName;
     private String groupDesc;
-    private ObjectId creatorId;
-    private List<ObjectId> memberId;
+    private String creatorId;
+    private List<String> memberIds;
     private LocalDateTime creationDate;
+    private List<String> messageIds;
 
-    public ObjectId getGroupId() {
+    public String getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(ObjectId groupId) {
+    public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
 
@@ -50,20 +49,20 @@ public class Groups {
         this.groupDesc = groupDesc;
     }
 
-    public ObjectId getCreatorId() {
+    public String getCreatorId() {
         return creatorId;
     }
 
-    public void setCreatorId(ObjectId creatorId) {
+    public void setCreatorId(String creatorId) {
         this.creatorId = creatorId;
     }
 
-    public List<ObjectId> getMemberId() {
-        return memberId;
+    public List<String> getMemberIds() {
+        return memberIds;
     }
 
-    public void setMemberId(List<ObjectId> memberIds) {
-        this.memberId = memberIds;
+    public void setMemberIds(List<String> memberIds) {
+        this.memberIds = memberIds;
     }
 
     public LocalDateTime getCreationDate() {
@@ -72,5 +71,13 @@ public class Groups {
 
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public List<String> getMessageIds() {
+        return messageIds;
+    }
+
+    public void setMessageIds(List<String> messageIds) {
+        this.messageIds = messageIds;
     }
 }
