@@ -110,7 +110,7 @@ public class WebSocketController implements WebSocketHandler {
 
     private void handleMessages(Map<String, Object> messageData) {
         Message message = objectMapper.convertValue(messageData.get("body"), Message.class);
-        messageService.saveMessage(message);
+        messageService.sendMessage(message);
         broadcastToSubscribers("messageService", messageData.get("body"));
     }
 

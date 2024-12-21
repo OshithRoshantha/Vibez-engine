@@ -33,6 +33,11 @@ public class MessageController {
         return ResponseEntity.ok(messageService.markAsRead(messageId));
     }
 
+    @GetMapping("/message/group/{groupId}")
+    public ResponseEntity<List<String>> getMessagesByGroups(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String groupId){
+        return ResponseEntity.ok(messageService.getMessagesByGroups(groupId));
+    }
+
     @GetMapping("/message/direct/{senderId}/{receiverId}")
     public ResponseEntity<List<String>> getDirectMessages(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String senderId, @PathVariable String receiverId) {
         return ResponseEntity.ok(messageService.getDirectMessages(senderId, receiverId));

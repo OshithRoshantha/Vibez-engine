@@ -61,4 +61,9 @@ public class MessageImplement implements MessageService {
         messageRepo.save(message);
         return true;
     }
+
+    public List<String> getMessagesByGroups(String groupId){
+        Groups group = groupsService.getGroupById(groupId);
+        return group.getMessageIds();
+    }
 }
