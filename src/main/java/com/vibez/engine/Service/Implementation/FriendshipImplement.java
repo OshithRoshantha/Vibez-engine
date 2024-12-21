@@ -3,7 +3,6 @@ package com.vibez.engine.Service.Implementation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,25 +37,24 @@ public class FriendshipImplement implements FriendshipService {
             if (user.getFriendshipIds() == null) {
                 user.setFriendshipIds(new ArrayList<>());
             }
+
             user.getFriendshipIds().add(friendshipId);
     
             if (friend.getFriendshipIds() == null) {
                 friend.setFriendshipIds(new ArrayList<>());
             }
+
             friend.getFriendshipIds().add(friendshipId);
             userRepo.save(user);
             userRepo.save(friend);
-            return "Friend request sent";	
+            return friendshipId;	
         }
         return "Not Allowed"; 
     }
     
 
-    public String acceptFriendRequest(String userId, String friendId) {
-        Friendship friendship = friendshipRepo.findByUserIdAndFriendId(userId, friendId);
-        if (friendship == null) {
-            friendship = friendshipRepo.findByUserIdAndFriendId(friendId, userId);
-        }
+    public String acceptFriendRequest(String friendshipId) {
+        Friendship friendship = friendshipRepo.findByFriendshipId(friendshipId);
         if ("PENDING".equals(friendship.getStatus())) {
             friendship.setStatus("ACCEPTED");
             friendshipRepo.save(friendship);
@@ -65,11 +63,8 @@ public class FriendshipImplement implements FriendshipService {
         return "Not Allowed"; 
     }
 
-    public String rejectFriendRequest(String userId, String friendId) {
-        Friendship friendship = friendshipRepo.findByUserIdAndFriendId(userId, friendId);
-        if (friendship == null) {
-            friendship = friendshipRepo.findByUserIdAndFriendId(friendId, userId);
-        }
+    public String rejectFriendRequest(String friendshipId) {
+        Friendship friendship = friendshipRepo.findByFriendshipId(friendshipId);
         if ("PENDING".equals(friendship.getStatus())) {
             friendship.setStatus("REJECTED");
             friendshipRepo.save(friendship);
@@ -78,11 +73,8 @@ public class FriendshipImplement implements FriendshipService {
         return "Not Allowed"; 
     }
 
-    public String blockFriend(String userId, String friendId) {
-        Friendship friendship = friendshipRepo.findByUserIdAndFriendId(userId, friendId);
-        if (friendship == null) {
-            friendship = friendshipRepo.findByUserIdAndFriendId(friendId, userId);
-        }
+    public String blockFriend(String friendshipId) {
+        Friendship friendship = friendshipRepo.findByFriendshipId(friendshipId);
         if ("ACCEPTED".equals(friendship.getStatus())) {
             friendship.setStatus("BLOCKED");
             friendshipRepo.save(friendship);
@@ -100,7 +92,12 @@ public class FriendshipImplement implements FriendshipService {
         return friendIds;
     }
 
-    public List<Friendship> getPendingRequests(String userId) {
-        return friendshipRepo.findByMatchStatusAndUserIdOrFriendId("PENDING", userId);
+    public List<String> getPendingRequests(String userId) {
+        List <Friendship> pendingRequests = friendshipRepo.findByMatchStatusAndUserIdOrFriendId("PENDING", userId);
+        List <String> pendingRequestIds = new ArrayList<>();
+        for (Friendship pendingRequest : pendingRequests) {
+            pendingRequestIds.add(pendingRequest.getFriendId());
+        }
+        return pendingRequestIds;
     }
 }

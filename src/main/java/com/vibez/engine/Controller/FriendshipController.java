@@ -2,7 +2,6 @@ package com.vibez.engine.Controller;
 
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vibez.engine.Model.Friendship;
 import com.vibez.engine.Service.FriendshipService;
 
 @RestController
@@ -29,21 +27,21 @@ public class FriendshipController {
         return ResponseEntity.ok(friendshipStatus);
     }
 
-    @PutMapping ("/friends/accept/{userId}/{friendId}")
-    public ResponseEntity<String> acceptFriendRequest(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId, @PathVariable String friendId) {
-        String friendshipStatus = friendshipService.acceptFriendRequest(userId, friendId);
+    @PutMapping ("/friends/accept/{friendshipId}")
+    public ResponseEntity<String> acceptFriendRequest(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String friendshipId) {
+        String friendshipStatus = friendshipService.acceptFriendRequest(friendshipId);
         return ResponseEntity.ok(friendshipStatus);
     }
 
-    @PutMapping("/friends/reject/{userId}/{friendId}")
-    public ResponseEntity<String> rejectFriendRequest(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId, @PathVariable String friendId) {
-        String friendshipStatus = friendshipService.rejectFriendRequest(userId, friendId);
+    @PutMapping("/friends/reject/{friendshipId}")
+    public ResponseEntity<String> rejectFriendRequest(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String friendshipId) {
+        String friendshipStatus = friendshipService.rejectFriendRequest(friendshipId);
         return ResponseEntity.ok(friendshipStatus);
     }
 
-    @PutMapping("/friends/block/{userId}/{friendId}")
-    public ResponseEntity<String> blockFriend(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId, @PathVariable String friendId) {
-        String friendshipStatus = friendshipService.blockFriend(userId, friendId);
+    @PutMapping("/friends/block/{friendshipId}")
+    public ResponseEntity<String> blockFriend(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String friendshipId) {
+        String friendshipStatus = friendshipService.blockFriend(friendshipId);
         return ResponseEntity.ok(friendshipStatus);
     }
 
@@ -54,8 +52,8 @@ public class FriendshipController {
     }
 
     @GetMapping("/friends/pending/{userId}")
-    public ResponseEntity<List<Friendship>> getPendingRequests(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId) {
-        List<Friendship> pendingRequests = friendshipService.getPendingRequests(userId);
+    public ResponseEntity<List<String>> getPendingRequests(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId) {
+        List<String> pendingRequests = friendshipService.getPendingRequests(userId);
         return ResponseEntity.ok(pendingRequests);
     }    
 }
