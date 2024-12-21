@@ -2,50 +2,49 @@ package com.vibez.engine.Model;
 
 import java.time.LocalDateTime;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "messages")
 public class Message {
     @Id
-    private ObjectId messageId;
-    private ObjectId senderId;
-    private ObjectId receiverId;
-    private ObjectId groupId; //null for direct messages
+    private String messageId;
+    private String senderId;
+    private String receiverId;
+    private String groupId; //null for direct messages
     private String message;
     private LocalDateTime timestamp;
     private boolean isRead;
 
-    public ObjectId getMessageId() {
+    public String getMessageId() {
         return messageId;
     }
 
-    public void setMessageId(ObjectId messageId) {
+    public void setMessageId(String messageId) {
         this.messageId = messageId;
     }
 
-    public ObjectId getSenderId() {
+    public String getSenderId() {
         return senderId;
     }
 
-    public void setSenderId(ObjectId senderId) {
+    public void setSenderId(String senderId) {
         this.senderId = senderId;
     }
 
-    public ObjectId getReceiverId() {
+    public String getReceiverId() {
         return receiverId;
     }
 
-    public void setReceiverId(ObjectId receiverId) {
+    public void setReceiverId(String receiverId) {
         this.receiverId = receiverId;
     }
 
-    public ObjectId getGroupId() {
+    public String getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(ObjectId groupId) {
+    public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
 

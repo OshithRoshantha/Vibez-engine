@@ -2,13 +2,14 @@ package com.vibez.engine.Repository;
 
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
 import com.vibez.engine.Model.Message;
 
-public interface  MessageRepo extends MongoRepository<Message, ObjectId>{
-    List<Message> findBySenderIdAndReceiverId(ObjectId senderId, ObjectId receiverId);
-    List<Message> findByGroupId(ObjectId groupId);
-    Message findByMessageId(ObjectId messageId);
+public interface  MessageRepo extends MongoRepository<Message, String>{
+    @Query("{ $or: [ { 'senderId': ?0, 'receiverId': ?1 }, { 'senderId': ?1, 'receiverId': ?0 } ] }")
+    List<String> findBySenderIdAndReceiverId(String senderId, String receiverId);
+    List<String> findByGroupId(String groupId);
+    Message findByMessageId(String messageId);
 }

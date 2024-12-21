@@ -15,7 +15,6 @@ import org.springframework.web.socket.WebSocketSession;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vibez.engine.Model.Friendship;
 import com.vibez.engine.Model.Message;
-import com.vibez.engine.Repository.FriendshipRepo;
 import com.vibez.engine.Service.FriendshipService;
 import com.vibez.engine.Service.GroupsService;
 import com.vibez.engine.Service.MessageService;
@@ -24,9 +23,6 @@ public class WebSocketController implements WebSocketHandler {
 
     private static final Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
     private static final Map<String, List<WebSocketSession>> subscriptions = new ConcurrentHashMap<>();
-
-    @Autowired
-    private FriendshipRepo friendshipRepo;
 
     @Autowired
     private MessageService messageService;

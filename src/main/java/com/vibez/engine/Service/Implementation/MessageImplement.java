@@ -3,7 +3,6 @@ package com.vibez.engine.Service.Implementation;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,15 +23,15 @@ public class MessageImplement implements MessageService {
         return message;
     }
 
-    public List<Message> getDirectMessages(ObjectId senderId, ObjectId receiverId){
+    public List<String> getDirectMessages(String senderId, String receiverId){
         return messageRepo.findBySenderIdAndReceiverId(senderId, receiverId);
     }
 
-    public List<Message> getGroupMessages(ObjectId groupId){
+    public List<String> getGroupMessages(String groupId){
         return messageRepo.findByGroupId(groupId);
     }
 
-    public boolean markAsRead(ObjectId messageId){
+    public boolean markAsRead(String messageId){
         Message message = messageRepo.findByMessageId(messageId);
         if(message == null){
             return false;

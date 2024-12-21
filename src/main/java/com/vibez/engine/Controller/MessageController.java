@@ -2,7 +2,6 @@ package com.vibez.engine.Controller;
 
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,17 +29,17 @@ public class MessageController {
     }
     
     @PutMapping("/message/markAsRead/{messageId}")
-    public ResponseEntity<Boolean> markAsRead(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable ObjectId messageId) {
+    public ResponseEntity<Boolean> markAsRead(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String messageId) {
         return ResponseEntity.ok(messageService.markAsRead(messageId));
     }
 
     @GetMapping("/message/direct/{senderId}/{receiverId}")
-    public ResponseEntity<List<Message>> getDirectMessages(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable ObjectId senderId, @PathVariable ObjectId receiverId) {
+    public ResponseEntity<List<String>> getDirectMessages(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String senderId, @PathVariable String receiverId) {
         return ResponseEntity.ok(messageService.getDirectMessages(senderId, receiverId));
     }
 
     @GetMapping("/message/group/{groupId}")
-    public ResponseEntity<List<Message>> getGroupMessages(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable ObjectId groupId) {
+    public ResponseEntity<List<String>> getGroupMessages(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String groupId) {
         return ResponseEntity.ok(messageService.getGroupMessages(groupId));
     }
 }
