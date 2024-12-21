@@ -2,7 +2,6 @@ package com.vibez.engine.Model;
 
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,20 +9,20 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "users")
 public class User {
     @Id
-    private ObjectId userId;
+    private String userId;
     private String userName;
     private String email; 
     private String password; 
     private String profilePicture; 
     private String about; 
-    private List<ObjectId> friendshipIds; 
-    private List<ObjectId> groupIds;
+    private List<String> friendshipIds; 
+    private List<String> groupIds;
 
-    public ObjectId getUserId(){
+    public String getUserId(){
         return userId;
     }
 
-    public void setUserId(ObjectId userId){
+    public void setUserId(String userId){
         this.userId = userId;
     }
 
@@ -67,19 +66,19 @@ public class User {
         this.about = about;
     }
 
-    public List<ObjectId> getFriendshipIds() {
+    public List<String> getFriendshipIds() {
         return friendshipIds;
     }
 
-    public void setFriendshipIds(List<ObjectId> friendshipIds) {
+    public void setFriendshipIds(List<String> friendshipIds) {
         this.friendshipIds = friendshipIds;
     }
 
-    public List<ObjectId> getGroupIds() {
+    public List<String> getGroupIds() {
         return groupIds;
     }
 
-    public void setGroupIds(List<ObjectId> groupIds) {
+    public void setGroupIds(List<String> groupIds) {
         this.groupIds = groupIds;
     }
 }

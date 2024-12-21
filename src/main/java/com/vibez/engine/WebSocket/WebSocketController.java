@@ -13,6 +13,8 @@ import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vibez.engine.Model.Friendship;
+import com.vibez.engine.Model.Message;
 import com.vibez.engine.Service.FriendshipService;
 import com.vibez.engine.Service.GroupsService;
 import com.vibez.engine.Service.MessageService;
@@ -47,11 +49,11 @@ public class WebSocketController implements WebSocketHandler {
         String action = (String) messageData.get("action");
 
         switch (action) {
-            case "sendDirectMessage":
-                handleSendDirectMessage(messageData);
+            case "messageService":
+                handleMessages(messageData);
                 break;
-            case "sendGroupMessage":
-                handleSendGroupMessage(messageData);
+            case "friendshipService":
+               // handleFriendships(messageData);
                 break;
             case "addUserToGroup":
                 handleAddUserToGroup(messageData);
@@ -106,13 +108,30 @@ public class WebSocketController implements WebSocketHandler {
         }
     }
 
-    private void handleSendDirectMessage(Map<String, Object> messageData) {
-        broadcastToSubscribers("sendDirectMessage", messageData);
+    private void handleMessages(Map<String, Object> messageData) {
+        Message message = objectMapper.convertValue(messageData.get("body"), Message.class);
+        messageService.saveMessage(message);
+        broadcastToSubscribers("messageService", messageData.get("body"));
     }
 
-    private void handleSendGroupMessage(Map<String, Object> messageData) {
-        // Implement the logic to handle sending group messages
-    }
+   /*  private void handleFriendships(Map<String, Object> messageData) {
+        Friendship friendship = objectMapper.convertValue(messageData.get("body"), Friendship.class);
+        ObjectId userId = friendship.getUserId();
+        ObjectId friendId = friendship.getFriendId();
+        if (friendship.getStatus().equals("PENDING")) {
+            friendshipService.sendFriendRequest(userId, friendId);
+        } 
+        else if (friendship.getStatus().equals("ACCEPTED")) {
+            friendshipService.acceptFriendRequest(userId, friendId);
+        } 
+        else if (friendship.getStatus().equals("REJECTED")) {
+            friendshipService.rejectFriendRequest(userId, friendId);
+        } 
+        else if (friendship.getStatus().equals("BLOCKED")) {
+            friendshipService.blockFriend(userId, friendId);
+        }
+        broadcastToSubscribers("friendshipService", messageData.get("body"));
+    }*/
 
     private void handleAddUserToGroup(Map<String, Object> messageData) {
         // Implement the logic to handle adding a user to a group

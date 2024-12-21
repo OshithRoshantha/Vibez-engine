@@ -22,7 +22,7 @@ public class FriendshipImplement implements FriendshipService {
     @Autowired
     private UserRepo userRepo;
 
-    public String sendFriendRequest(ObjectId userId, ObjectId friendId) {
+    public String sendFriendRequest(String userId, String friendId) {
         if (friendshipRepo.findByUserIdAndFriendId(userId, friendId) == null && friendshipRepo.findByUserIdAndFriendId(friendId, userId) == null) {
             Friendship friendship = new Friendship();
             friendship.setUserId(userId);
@@ -30,7 +30,7 @@ public class FriendshipImplement implements FriendshipService {
             friendship.setStatus("PENDING");
     
             friendship = friendshipRepo.save(friendship);
-            ObjectId friendshipId = friendship.getFriendshipId();
+            String friendshipId = friendship.getFriendshipId();
     
             User user = userRepo.findByUserId(userId);
             User friend = userRepo.findByUserId(friendId);
@@ -52,7 +52,7 @@ public class FriendshipImplement implements FriendshipService {
     }
     
 
-    public String acceptFriendRequest(ObjectId userId, ObjectId friendId) {
+    public String acceptFriendRequest(String userId, String friendId) {
         Friendship friendship = friendshipRepo.findByUserIdAndFriendId(userId, friendId);
         if (friendship == null) {
             friendship = friendshipRepo.findByUserIdAndFriendId(friendId, userId);
@@ -65,7 +65,7 @@ public class FriendshipImplement implements FriendshipService {
         return "Not Allowed"; 
     }
 
-    public String rejectFriendRequest(ObjectId userId, ObjectId friendId) {
+    public String rejectFriendRequest(String userId, String friendId) {
         Friendship friendship = friendshipRepo.findByUserIdAndFriendId(userId, friendId);
         if (friendship == null) {
             friendship = friendshipRepo.findByUserIdAndFriendId(friendId, userId);
@@ -78,7 +78,7 @@ public class FriendshipImplement implements FriendshipService {
         return "Not Allowed"; 
     }
 
-    public String blockFriend(ObjectId userId, ObjectId friendId) {
+    public String blockFriend(String userId, String friendId) {
         Friendship friendship = friendshipRepo.findByUserIdAndFriendId(userId, friendId);
         if (friendship == null) {
             friendship = friendshipRepo.findByUserIdAndFriendId(friendId, userId);
@@ -91,11 +91,16 @@ public class FriendshipImplement implements FriendshipService {
         return "Not Allowed";
     }
 
-    public List<Friendship> getFriends(ObjectId userId) {
-        return friendshipRepo.findByMatchStatusAndUserIdOrFriendId("ACCEPTED", userId);
+    public List<String> getFriends(String userId) {
+        List <Friendship> friends = friendshipRepo.findByMatchStatusAndUserIdOrFriendId("ACCEPTED", userId);
+        List <String> friendIds = new ArrayList<>();
+        for (Friendship friend : friends) {
+            friendIds.add(friend.getFriendId());
+        }
+        return friendIds;
     }
 
-    public List<Friendship> getPendingRequests(ObjectId userId) {
+    public List<Friendship> getPendingRequests(String userId) {
         return friendshipRepo.findByMatchStatusAndUserIdOrFriendId("PENDING", userId);
     }
 }
