@@ -45,7 +45,7 @@ public class GroupImplement implements GroupsService{
     }
 
     public List<String> getGroupsByUser(String userId){
-        List <Groups> groups = groupRepo.findByMemberId(userId);
+        List <Groups> groups = groupRepo.findByMemberIds(userId);
         List<String> groupIds = new ArrayList<>();
         for(Groups group : groups){
             groupIds.add(group.getGroupId());
