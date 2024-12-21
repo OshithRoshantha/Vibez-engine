@@ -1,5 +1,4 @@
 package com.vibez.engine.Service;
-
 import com.vibez.engine.Model.User;
 
 public interface  UserService {

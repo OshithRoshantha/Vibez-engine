@@ -1,6 +1,7 @@
 package com.vibez.engine.Service.Implementation;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -8,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vibez.engine.Model.Groups;
+import com.vibez.engine.Model.User;
 import com.vibez.engine.Repository.GroupRepo;
 import com.vibez.engine.Service.GroupsService;
+import com.vibez.engine.Service.UserService;
 
 @Service
 public class GroupImplement implements GroupsService{
@@ -17,10 +20,13 @@ public class GroupImplement implements GroupsService{
     @Autowired
     private GroupRepo groupRepo;
 
+    @Autowired
+    private UserService userService;
+
     public boolean createGroup(Groups newGroup , ObjectId creatorId){
         newGroup.setCreatorId(creatorId);
         newGroup.setMemberId(List.of(creatorId));
-        newGroup.setCreationDate(LocalDateTime.now());  
+        newGroup.setCreationDate(LocalDateTime.now()); 
         groupRepo.save(newGroup);
         return true;
     }

@@ -1,6 +1,7 @@
 package com.vibez.engine.Service.Implementation;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +25,21 @@ public class MessageImplement implements MessageService {
     }
 
     public List<String> getDirectMessages(String senderId, String receiverId){
-        return messageRepo.findBySenderIdAndReceiverId(senderId, receiverId);
+        List <Message> messages = messageRepo.findBySenderIdAndReceiverId(senderId, receiverId);
+        List <String> messageIds = new ArrayList<>();
+        for(Message message : messages){
+            messageIds.add(message.getMessageId());
+        }
+        return messageIds;
     }
 
     public List<String> getGroupMessages(String groupId){
-        return messageRepo.findByGroupId(groupId);
+        List <Message> messages = messageRepo.findByGroupId(groupId);
+        List <String> messageIds = new ArrayList<>();
+        for(Message message : messages){
+            messageIds.add(message.getMessageId());
+        }
+        return messageIds;
     }
 
     public boolean markAsRead(String messageId){
