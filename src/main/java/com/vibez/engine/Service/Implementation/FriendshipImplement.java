@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.vibez.engine.Model.Friendship;
 import com.vibez.engine.Model.User;
 import com.vibez.engine.Repository.FriendshipRepo;
-import com.vibez.engine.Repository.UserRepo;
 import com.vibez.engine.Service.FriendshipService;
 
 @Service
@@ -18,35 +17,14 @@ public class FriendshipImplement implements FriendshipService {
     @Autowired
     private FriendshipRepo friendshipRepo;
 
-    @Autowired
-    private UserRepo userRepo;
-
     public String sendFriendRequest(String userId, String friendId) {
         if (friendshipRepo.findByUserIdAndFriendId(userId, friendId) == null && friendshipRepo.findByUserIdAndFriendId(friendId, userId) == null) {
             Friendship friendship = new Friendship();
             friendship.setUserId(userId);
             friendship.setFriendId(friendId);
             friendship.setStatus("PENDING");
-    
             friendship = friendshipRepo.save(friendship);
             String friendshipId = friendship.getFriendshipId();
-    
-            User user = userRepo.findByUserId(userId);
-            User friend = userRepo.findByUserId(friendId);
-    
-            if (user.getFriendshipIds() == null) {
-                user.setFriendshipIds(new ArrayList<>());
-            }
-
-            user.getFriendshipIds().add(friendshipId);
-    
-            if (friend.getFriendshipIds() == null) {
-                friend.setFriendshipIds(new ArrayList<>());
-            }
-
-            friend.getFriendshipIds().add(friendshipId);
-            userRepo.save(user);
-            userRepo.save(friend);
             return friendshipId;	
         }
         return "Not Allowed"; 

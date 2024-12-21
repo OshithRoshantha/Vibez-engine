@@ -1,7 +1,5 @@
 package com.vibez.engine.Model;
 
-import java.util.List;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -15,8 +13,6 @@ public class User {
     private String password; 
     private String profilePicture; 
     private String about; 
-    private List<String> friendshipIds; 
-    private List<String> groupIds;
 
     public String getUserId(){
         return userId;
@@ -66,19 +62,4 @@ public class User {
         this.about = about;
     }
 
-    public List<String> getFriendshipIds() {
-        return friendshipIds;
-    }
-
-    public void setFriendshipIds(List<String> friendshipIds) {
-        this.friendshipIds = friendshipIds;
-    }
-
-    public List<String> getGroupIds() {
-        return groupIds;
-    }
-
-    public void setGroupIds(List<String> groupIds) {
-        this.groupIds = groupIds;
-    }
 }

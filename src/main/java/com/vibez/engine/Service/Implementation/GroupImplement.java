@@ -19,7 +19,12 @@ public class GroupImplement implements GroupsService{
 
     public boolean createGroup(Groups newGroup , String creatorId){
         newGroup.setCreatorId(creatorId);
-        newGroup.setMemberId(List.of(creatorId));
+
+        if (newGroup.getMemberIds() == null){
+            newGroup.setMemberIds(new ArrayList<>());
+        }
+
+        newGroup.getMemberIds().add(creatorId);
         newGroup.setCreationDate(LocalDateTime.now()); 
         groupRepo.save(newGroup);
         return true;
@@ -27,14 +32,14 @@ public class GroupImplement implements GroupsService{
 
     public boolean addUserToGroup(String groupId, String newUser){
         Groups group = groupRepo.findByGroupId(groupId);
-        group.getMemberId().add(newUser);
+        group.getMemberIds().add(newUser); 
         groupRepo.save(group);
         return true;
     }
 
     public boolean removeUserFromGroup(String groupId, String existingUser){
         Groups group = groupRepo.findByGroupId(groupId);
-        group.getMemberId().remove(existingUser);
+        group.getMemberIds().remove(existingUser);
         groupRepo.save(group);
         return true;
     }
