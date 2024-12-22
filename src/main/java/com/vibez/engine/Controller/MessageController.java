@@ -38,6 +38,11 @@ public class MessageController {
         return ResponseEntity.ok(messageService.getMessagesByGroups(groupId));
     }
 
+    @GetMapping("/message/directChat/{directChatId}") //find all messages in a direct chat
+    public ResponseEntity<List<String>> getMessagesByDirectChat(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String directChatId){
+        return ResponseEntity.ok(messageService.getMessagesByDirectChat(directChatId));
+    }
+
     @GetMapping("/message/{messageId}") //get message info
     public ResponseEntity<Message> getMessage(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String messageId) {
         return ResponseEntity.ok(messageService.getMessage(messageId));
