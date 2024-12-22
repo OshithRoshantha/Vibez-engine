@@ -1,33 +1,32 @@
 package com.vibez.engine.Model;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "friendships")
 public class Friendship {
     @Id
-    private ObjectId friendshipId;
-    private ObjectId userId;      
-    private ObjectId friendId;    
+    private String friendshipId;
+    private String userId;      
+    private String friendId;    
     private String status; 
     
-    public ObjectId getFriendshipId() {
+    public String getFriendshipId() {
         return friendshipId;
     }
-    public void setFriendshipId(ObjectId friendshipId) {
+    public void setFriendshipId(String friendshipId) {
         this.friendshipId = friendshipId;
     }
-    public ObjectId getUserId() {
+    public String getUserId() {
         return userId;
     }
-    public void setUserId(ObjectId userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
-    public ObjectId getFriendId() {
+    public String getFriendId() {
         return friendId;
     }
-    public void setFriendId(ObjectId friendId) {
+    public void setFriendId(String friendId) {
         this.friendId = friendId;
     }
 

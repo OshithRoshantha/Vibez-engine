@@ -1,15 +1,17 @@
 package com.vibez.engine.Service.Implementation;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vibez.engine.Model.Groups;
+import com.vibez.engine.Model.User;
 import com.vibez.engine.Repository.GroupRepo;
 import com.vibez.engine.Service.GroupsService;
+import com.vibez.engine.Service.UserService;
 
 @Service
 public class GroupImplement implements GroupsService{
@@ -17,50 +19,75 @@ public class GroupImplement implements GroupsService{
     @Autowired
     private GroupRepo groupRepo;
 
-    public boolean createGroup(Groups newGroup , ObjectId creatorId){
+    @Autowired
+    private UserService userService;
+
+    public String createGroup(Groups newGroup , String creatorId){
+        User creator = userService.getUserById(creatorId);
         newGroup.setCreatorId(creatorId);
-        newGroup.setMemberId(List.of(creatorId));
-        newGroup.setCreationDate(LocalDateTime.now());  
+
+        if (newGroup.getMemberIds() == null){
+            newGroup.setMemberIds(new ArrayList<>());
+        }
+
+        newGroup.getMemberIds().add(creatorId);
+        newGroup.setCreationDate(LocalDateTime.now());
+        newGroup.setLastUpdate(LocalDateTime.now());
+        newGroup.setLastMessage(creator.getUserName() + " created this group."); 
         groupRepo.save(newGroup);
-        return true;
+        return newGroup.getGroupId();
     }
 
-    public boolean addUserToGroup(ObjectId groupId, ObjectId newUser){
+    public String addUsersToGroup(String groupId, List<String> newUsers){
         Groups group = groupRepo.findByGroupId(groupId);
-        group.getMemberId().add(newUser);
+
+        if (group.getMemberIds() == null){
+            group.setMemberIds(new ArrayList<>());
+        }
+        for(String user : newUsers){
+            group.getMemberIds().add(user);
+        }
+
         groupRepo.save(group);
-        return true;
+        return groupId;
     }
 
-    public boolean removeUserFromGroup(ObjectId groupId, ObjectId existingUser){
+    public String removeUsersFromGroup(String groupId, List<String> existingUsers){
         Groups group = groupRepo.findByGroupId(groupId);
-        group.getMemberId().remove(existingUser);
+
+        for(String existingUser : existingUsers){
+            group.getMemberIds().remove(existingUser);
+        }
+
         groupRepo.save(group);
-        return true;
+        return groupId;
     }
 
-    public List<Groups> getGroupsByUser(ObjectId user){
-        return groupRepo.findByMemberIdContaining(user);
+    public List<String> getGroupsByUser(String userId){
+        List <Groups> groups = groupRepo.findByMemberIds(userId);
+        List<String> groupIds = new ArrayList<>();
+        for(Groups group : groups){
+            groupIds.add(group.getGroupId());
+        }
+        return groupIds;
+    }
+    
+    public Groups getGroupById(String groupId){
+        return groupRepo.findByGroupId(groupId);
     }
 
-    public boolean changeGroupIcon(ObjectId groupId, String newIcon){
-        Groups group = groupRepo.findByGroupId(groupId);
-        group.setGroupIcon(newIcon);
+    public String changeGroup(Groups updatedGroup){
+        Groups group = groupRepo.findByGroupId(updatedGroup.getGroupId());
+        if (updatedGroup.getGroupIcon() != null){
+            group.setGroupIcon(updatedGroup.getGroupIcon());
+        }
+        if (updatedGroup.getGroupName() != null){
+            group.setGroupName(updatedGroup.getGroupName());
+        }
+        if (updatedGroup.getGroupDesc() != null){
+            group.setGroupDesc(updatedGroup.getGroupDesc());
+        }
         groupRepo.save(group);
-        return true;
-    }
-
-    public boolean changeGroupDescp(ObjectId groupId, String newDescp){
-        Groups group = groupRepo.findByGroupId(groupId);
-        group.setGroupDesc(newDescp);
-        groupRepo.save(group);
-        return true;
-    }
-
-    public boolean changeGroupName(ObjectId groupId, String newName){
-        Groups group = groupRepo.findByGroupId(groupId);
-        group.setGroupName(newName);
-        groupRepo.save(group);
-        return true;
+        return updatedGroup.getGroupId();
     }
 }

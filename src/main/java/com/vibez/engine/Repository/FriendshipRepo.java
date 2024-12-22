@@ -1,15 +1,16 @@
 package com.vibez.engine.Repository;
 
-import com.vibez.engine.Model.Friendship;
-import org.bson.types.ObjectId;
+import java.util.List;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
-import java.util.List;
+import com.vibez.engine.Model.Friendship;
 
-public interface FriendshipRepo extends MongoRepository<Friendship, ObjectId> {
+public interface FriendshipRepo extends MongoRepository<Friendship, String> {
     @Query("{'status': ?0, '$or': [{'userId': ?1}, {'friendId': ?1}]}")
-    List<Friendship> findByMatchStatusAndUserIdOrFriendId(String matchStatus, ObjectId matchId);
-    Friendship findByUserIdAndFriendId(ObjectId userId, ObjectId friendId);
-    List<Friendship> findByUserId(ObjectId userId);
+    List<Friendship> findByMatchStatusAndUserIdOrFriendId(String matchStatus, String matchId);
+    Friendship findByUserIdAndFriendId(String userId, String friendId);
+    Friendship findByFriendshipId(String friendshipId);
+    List<Friendship> findByUserId(String userId);
 }
