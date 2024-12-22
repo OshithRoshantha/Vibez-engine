@@ -10,7 +10,7 @@ public class Message {
     @Id
     private String messageId;
     private String senderId;
-    private String receiverId; //null for group messages
+    private String directChatId; //null for group messages
     private String groupId; //null for direct messages
     private String message;
     private LocalDateTime timestamp;
@@ -32,12 +32,12 @@ public class Message {
         this.senderId = senderId;
     }
 
-    public String getReceiverId() {
-        return receiverId;
+    public String getDirectChatId() {
+        return directChatId;
     }
 
-    public void setReceiverId(String receiverId) {
-        this.receiverId = receiverId;
+    public void setDirectChatId(String directChatId) {
+        this.directChatId = directChatId;
     }
 
     public String getGroupId() {
