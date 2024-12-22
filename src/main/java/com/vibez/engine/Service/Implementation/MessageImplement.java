@@ -43,15 +43,6 @@ public class MessageImplement implements MessageService {
         return message;
     }
 
-    public List<String> getDirectMessages(String senderId, String receiverId){
-        List <Message> messages = messageRepo.findBySenderIdAndReceiverId(senderId, receiverId);
-        List <String> messageIds = new ArrayList<>();
-        for(Message message : messages){
-            messageIds.add(message.getMessageId());
-        }
-        return messageIds;
-    }
-
     public boolean markAsRead(String messageId){
         Message message = messageRepo.findByMessageId(messageId);
         if(message == null){
@@ -63,7 +54,15 @@ public class MessageImplement implements MessageService {
     }
 
     public List<String> getMessagesByGroups(String groupId){
-        Groups group = groupsService.getGroupById(groupId);
-        return group.getMessageIds();
+        List <Message> messages = messageRepo.findByGroupId(groupId);
+        List<String> messageIds = new ArrayList<>();
+        for (Message message : messages){
+            messageIds.add(message.getMessageId());
+        }
+        return messageIds;
+    }
+
+    public Message getMessage(String messageId){
+        return messageRepo.findByMessageId(messageId);
     }
 }
