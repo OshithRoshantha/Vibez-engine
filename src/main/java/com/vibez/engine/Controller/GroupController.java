@@ -44,6 +44,11 @@ public class GroupController {
         return ResponseEntity.ok(groupsService.getGroupsByUser(userId));
     }
 
+    @GetMapping("group/info/{groupId}")
+    public ResponseEntity<Groups> getGroupInfo(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String groupId){
+        return ResponseEntity.ok(groupsService.getGroupById(groupId));
+    }
+
     @PutMapping("group/name/{groupId}/{newName}")
     public ResponseEntity<Boolean> changeGroupName(@RequestHeader(value = "Authorization", required = true)  String token,  @PathVariable String groupId, @PathVariable String newName){
         return ResponseEntity.ok(groupsService.changeGroupName(groupId, newName));
