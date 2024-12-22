@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vibez.engine.Model.Groups;
+import com.vibez.engine.Model.User;
 import com.vibez.engine.Repository.GroupRepo;
 import com.vibez.engine.Service.GroupsService;
+import com.vibez.engine.Service.UserService;
 
 @Service
 public class GroupImplement implements GroupsService{
@@ -17,7 +19,11 @@ public class GroupImplement implements GroupsService{
     @Autowired
     private GroupRepo groupRepo;
 
+    @Autowired
+    private UserService userService;
+
     public String createGroup(Groups newGroup , String creatorId){
+        User creator = userService.getUserById(creatorId);
         newGroup.setCreatorId(creatorId);
 
         if (newGroup.getMemberIds() == null){
@@ -25,7 +31,9 @@ public class GroupImplement implements GroupsService{
         }
 
         newGroup.getMemberIds().add(creatorId);
-        newGroup.setCreationDate(LocalDateTime.now()); 
+        newGroup.setCreationDate(LocalDateTime.now());
+        newGroup.setLastUpdate(LocalDateTime.now());
+        newGroup.setLastMessage(creator.getUserName() + " created this group."); 
         groupRepo.save(newGroup);
         return newGroup.getGroupId();
     }

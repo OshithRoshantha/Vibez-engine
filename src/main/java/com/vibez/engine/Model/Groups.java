@@ -2,6 +2,7 @@ package com.vibez.engine.Model;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -15,6 +16,8 @@ public class Groups {
     private String creatorId;
     private List<String> memberIds;
     private LocalDateTime creationDate;
+    private  LocalDateTime lastUpdate;
+    private  String lastMessage;
     private List<String> messageIds;
 
     public String getGroupId() {
@@ -79,5 +82,21 @@ public class Groups {
 
     public void setMessageIds(List<String> messageIds) {
         this.messageIds = messageIds;
+    }
+
+    public LocalDateTime getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(LocalDateTime lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
+    public String getLastMessage() {
+        return lastMessage;
+    }
+
+    public void setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
     }
 }
