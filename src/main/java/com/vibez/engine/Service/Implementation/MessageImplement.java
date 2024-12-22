@@ -7,10 +7,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.vibez.engine.Model.DirectChat;
 import com.vibez.engine.Model.Groups;
 import com.vibez.engine.Model.Message;
+import com.vibez.engine.Repository.DirectChatRepo;
 import com.vibez.engine.Repository.GroupRepo;
 import com.vibez.engine.Repository.MessageRepo;
+import com.vibez.engine.Service.DirectChatService;
 import com.vibez.engine.Service.GroupsService;
 import com.vibez.engine.Service.MessageService;
 
@@ -25,6 +28,12 @@ public class MessageImplement implements MessageService {
 
     @Autowired
     private  GroupRepo groupRepo;
+
+    @Autowired
+    private  DirectChatService directChatService;
+
+    @Autowired
+    private DirectChatRepo directChatRepo;
 
     public String sendMessage(Message message){
         message.setRead(false);
@@ -41,7 +50,16 @@ public class MessageImplement implements MessageService {
               group.getMessageIds().add(message.getMessageId());
               groupRepo.save(group);
         }
-
+        else if (message.getDirectChatId() != null){
+            DirectChat directChat = directChatService.getDirectChatById(message.getDirectChatId());
+            directChat.setLastUpdate(LocalDateTime.now());
+            directChat.setLastMessage(message.getMessage());
+            if (directChat.getMessageIds() == null){
+                directChat.setMessageIds(new ArrayList<>());
+            }
+            directChat.getMessageIds().add(message.getMessageId());
+            directChatRepo.save(directChat);
+        }
         return message.getMessageId();
     }
 
@@ -57,6 +75,15 @@ public class MessageImplement implements MessageService {
 
     public List<String> getMessagesByGroups(String groupId){
         List <Message> messages = messageRepo.findByGroupId(groupId);
+        List<String> messageIds = new ArrayList<>();
+        for (Message message : messages){
+            messageIds.add(message.getMessageId());
+        }
+        return messageIds;
+    }
+
+    public List<String> getMessagesByDirectChat(String directChatId){
+        List <Message> messages = messageRepo.findByDirectChatId(directChatId);
         List<String> messageIds = new ArrayList<>();
         for (Message message : messages){
             messageIds.add(message.getMessageId());

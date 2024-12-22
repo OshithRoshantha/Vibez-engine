@@ -9,4 +9,5 @@ import com.vibez.engine.Model.Message;
 public interface  MessageRepo extends MongoRepository<Message, String>{
     Message findByMessageId(String messageId);
     List <Message> findByGroupId(String groupId);
+    List<Message> findByDirectChatId(String directChatId);
 }

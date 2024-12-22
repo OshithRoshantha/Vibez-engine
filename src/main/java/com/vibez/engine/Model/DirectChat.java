@@ -13,6 +13,7 @@ public class DirectChat {
     private List<String> memberIds;
     private LocalDateTime lastUpdate;
     private String lastMessage;
+    private List<String> messageIds;
 
     public String getChatId() {
         return chatId;
@@ -44,5 +45,13 @@ public class DirectChat {
 
     public void setLastMessage(String lastMessage) {
         this.lastMessage = lastMessage;
+    }
+
+    public List<String> getMessageIds() {
+        return messageIds;
+    }
+
+    public void setMessageIds(List<String> messageIds) {
+        this.messageIds = messageIds;
     }
 }
