@@ -21,7 +21,7 @@ public class FriendshipController {
     @Autowired
     private FriendshipService friendshipService;
 
-    @PostMapping("/friends/send/{userId}/{friendId}")
+    @PostMapping("/friends/send/{userId}/{friendId}") //Send a friend request
     public ResponseEntity<String> sendFriendRequest(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId, @PathVariable String friendId) {
         String friendshipStatus = friendshipService.sendFriendRequest(userId, friendId);
         return ResponseEntity.ok(friendshipStatus);

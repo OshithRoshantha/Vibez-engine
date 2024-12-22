@@ -21,7 +21,7 @@ public class DirectChatController {
     @Autowired
     private DirectChatService directChatService;
 
-    @PostMapping("/directChat/create/{userId1}/{userId2}")
+    @PostMapping("/directChat/create/{userId1}/{userId2}") //Initiate a direct chat between two users
     public ResponseEntity<String> createDirectChat(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId1, @PathVariable String userId2) {
         String chatId = directChatService.createDirectChat(userId1, userId2);
         return ResponseEntity.ok(chatId);
