@@ -27,13 +27,13 @@ public class DirectChatController {
         return ResponseEntity.ok(chatId);
     }
 
-    @GetMapping("/directChat/{userId}")
+    @GetMapping("/directChat/{userId}") //find all direct chats of a user
     public ResponseEntity<List<String>> getDirectChatsByUser(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId){
         return ResponseEntity.ok(directChatService.getDirectChatsByUser(userId));
     }
 
-    @GetMapping("/directChat/info/{chatId}")
-    public ResponseEntity<DirectChat> getDirectChatById(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId){
-        return ResponseEntity.ok(directChatService.getDirectChatById(userId));
+    @GetMapping("/directChat/info/{chatId}") //get direct chat info
+    public ResponseEntity<DirectChat> getDirectChatById(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String chatId){
+        return ResponseEntity.ok(directChatService.getDirectChatById(chatId));
     }
 }
