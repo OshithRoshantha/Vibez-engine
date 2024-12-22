@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import javax.swing.GroupLayout;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -14,6 +16,8 @@ import org.springframework.web.socket.WebSocketSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vibez.engine.Model.Friendship;
+import com.vibez.engine.Model.GroupAction;
+import com.vibez.engine.Model.Groups;
 import com.vibez.engine.Model.Message;
 import com.vibez.engine.Service.FriendshipService;
 import com.vibez.engine.Service.GroupsService;
@@ -55,8 +59,8 @@ public class WebSocketController implements WebSocketHandler {
             case "friendshipService":
                 handleFriendships(messageData);
                 break;
-            case "addUserToGroup":
-                handleAddUserToGroup(messageData);
+            case "groupService":
+                handleGroups(messageData);
                 break;
             case "removeUserFromGroup":
                 handleRemoveUserFromGroup(messageData);
@@ -132,8 +136,28 @@ public class WebSocketController implements WebSocketHandler {
         broadcastToSubscribers("friendshipService", friendshipId);
     }
 
-    private void handleAddUserToGroup(Map<String, Object> messageData) {
-        // Implement the logic to handle adding a user to a group
+    private void handleGroups(Map<String, Object> messageData) {
+        String groupId = null;
+        if (messageData.get("groupAction") != null){
+            GroupAction groupAction = objectMapper.convertValue(messageData.get("groupAction"), GroupAction.class);
+            if (groupAction.getAction().equals("addUsers")){
+                groupId = groupsService.addUsersToGroup(groupAction.getGroupId(), groupAction.getUserIds());
+            } else if (groupAction.getAction().equals("removeUsers")){
+                groupId = groupsService.removeUsersFromGroup(groupAction.getGroupId(), groupAction.getUserIds());
+            }
+            broadcastToSubscribers("groupService", groupId);
+            return;
+        }
+        if (messageData.get("body") != null){
+            Groups group = objectMapper.convertValue(messageData.get("body"), Groups.class);
+            if (group.getGroupId() == null){
+                groupId = groupsService.createGroup(group, group.getCreatorId());
+            } else {
+                groupId = groupsService.changeGroup(group);
+            }
+            broadcastToSubscribers("groupService", groupId);
+            return;
+        }
     }
 
     private void handleRemoveUserFromGroup(Map<String, Object> messageData) {

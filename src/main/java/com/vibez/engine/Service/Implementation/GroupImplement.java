@@ -38,23 +38,29 @@ public class GroupImplement implements GroupsService{
         return newGroup.getGroupId();
     }
 
-    public boolean addUserToGroup(String groupId, String newUser){
+    public String addUsersToGroup(String groupId, List<String> newUsers){
         Groups group = groupRepo.findByGroupId(groupId);
 
         if (group.getMemberIds() == null){
             group.setMemberIds(new ArrayList<>());
         }
+        for(String user : newUsers){
+            group.getMemberIds().add(user);
+        }
 
-        group.getMemberIds().add(newUser); 
         groupRepo.save(group);
-        return true;
+        return groupId;
     }
 
-    public boolean removeUserFromGroup(String groupId, String existingUser){
+    public String removeUsersFromGroup(String groupId, List<String> existingUsers){
         Groups group = groupRepo.findByGroupId(groupId);
-        group.getMemberIds().remove(existingUser);
+
+        for(String existingUser : existingUsers){
+            group.getMemberIds().remove(existingUser);
+        }
+
         groupRepo.save(group);
-        return true;
+        return groupId;
     }
 
     public List<String> getGroupsByUser(String userId){
