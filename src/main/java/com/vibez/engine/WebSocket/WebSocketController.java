@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -12,10 +13,12 @@ import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vibez.engine.Model.DirectChat;
 import com.vibez.engine.Model.Friendship;
 import com.vibez.engine.Model.GroupAction;
 import com.vibez.engine.Model.Groups;
 import com.vibez.engine.Model.Message;
+import com.vibez.engine.Service.DirectChatService;
 import com.vibez.engine.Service.FriendshipService;
 import com.vibez.engine.Service.GroupsService;
 import com.vibez.engine.Service.MessageService;
@@ -27,6 +30,9 @@ public class WebSocketController implements WebSocketHandler {
 
     @Autowired
     private MessageService messageService;
+
+    @Autowired
+    private DirectChatService directChatService;
 
     @Autowired
     private GroupsService groupsService;
@@ -59,8 +65,8 @@ public class WebSocketController implements WebSocketHandler {
             case "groupService":
                 handleGroups(messageData);
                 break;
-            case "removeUserFromGroup":
-                handleRemoveUserFromGroup(messageData);
+            case "directChatService":
+                handleDirectChats(messageData);
                 break;
             case "changeGroupIcon":
                 handleChangeGroupIcon(messageData);
@@ -157,8 +163,10 @@ public class WebSocketController implements WebSocketHandler {
         }
     }
 
-    private void handleRemoveUserFromGroup(Map<String, Object> messageData) {
-        // Implement the logic to handle removing a user from a group
+    private void handleDirectChats(Map<String, Object> messageData) {
+        DirectChat directChat = objectMapper.convertValue(messageData.get("body"), DirectChat.class);
+        String directChatId = directChatService.createDirectChat(directChat.getMemberIds().get(0), directChat.getMemberIds().get(1));
+        broadcastToSubscribers("directChatService", directChatId);
     }
 
     private void handleChangeGroupIcon(Map<String, Object> messageData) {
