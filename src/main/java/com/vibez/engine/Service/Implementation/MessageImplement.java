@@ -39,6 +39,7 @@ public class MessageImplement implements MessageService {
         message.setRead(false);
         message.setTimestamp(LocalDateTime.now());
         message = messageRepo.save(message);
+        String updatingId = null;
 
         if (message.getGroupId() != null){
             Groups group = groupsService.getGroupById(message.getGroupId());
@@ -49,7 +50,9 @@ public class MessageImplement implements MessageService {
             }
               group.getMessageIds().add(message.getMessageId());
               groupRepo.save(group);
+              updatingId = group.getGroupId();
         }
+
         else if (message.getDirectChatId() != null){
             DirectChat directChat = directChatService.getDirectChatById(message.getDirectChatId());
             directChat.setLastUpdate(LocalDateTime.now());
@@ -59,8 +62,10 @@ public class MessageImplement implements MessageService {
             }
             directChat.getMessageIds().add(message.getMessageId());
             directChatRepo.save(directChat);
+            updatingId = directChat.getChatId();
         }
-        return message.getMessageId();
+
+        return updatingId;
     }
 
     public boolean markAsRead(String messageId){

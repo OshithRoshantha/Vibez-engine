@@ -68,8 +68,8 @@ public class WebSocketController implements WebSocketHandler {
             case "directChatService":
                 handleDirectChats(messageData);
                 break;
-            case "changeGroupIcon":
-                handleChangeGroupIcon(messageData);
+            case "updateService":
+                handleMessages(messageData);
                 break;
             case "changeGroupName":
                 handleChangeGroupName(messageData);
@@ -117,7 +117,8 @@ public class WebSocketController implements WebSocketHandler {
 
     private void handleMessages(Map<String, Object> messageData) {
         Message message = objectMapper.convertValue(messageData.get("body"), Message.class);
-        messageService.sendMessage(message);
+        String updatingId = messageService.sendMessage(message);
+        broadcastToSubscribers("updateService", updatingId);
         broadcastToSubscribers("messageService", messageData.get("body"));
     }
 
