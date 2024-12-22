@@ -17,7 +17,7 @@ public class GroupImplement implements GroupsService{
     @Autowired
     private GroupRepo groupRepo;
 
-    public boolean createGroup(Groups newGroup , String creatorId){
+    public String createGroup(Groups newGroup , String creatorId){
         newGroup.setCreatorId(creatorId);
 
         if (newGroup.getMemberIds() == null){
@@ -27,7 +27,7 @@ public class GroupImplement implements GroupsService{
         newGroup.getMemberIds().add(creatorId);
         newGroup.setCreationDate(LocalDateTime.now()); 
         groupRepo.save(newGroup);
-        return true;
+        return newGroup.getGroupId();
     }
 
     public boolean addUserToGroup(String groupId, String newUser){
@@ -36,7 +36,7 @@ public class GroupImplement implements GroupsService{
         if (group.getMemberIds() == null){
             group.setMemberIds(new ArrayList<>());
         }
-        
+
         group.getMemberIds().add(newUser); 
         groupRepo.save(group);
         return true;

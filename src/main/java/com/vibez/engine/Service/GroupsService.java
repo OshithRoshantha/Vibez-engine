@@ -5,7 +5,7 @@ import java.util.List;
 import com.vibez.engine.Model.Groups;
 
 public interface GroupsService {
-    boolean createGroup(Groups newGroup, String creatorId);
+    String createGroup(Groups newGroup, String creatorId);
     boolean addUserToGroup(String groupId, String newUser);
     boolean removeUserFromGroup(String groupId, String existingUser);
     List<String> getGroupsByUser(String user);
