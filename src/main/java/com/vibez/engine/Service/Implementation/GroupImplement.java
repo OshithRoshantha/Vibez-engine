@@ -32,6 +32,11 @@ public class GroupImplement implements GroupsService{
 
     public boolean addUserToGroup(String groupId, String newUser){
         Groups group = groupRepo.findByGroupId(groupId);
+
+        if (group.getMemberIds() == null){
+            group.setMemberIds(new ArrayList<>());
+        }
+        
         group.getMemberIds().add(newUser); 
         groupRepo.save(group);
         return true;
