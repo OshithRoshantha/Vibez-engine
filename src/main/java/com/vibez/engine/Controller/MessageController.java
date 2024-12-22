@@ -33,12 +33,12 @@ public class MessageController {
         return ResponseEntity.ok(messageService.markAsRead(messageId));
     }
 
-    @GetMapping("/message/group/{groupId}")
+    @GetMapping("/message/group/{groupId}") //find all messages in a group
     public ResponseEntity<List<String>> getMessagesByGroups(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String groupId){
         return ResponseEntity.ok(messageService.getMessagesByGroups(groupId));
     }
 
-    @GetMapping("/message/{messageId}")
+    @GetMapping("/message/{messageId}") //get message info
     public ResponseEntity<Message> getMessage(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String messageId) {
         return ResponseEntity.ok(messageService.getMessage(messageId));
     }

@@ -45,13 +45,13 @@ public class FriendshipController {
         return ResponseEntity.ok(friendshipStatus);
     }
 
-     @GetMapping("/friends/{userId}")
+     @GetMapping("/friends/{userId}") //find all friends of a user
     public ResponseEntity<List<String>> getFriends(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId) {
         List<String> friends = friendshipService.getFriends(userId);
         return ResponseEntity.ok(friends);
     }
 
-    @GetMapping("/friends/pending/{userId}")
+    @GetMapping("/friends/pending/{userId}") //find all pending requests of a user
     public ResponseEntity<List<String>> getPendingRequests(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId) {
         List<String> pendingRequests = friendshipService.getPendingRequests(userId);
         return ResponseEntity.ok(pendingRequests);
