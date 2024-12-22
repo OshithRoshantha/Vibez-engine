@@ -10,7 +10,7 @@ public class Message {
     @Id
     private String messageId;
     private String senderId;
-    private String receiverId;
+    private String receiverId; //null for group messages
     private String groupId; //null for direct messages
     private String message;
     private LocalDateTime timestamp;

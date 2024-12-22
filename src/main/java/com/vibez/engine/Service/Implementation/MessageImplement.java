@@ -26,7 +26,7 @@ public class MessageImplement implements MessageService {
     @Autowired
     private  GroupRepo groupRepo;
 
-    public Message sendMessage(Message message){
+    public String sendMessage(Message message){
         message.setRead(false);
         message.setTimestamp(LocalDateTime.now());
         message = messageRepo.save(message);
@@ -40,7 +40,7 @@ public class MessageImplement implements MessageService {
               groupRepo.save(group);
         }
 
-        return message;
+        return message.getMessageId();
     }
 
     public boolean markAsRead(String messageId){
