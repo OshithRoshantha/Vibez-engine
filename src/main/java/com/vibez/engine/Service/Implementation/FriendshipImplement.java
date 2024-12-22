@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vibez.engine.Model.Friendship;
-import com.vibez.engine.Model.User;
 import com.vibez.engine.Repository.FriendshipRepo;
 import com.vibez.engine.Service.FriendshipService;
 
@@ -74,5 +73,9 @@ public class FriendshipImplement implements FriendshipService {
             pendingRequestIds.add(pendingRequest.getFriendId());
         }
         return pendingRequestIds;
+    }
+
+    public Friendship getFriendshipInfo(String friendshipId) {
+        return friendshipRepo.findByFriendshipId(friendshipId);
     }
 }
