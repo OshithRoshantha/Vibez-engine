@@ -20,7 +20,6 @@ public class GroupController {
     @Autowired
     private GroupsService groupsService;
     
-
     @GetMapping("group/{userId}") //find all groups that a user is in
     public ResponseEntity<List<String>> getGroupsByUser(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId){
         return ResponseEntity.ok(groupsService.getGroupsByUser(userId));
