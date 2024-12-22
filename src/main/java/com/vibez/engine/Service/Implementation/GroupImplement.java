@@ -65,36 +65,23 @@ public class GroupImplement implements GroupsService{
         }
         return groupIds;
     }
-
-    public boolean changeGroupIcon(String groupId, String newIcon){
-        Groups group = groupRepo.findByGroupId(groupId);
-        group.setGroupIcon(newIcon);
-        groupRepo.save(group);
-        return true;
-    }
-
-    public boolean changeGroupDescp(String groupId, String newDescp){
-        Groups group = groupRepo.findByGroupId(groupId);
-        group.setGroupDesc(newDescp);
-        groupRepo.save(group);
-        return true;
-    }
-
-    public boolean changeGroupName(String groupId, String newName){
-        Groups group = groupRepo.findByGroupId(groupId);
-        group.setGroupName(newName);
-        groupRepo.save(group);
-        return true;
-    }
-
-    public boolean sendGroupMessage(String groupId, String messageId){
-        Groups group = groupRepo.findByGroupId(groupId);
-        group.getMessageIds().add(messageId);
-        groupRepo.save(group);
-        return true;
-    }
-
+    
     public Groups getGroupById(String groupId){
         return groupRepo.findByGroupId(groupId);
+    }
+
+    public String changeGroup(Groups updatedGroup){
+        Groups group = groupRepo.findByGroupId(updatedGroup.getGroupId());
+        if (updatedGroup.getGroupIcon() != null){
+            group.setGroupIcon(updatedGroup.getGroupIcon());
+        }
+        if (updatedGroup.getGroupName() != null){
+            group.setGroupName(updatedGroup.getGroupName());
+        }
+        if (updatedGroup.getGroupDesc() != null){
+            group.setGroupDesc(updatedGroup.getGroupDesc());
+        }
+        groupRepo.save(group);
+        return updatedGroup.getGroupId();
     }
 }
