@@ -26,6 +26,9 @@ public class DirectChatImplemet implements DirectChatService{
     }
 
     public String createDirectChat(String userId1, String userId2) {
+        if (directChatRepo.findByBothMemberIds(userId1, userId2) != null) {
+            return directChatRepo.findByBothMemberIds(userId1, userId2).getChatId();
+        }
         DirectChat newDirectChat = new DirectChat();
         List <String> memberIds = new ArrayList<>();
         memberIds.add(userId1);
