@@ -1,35 +1,38 @@
 from flask import Flask, request, jsonify
-from transformers import LlamaForCausalLM, LlamaTokenizer
-from huggingface_hub import hf_hub_download
-import torch
+import requests
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
-vibezLlama = Flask(__name__)
 
-modelName = os.getenv("MODEL")
-hf_token = os.getenv("HF_TOKEN")
+vibezApi = Flask(__name__)
 
-modelPath = hf_hub_download(repo_id=modelName, filename="pytorch_model.bin", token=hf_token)
-configPath = hf_hub_download(repo_id=modelName, filename="config.json", token=hf_token)
-tokenizerPath = hf_hub_download(repo_id=modelName, filename="tokenizer.json", token=hf_token)
+model = os.getenv("MODEL")
+hfToken = os.getenv("HF_TOKEN")
 
-tokenizer = LlamaTokenizer.from_pretrained(tokenizerPath)
-model = LlamaForCausalLM.from_pretrained(modelPath, config=configPath)
-
-model.eval()
+headers = {
+    "Authorization": f"Bearer {hfToken}"
+}
 
 def getAutoReplies(chatHistory):
     chatInput = "".join(chatHistory)
-    inputs = tokenizer(chatInput, return_tensors="pt")
+    payload = {
+        "inputs": chatInput,
+        "parameters": {
+            "max_length": 100,
+            "num_return_sequences": 1,
+            "no_repeat_ngram_size": 2
+        }
+    }
     
-    with torch.no_grad():
-        outputs = model.generate(inputs['inputIds'], max_length=100, num_return_sequences=5, no_repeat_ngram_size=2)
-        reply = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    response = requests.post(model, headers=headers, json=payload)
+    if response.status_code == 200:
+        reply = response.json()[0]["generated_text"]
         return reply.strip()
-    
-@vibezLlama.route("/ai_reply", methods=["POST"])
+    else:
+        return f"Error: {response.json()}"
+
+@vibezApi.route("/ai_reply", methods=["POST"])
 def aiReplyApi():
     data = request.get_json()
     
@@ -44,7 +47,6 @@ def aiReplyApi():
     reply = getAutoReplies(chatHistory)
     
     return jsonify({"reply": reply})
-    
-    
+
 if __name__ == "__main__":
-    vibezLlama.run()
+    vibezApi.run()
