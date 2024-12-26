@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from transformers import LlamaForCausalLM, LlamaTokenizer
+from huggingface_hub import hf_hub_download
 import torch
 import os
 from dotenv import load_dotenv
@@ -9,8 +10,13 @@ vibezLlama = Flask(__name__)
 
 modelName = os.getenv("MODEL")
 hf_token = os.getenv("HF_TOKEN")
-tokenizer = LlamaTokenizer.from_pretrained(modelName, token=hf_token)
-model = LlamaForCausalLM.from_pretrained(modelName, token=hf_token)
+
+modelPath = hf_hub_download(repo_id=modelName, filename="pytorch_model.bin", token=hf_token)
+configPath = hf_hub_download(repo_id=modelName, filename="config.json", token=hf_token)
+tokenizerPath = hf_hub_download(repo_id=modelName, filename="tokenizer.json", token=hf_token)
+
+tokenizer = LlamaTokenizer.from_pretrained(tokenizerPath)
+model = LlamaForCausalLM.from_pretrained(modelPath, config=configPath)
 
 model.eval()
 
