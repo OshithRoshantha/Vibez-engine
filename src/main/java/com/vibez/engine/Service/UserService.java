@@ -1,5 +1,4 @@
 package com.vibez.engine.Service;
-
 import com.vibez.engine.Model.User;
 
 public interface  UserService {
@@ -7,4 +6,5 @@ public interface  UserService {
     String authenticateUser(User existingUser);
     User getUserProfile(String email);
     boolean updateProfile(User user);
+    User getUserById(String userId);
 }

@@ -59,4 +59,8 @@ public class UserImplement implements UserService {
         userRepo.save(existingUser);
         return true;
     }
+
+    public User getUserById(String userId) {
+        return userRepo.findByUserId(userId);
+    }
 }

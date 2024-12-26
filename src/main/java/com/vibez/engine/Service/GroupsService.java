@@ -2,16 +2,13 @@ package com.vibez.engine.Service;
 
 import java.util.List;
 
-import org.bson.types.ObjectId;
-
 import com.vibez.engine.Model.Groups;
 
 public interface GroupsService {
-    boolean createGroup(Groups newGroup, ObjectId creatorId);
-    boolean addUserToGroup(ObjectId groupId, ObjectId newUser);
-    boolean removeUserFromGroup(ObjectId groupId, ObjectId existingUser);
-    List<Groups> getGroupsByUser(ObjectId user);
-    boolean changeGroupIcon(ObjectId groupId, String newIcon);
-    boolean changeGroupDescp(ObjectId groupId, String newDescp);
-    boolean changeGroupName(ObjectId groupId, String newName);
+    String createGroup(Groups newGroup, String creatorId);
+    String addUsersToGroup(String groupId, List<String> newUsers);
+    String removeUsersFromGroup(String groupId, List<String> existingUsers);
+    List<String> getGroupsByUser(String user);
+    Groups getGroupById(String groupId);
+    String changeGroup(Groups updatedGroup);
 }
