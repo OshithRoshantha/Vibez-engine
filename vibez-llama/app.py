@@ -32,7 +32,7 @@ def getAutoReplies(chatHistory):
     else:
         return f"Error: {response.json()}"
 
-@vibezApi.route("/ai_reply", methods=["POST"])
+@vibezApi.route("/vibez/ai_reply", methods=["POST"])
 def aiReplyApi():
     data = request.get_json()
     
