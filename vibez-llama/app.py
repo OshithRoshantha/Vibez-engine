@@ -32,9 +32,16 @@ def getAutoReplies(chatHistory):
     if response.status_code == 200:
         reply = response.json()[0]["generated_text"].strip()
         reply = reply.replace("\n", " ")
+        reply = refineReply(chatHistory, reply)
         return reply
     else:
         return f"Error: {response.json()}"
+
+def refineReply(chatHistory, reply):
+    pattern = '|'.join([re.escape(sentence) for sentence in chatHistory])
+    cleanedReply = re.sub(pattern, '', reply)
+    cleanedReply = cleanedReply.strip()
+    return cleanedReply
 
 @vibezApi.route("/vibez/ai_reply", methods=["POST"])
 def aiReplyApi():
