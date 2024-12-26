@@ -41,7 +41,11 @@ def refineReply(chatHistory, reply):
     pattern = '|'.join([re.escape(sentence) for sentence in chatHistory])
     cleanedReply = re.sub(pattern, '', reply)
     cleanedReply = cleanedReply.strip()
-    return cleanedReply
+    match = re.match(r'^[^.?!]*[?.]?', cleanedReply)
+    if match:
+        return match.group(0).strip()
+    else:
+        return cleanedReply
 
 @vibezApi.route("/vibez/ai_reply", methods=["POST"])
 def aiReplyApi():
