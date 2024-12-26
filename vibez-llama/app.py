@@ -8,8 +8,9 @@ load_dotenv()
 vibezLlama = Flask(__name__)
 
 modelName = os.getenv("MODEL")
-tokenizer = LlamaTokenizer.from_pretrained(modelName)
-model = LlamaForCausalLM.from_pretrained(modelName)
+hf_token = os.getenv("HF_TOKEN")
+tokenizer = LlamaTokenizer.from_pretrained(modelName, token=hf_token)
+model = LlamaForCausalLM.from_pretrained(modelName, token=hf_token)
 
 model.eval()
 
