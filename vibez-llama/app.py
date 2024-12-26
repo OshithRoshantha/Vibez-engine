@@ -1,3 +1,4 @@
+import re
 from flask import Flask, request, jsonify
 import requests
 import os
@@ -19,16 +20,19 @@ def getAutoReplies(chatHistory):
     payload = {
         "inputs": chatInput,
         "parameters": {
-            "max_length": 100,
-            "num_return_sequences": 1,
-            "no_repeat_ngram_size": 2
+            "max_length": 50, 
+            "num_return_sequences": 1,  
+            "no_repeat_ngram_size": 2,  
+            "temperature": 0.7  
         }
     }
     
     response = requests.post(model, headers=headers, json=payload)
+    
     if response.status_code == 200:
-        reply = response.json()[0]["generated_text"]
-        return reply.strip()
+        reply = response.json()[0]["generated_text"].strip()
+        reply = reply.replace("\n", " ")
+        return reply
     else:
         return f"Error: {response.json()}"
 
