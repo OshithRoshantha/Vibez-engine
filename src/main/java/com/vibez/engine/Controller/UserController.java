@@ -72,4 +72,8 @@ public class UserController {
         return ResponseEntity.ok(true);
     }
 
+    @GetMapping("/profile/isExist/{email}")
+    public ResponseEntity<Boolean> isUserExist(@PathVariable String email) {
+        return ResponseEntity.ok(userService.isUserExist(email));
+    }
 }

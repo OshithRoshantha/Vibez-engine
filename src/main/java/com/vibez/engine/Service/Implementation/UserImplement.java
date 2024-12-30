@@ -69,4 +69,12 @@ public class UserImplement implements UserService {
         existingUser.setDarkMode(darkMode);
         userRepo.save(existingUser);
     }
+
+    public boolean isUserExist(String email) {
+        User existingUser = userRepo.findByEmail(email);
+        if (existingUser == null) {
+            return false;
+        }
+        return true;
+    }
 }

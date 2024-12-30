@@ -8,4 +8,5 @@ public interface  UserService {
     boolean updateProfile(User user);
     User getUserById(String userId);
     void changeDarkMode(boolean darkMode, String userId);
+    boolean isUserExist(String email);
 }
