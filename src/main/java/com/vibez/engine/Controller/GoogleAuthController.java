@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vibez.engine.Model.User;
 import com.vibez.engine.Service.GoogleAuthService;
 
 @CrossOrigin(origins = "*" , allowedHeaders = "*")
@@ -20,11 +21,11 @@ public class GoogleAuthController {
     private GoogleAuthService googleAuthService;
 
     @PostMapping("/GoogleAuth")
-    public ResponseEntity<String> GoogleAuth(@RequestBody Map<String, Object> request) {
-        String email = (String) request.get("email");
-        String name = (String) request.get("name");
-        String picture = (String) request.get("picture");
-        String password = (String) request.get("sub");
+    public ResponseEntity<String> GoogleAuth(@RequestBody User request) {
+        String email = request.getEmail();
+        String name = request.getUserName();
+        String picture = request.getProfilePicture();
+        String password = request.getPassword();
         return ResponseEntity.ok(googleAuthService.googleAuthenticator(email, password, name, picture));
     }
     
