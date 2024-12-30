@@ -14,6 +14,7 @@ public class DirectChat {
     private LocalDateTime lastUpdate;
     private String lastMessage;
     private List<String> messageIds;
+    private List<String> favoritedBy;
 
     public String getChatId() {
         return chatId;
@@ -53,5 +54,13 @@ public class DirectChat {
 
     public void setMessageIds(List<String> messageIds) {
         this.messageIds = messageIds;
+    }
+
+    public List<String> getFavoritedBy() {
+        return favoritedBy;
+    }
+
+    public void setFavoritedBy(List<String> favoritedBy) {
+        this.favoritedBy = favoritedBy;
     }
 }
