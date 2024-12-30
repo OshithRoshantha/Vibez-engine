@@ -9,4 +9,5 @@ public interface  UserService {
     User getUserById(String userId);
     void changeDarkMode(boolean darkMode, String userId);
     boolean isUserExist(String email);
+    String getPublicKey(String userId);
 }

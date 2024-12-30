@@ -14,6 +14,7 @@ public class User {
     private String profilePicture; 
     private String about; 
     private boolean darkMode;
+    private String publicKey;
 
     public String getUserId(){
         return userId;
@@ -69,6 +70,14 @@ public class User {
 
     public void setDarkMode(boolean darkMode) {
         this.darkMode = darkMode;
+    }
+
+    public String getPublicKey() {
+        return publicKey;
+    }
+
+    public void setPublicKey(String publicKey) {
+        this.publicKey = publicKey;
     }
 
 }

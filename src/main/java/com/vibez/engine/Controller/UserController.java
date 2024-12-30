@@ -76,4 +76,9 @@ public class UserController {
     public ResponseEntity<Boolean> isUserExist(@PathVariable String email) {
         return ResponseEntity.ok(userService.isUserExist(email));
     }
+
+    @GetMapping("/profile/publicKey/{userId}")
+    public ResponseEntity<String> getPublicKey(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId) {
+        return ResponseEntity.ok(userService.getPublicKey(userId));
+    }
 }

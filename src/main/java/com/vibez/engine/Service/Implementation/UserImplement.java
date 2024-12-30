@@ -77,4 +77,9 @@ public class UserImplement implements UserService {
         }
         return true;
     }
+
+    public String getPublicKey(String userId) {
+        User existingUser = userRepo.findByUserId(userId);
+        return existingUser.getPublicKey();
+    }
 }
