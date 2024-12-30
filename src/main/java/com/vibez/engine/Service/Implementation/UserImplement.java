@@ -63,4 +63,23 @@ public class UserImplement implements UserService {
     public User getUserById(String userId) {
         return userRepo.findByUserId(userId);
     }
+
+    public void changeDarkMode(boolean darkMode, String userId) {
+        User existingUser = userRepo.findByUserId(userId);
+        existingUser.setDarkMode(darkMode);
+        userRepo.save(existingUser);
+    }
+
+    public boolean isUserExist(String email) {
+        User existingUser = userRepo.findByEmail(email);
+        if (existingUser == null) {
+            return false;
+        }
+        return true;
+    }
+
+    public String getPublicKey(String userId) {
+        User existingUser = userRepo.findByUserId(userId);
+        return existingUser.getPublicKey();
+    }
 }

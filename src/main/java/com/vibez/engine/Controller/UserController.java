@@ -2,6 +2,7 @@ package com.vibez.engine.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +16,7 @@ import com.vibez.engine.Model.User;
 import com.vibez.engine.Service.JwtService;
 import com.vibez.engine.Service.UserService;
 
-
+@CrossOrigin(origins = "*" , allowedHeaders = "*")
 @RestController
 @RequestMapping("/vibez")
 public class UserController {
@@ -37,6 +38,7 @@ public class UserController {
         if (newUser.getAbout() == "" || newUser.getAbout() == null) {
             newUser.setAbout(DEFAULT_AB);
         }
+        newUser.setDarkMode(false);
         return ResponseEntity.ok(userService.createUser(newUser));
     }
 
@@ -64,4 +66,19 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserById(userId));
     }
 
+    @PutMapping("/profile/darkmode/{userId}/{mode}")
+    public ResponseEntity<Boolean> changeDarkMode(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId, @PathVariable boolean mode) {
+        userService.changeDarkMode(mode, userId);
+        return ResponseEntity.ok(true);
+    }
+
+    @GetMapping("/profile/isExist/{email}")
+    public ResponseEntity<Boolean> isUserExist(@PathVariable String email) {
+        return ResponseEntity.ok(userService.isUserExist(email));
+    }
+
+    @GetMapping("/profile/publicKey/{userId}")
+    public ResponseEntity<String> getPublicKey(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId) {
+        return ResponseEntity.ok(userService.getPublicKey(userId));
+    }
 }

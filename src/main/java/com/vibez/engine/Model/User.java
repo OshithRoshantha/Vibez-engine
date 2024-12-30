@@ -13,6 +13,8 @@ public class User {
     private String password; 
     private String profilePicture; 
     private String about; 
+    private boolean darkMode;
+    private String publicKey;
 
     public String getUserId(){
         return userId;
@@ -60,6 +62,22 @@ public class User {
 
     public void setAbout(String about) {
         this.about = about;
+    }
+
+    public boolean getDarkMode() {
+        return darkMode;
+    }
+
+    public void setDarkMode(boolean darkMode) {
+        this.darkMode = darkMode;
+    }
+
+    public String getPublicKey() {
+        return publicKey;
+    }
+
+    public void setPublicKey(String publicKey) {
+        this.publicKey = publicKey;
     }
 
 }
