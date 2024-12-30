@@ -26,7 +26,6 @@ public class GoogleAuthService {
             newUser.setUserName(name);
             newUser.setProfilePicture(picture);
             userService.createUser(newUser);
-            userService.createUser(newUser);
             return true;
         } 
         return false;
