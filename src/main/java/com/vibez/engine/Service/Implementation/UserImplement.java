@@ -63,4 +63,10 @@ public class UserImplement implements UserService {
     public User getUserById(String userId) {
         return userRepo.findByUserId(userId);
     }
+
+    public void changeDarkMode(boolean darkMode, String userId) {
+        User existingUser = userRepo.findByUserId(userId);
+        existingUser.setDarkMode(darkMode);
+        userRepo.save(existingUser);
+    }
 }

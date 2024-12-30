@@ -37,6 +37,7 @@ public class UserController {
         if (newUser.getAbout() == "" || newUser.getAbout() == null) {
             newUser.setAbout(DEFAULT_AB);
         }
+        newUser.setDarkMode(false);
         return ResponseEntity.ok(userService.createUser(newUser));
     }
 
@@ -62,6 +63,12 @@ public class UserController {
     @GetMapping("/profile/{userId}")
     public ResponseEntity<User> getUserById(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId) {
         return ResponseEntity.ok(userService.getUserById(userId));
+    }
+
+    @PutMapping("/profile/darkmode/{userId}/{mode}")
+    public ResponseEntity<Boolean> changeDarkMode(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId, @PathVariable boolean mode) {
+        userService.changeDarkMode(mode, userId);
+        return ResponseEntity.ok(true);
     }
 
 }
