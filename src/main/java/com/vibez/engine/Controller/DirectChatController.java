@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,5 +31,10 @@ public class DirectChatController {
     @GetMapping("/directChat/info/{chatId}") //get direct chat info
     public ResponseEntity<DirectChat> getDirectChatById(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String chatId){
         return ResponseEntity.ok(directChatService.getDirectChatById(chatId));
+    }
+
+    @PutMapping("/directChat/favorite/{userId}/{chatId}") //favorite a direct chat
+    public ResponseEntity<String> favoriteDirectChat(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String chatId, @PathVariable String userId){
+        return ResponseEntity.ok(directChatService.favoriteDirectChat(chatId, userId));
     }
 }

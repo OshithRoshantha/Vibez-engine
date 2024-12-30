@@ -41,5 +41,17 @@ public class DirectChatImplemet implements DirectChatService{
     public DirectChat getDirectChatById(String chatId) {
         return directChatRepo.findByChatId(chatId);
     }
+
+    public String favoriteDirectChat(String chatId, String userId) {
+        DirectChat chat = directChatRepo.findByChatId(chatId);
+        List<String> favoritedBy = chat.getFavoritedBy();
+        if(favoritedBy == null){
+            favoritedBy = new ArrayList<>();
+            favoritedBy.add(userId);
+        }
+        favoritedBy.add(userId);
+        chat.setFavoritedBy(favoritedBy);
+        return "Chat favorited";
+    }
     
 }
