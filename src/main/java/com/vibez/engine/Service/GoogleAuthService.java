@@ -15,21 +15,28 @@ public class GoogleAuthService {
     @Autowired
     private UserService userService;
 
-
-    //if the user does not exist in the database, return true and create a new user, otherwise return false
-    public boolean checkAccountByGoogle(String email, String password, String name, String picture) {
+    public String googleAuthenticator(String email, String password, String name, String picture) {
         User user = userRepo.findByEmail(email);
         if (user == null) {
             User newUser = new User();
+            User existingUser = new User();
             newUser.setEmail(email);
             newUser.setPassword(password);
             newUser.setUserName(name);
             newUser.setProfilePicture(picture);
             userService.createUser(newUser);
-            userService.createUser(newUser);
-            return true;
+            existingUser.setEmail(email);
+            existingUser.setPassword(password);
+
+            return userService.authenticateUser(existingUser);
         } 
-        return false;
+        else {
+            User existingUser = new User();
+            existingUser.setEmail(email);
+            existingUser.setPassword(password);
+            
+            return userService.authenticateUser(existingUser);
+        }
     }
     
 }
