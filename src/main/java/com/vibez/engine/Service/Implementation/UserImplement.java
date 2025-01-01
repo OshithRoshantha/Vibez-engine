@@ -1,5 +1,8 @@
 package com.vibez.engine.Service.Implementation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -81,5 +84,14 @@ public class UserImplement implements UserService {
     public String getPublicKey(String userId) {
         User existingUser = userRepo.findByUserId(userId);
         return existingUser.getPublicKey();
+    }
+
+    public List<String> searchAccount(String keyword) {
+        List<User> users = userRepo.findByEmailOrUserNameContaining(keyword);
+        List<String> result = new ArrayList<>();
+        for (User user : users) {
+            result.add(user.getUserId());
+        }
+        return result;
     }
 }

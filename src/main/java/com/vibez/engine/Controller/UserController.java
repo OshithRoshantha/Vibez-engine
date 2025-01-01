@@ -1,5 +1,7 @@
 package com.vibez.engine.Controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -80,5 +82,10 @@ public class UserController {
     @GetMapping("/profile/publicKey/{userId}")
     public ResponseEntity<String> getPublicKey(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId) {
         return ResponseEntity.ok(userService.getPublicKey(userId));
+    }
+
+    @GetMapping("/search/{entity}")
+    public ResponseEntity<List<String>> searchAccount(@PathVariable String keyword) {
+        return ResponseEntity.ok(userService.searchAccount(keyword));
     }
 }

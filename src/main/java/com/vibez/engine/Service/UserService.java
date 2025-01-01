@@ -1,4 +1,6 @@
 package com.vibez.engine.Service;
+import java.util.List;
+
 import com.vibez.engine.Model.User;
 
 public interface  UserService {
@@ -10,4 +12,5 @@ public interface  UserService {
     void changeDarkMode(boolean darkMode, String userId);
     boolean isUserExist(String email);
     String getPublicKey(String userId);
+    List<String> searchAccount(String keyword);
 }
