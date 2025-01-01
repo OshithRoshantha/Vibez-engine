@@ -58,11 +58,6 @@ public class UserController {
         return ResponseEntity.ok(userProfile);
     }
 
-    @PutMapping("/profile/update")
-    public ResponseEntity<Boolean> updateProfile(@RequestHeader(value = "Authorization", required = true) String token, @RequestBody User user) {
-        return ResponseEntity.ok(userService.updateProfile(user));
-    }
-
     @GetMapping("/profile/{userId}")
     public ResponseEntity<User> getUserById(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId) {
         return ResponseEntity.ok(userService.getUserById(userId));

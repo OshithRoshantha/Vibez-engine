@@ -18,10 +18,13 @@ import com.vibez.engine.Model.Friendship;
 import com.vibez.engine.Model.GroupAction;
 import com.vibez.engine.Model.Groups;
 import com.vibez.engine.Model.Message;
+import com.vibez.engine.Model.User;
+import com.vibez.engine.Model.UserUpdate;
 import com.vibez.engine.Service.DirectChatService;
 import com.vibez.engine.Service.FriendshipService;
 import com.vibez.engine.Service.GroupsService;
 import com.vibez.engine.Service.MessageService;
+import com.vibez.engine.Service.UserService;
 
 
 public class WebSocketController implements WebSocketHandler {
@@ -31,6 +34,9 @@ public class WebSocketController implements WebSocketHandler {
 
     @Autowired
     private MessageService messageService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private DirectChatService directChatService;
@@ -72,8 +78,8 @@ public class WebSocketController implements WebSocketHandler {
             case "updateService":
                 handleMessages(messageData);
                 break;
-            case "changeGroupName":
-                handleChangeGroupName(messageData);
+            case "profileService":
+                handleProfileMetaData(messageData);
                 break;
             case "changeGroupDesc":
                 handleChangeGroupDesc(messageData);
@@ -171,8 +177,20 @@ public class WebSocketController implements WebSocketHandler {
         broadcastToSubscribers("directChatService", directChatId);
     }
 
-    private void handleChangeGroupIcon(Map<String, Object> messageData) {
-        // Implement the logic to handle changing the group icon
+    private void handleProfileMetaData(Map<String, Object> messageData) {
+        UserUpdate userUpdate = objectMapper.convertValue(messageData.get("body"), UserUpdate.class);
+        User existingUser = userService.getUserById(userUpdate.getUserId());
+        if (userUpdate.getUserName() != null) {
+            existingUser.setUserName(userUpdate.getUserName());
+        }
+        if (userUpdate.getAbout() != null) {
+            existingUser.setAbout(userUpdate.getAbout());
+        }
+        if (userUpdate.getProfilePicture() != null) {
+            existingUser.setProfilePicture(userUpdate.getProfilePicture());
+        }
+        String userId = userService.updateProfile(existingUser);
+        broadcastToSubscribers("profileService", userId);
     }
 
     private void handleChangeGroupName(Map<String, Object> messageData) {

@@ -51,16 +51,16 @@ public class UserImplement implements UserService {
         return userRepo.findByEmail(email);
     } 
     
-    public boolean updateProfile(User user) {
-        User existingUser = userRepo.findByEmail(user.getEmail());
+    public String updateProfile(User user) {
+        User existingUser = userRepo.findByUserId(user.getUserId());
         if (existingUser == null) {
-            return false;
+            return null;
         }
         existingUser.setUserName(user.getUserName());
         existingUser.setProfilePicture(user.getProfilePicture());
         existingUser.setAbout(user.getAbout());
         userRepo.save(existingUser);
-        return true;
+        return existingUser.getUserId();
     }
 
     public User getUserById(String userId) {
@@ -69,8 +69,10 @@ public class UserImplement implements UserService {
 
     public void changeDarkMode(boolean darkMode, String userId) {
         User existingUser = userRepo.findByUserId(userId);
-        existingUser.setDarkMode(darkMode);
-        userRepo.save(existingUser);
+        if (existingUser != null) {
+            existingUser.setDarkMode(darkMode);
+            userRepo.save(existingUser);
+        }
     }
 
     public boolean isUserExist(String email) {
