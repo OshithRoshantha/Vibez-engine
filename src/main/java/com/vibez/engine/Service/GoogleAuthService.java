@@ -24,6 +24,7 @@ public class GoogleAuthService {
             newUser.setPassword(password);
             newUser.setUserName(name);
             newUser.setProfilePicture(picture);
+            newUser.setAbout("Hey there! I am using Vibez.");
             userService.createUser(newUser);
             existingUser.setEmail(email);
             existingUser.setPassword(password);
