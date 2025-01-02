@@ -1,5 +1,8 @@
 package com.vibez.engine.Service.Implementation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -48,16 +51,16 @@ public class UserImplement implements UserService {
         return userRepo.findByEmail(email);
     } 
     
-    public boolean updateProfile(User user) {
-        User existingUser = userRepo.findByEmail(user.getEmail());
+    public String updateProfile(User user) {
+        User existingUser = userRepo.findByUserId(user.getUserId());
         if (existingUser == null) {
-            return false;
+            return null;
         }
         existingUser.setUserName(user.getUserName());
         existingUser.setProfilePicture(user.getProfilePicture());
         existingUser.setAbout(user.getAbout());
         userRepo.save(existingUser);
-        return true;
+        return existingUser.getUserId();
     }
 
     public User getUserById(String userId) {
@@ -66,8 +69,10 @@ public class UserImplement implements UserService {
 
     public void changeDarkMode(boolean darkMode, String userId) {
         User existingUser = userRepo.findByUserId(userId);
-        existingUser.setDarkMode(darkMode);
-        userRepo.save(existingUser);
+        if (existingUser != null) {
+            existingUser.setDarkMode(darkMode);
+            userRepo.save(existingUser);
+        }
     }
 
     public boolean isUserExist(String email) {
@@ -81,5 +86,14 @@ public class UserImplement implements UserService {
     public String getPublicKey(String userId) {
         User existingUser = userRepo.findByUserId(userId);
         return existingUser.getPublicKey();
+    }
+
+    public List<String> searchAccount(String keyword) {
+        List<User> users = userRepo.findByEmailOrUserNameContaining(keyword);
+        List<String> result = new ArrayList<>();
+        for (User user : users) {
+            result.add(user.getUserId());
+        }
+        return result;
     }
 }

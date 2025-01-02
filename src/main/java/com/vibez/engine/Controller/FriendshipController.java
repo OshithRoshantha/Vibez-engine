@@ -38,5 +38,4 @@ public class FriendshipController {
     public ResponseEntity<Friendship> getFriendshipInfo(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String friendshipId){
         return ResponseEntity.ok(friendshipService.getFriendshipInfo(friendshipId));
     }
-
 }
