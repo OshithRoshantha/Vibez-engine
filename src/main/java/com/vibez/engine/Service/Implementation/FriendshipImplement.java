@@ -83,6 +83,9 @@ public class FriendshipImplement implements FriendshipService {
         Friendship friendship = friendshipRepo.findByUserIdAndFriendId(userId, friendId);
         if (friendship == null) {
             friendship = friendshipRepo.findByUserIdAndFriendId(friendId, userId);
+            if (friendship == null){
+                return "NOT_FRIENDS";
+            }
         }
         return friendship.getFriendshipId();
     }
