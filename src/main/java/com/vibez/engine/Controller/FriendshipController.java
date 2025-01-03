@@ -34,8 +34,13 @@ public class FriendshipController {
         return ResponseEntity.ok(pendingRequests);
     }
     
-    @GetMapping("friends/friendshipInfo/{friendshipId}") //get friendship info
+    @GetMapping("/friends/friendshipInfo/{friendshipId}") //get friendship info
     public ResponseEntity<Friendship> getFriendshipInfo(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String friendshipId){
         return ResponseEntity.ok(friendshipService.getFriendshipInfo(friendshipId));
+    }
+
+    @GetMapping("/friends/{userId}/{friendId}") //get friendshipId
+    public ResponseEntity<String> getFriendshipId(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId, @PathVariable String friendId){
+        return ResponseEntity.ok(friendshipService.getFriendshipId(userId, friendId));
     }
 }

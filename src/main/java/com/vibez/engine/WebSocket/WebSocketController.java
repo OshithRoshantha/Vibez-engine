@@ -145,7 +145,10 @@ public class WebSocketController implements WebSocketHandler {
                 friendshipService.blockFriend(friendship.getFriendshipId());
             }
         }
-        broadcastToSubscribers("friendshipService", friendshipId);
+        Map<String, Object> message = new HashMap<>();
+        message.put("action", "friendshipService");
+        message.put("body", friendshipId);
+        broadcastToSubscribers("friendshipService", message);
     }
 
     private void handleGroups(Map<String, Object> messageData) {

@@ -78,4 +78,12 @@ public class FriendshipImplement implements FriendshipService {
     public Friendship getFriendshipInfo(String friendshipId) {
         return friendshipRepo.findByFriendshipId(friendshipId);
     }
+
+    public String getFriendshipId(String userId, String friendId){
+        Friendship friendship = friendshipRepo.findByUserIdAndFriendId(userId, friendId);
+        if (friendship == null) {
+            friendship = friendshipRepo.findByUserIdAndFriendId(friendId, userId);
+        }
+        return friendship.getFriendshipId();
+    }
 }

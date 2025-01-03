@@ -12,4 +12,5 @@ public interface FriendshipService {
     List<String> getFriends(String userId);
     List<String> getPendingRequests(String userId);
     Friendship getFriendshipInfo(String friendshipId);
+    String getFriendshipId(String userId, String friendId);
 }
