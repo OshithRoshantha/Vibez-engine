@@ -132,10 +132,9 @@ public class FriendshipImplement implements FriendshipService {
     public List<String> getLinkedProfiles(String userId){
         List <Friendship> friends = friendshipRepo.findByUserIdOrFriendId(userId);
         List <String> linkedProfiles = new ArrayList<>();
-
         if (friends != null){
             for (Friendship friend : friends){
-                linkedProfiles.add(friend.getFriendId());
+                linkedProfiles.add(friend.getFriendshipId());
             }
         }
         return linkedProfiles;
