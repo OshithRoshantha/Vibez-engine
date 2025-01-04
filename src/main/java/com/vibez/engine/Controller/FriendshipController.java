@@ -62,6 +62,11 @@ public class FriendshipController {
         return ResponseEntity.ok(friendshipService.filterPendings(userId, friendshipId));
     }
 
+    @GetMapping("/friends/filterAccepteds/{userId}/{friendshipId}")  //filter accepted requests
+    public ResponseEntity<Boolean> filterAccepteds(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId, @PathVariable String friendshipId){
+        return ResponseEntity.ok(friendshipService.filterAccepteds(userId, friendshipId));
+    }
+
     @GetMapping("/friends/getStatus/{friendshipId}") //get status of a friendship
     public ResponseEntity<FriendshipStatus> getStatus(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String friendshipId){
         return ResponseEntity.ok(friendshipService.getFriendshipStatus(friendshipId));

@@ -132,8 +132,11 @@ public class FriendshipImplement implements FriendshipService {
     public List<String> getLinkedProfiles(String userId){
         List <Friendship> friends = friendshipRepo.findByUserIdOrFriendId(userId);
         List <String> linkedProfiles = new ArrayList<>();
-        for (Friendship friend : friends){
-            linkedProfiles.add(friend.getFriendshipId());
+
+        if (friends != null){
+            for (Friendship friend : friends){
+                linkedProfiles.add(friend.getFriendId());
+            }
         }
         return linkedProfiles;
     }
@@ -144,6 +147,14 @@ public class FriendshipImplement implements FriendshipService {
             return false;
         }
         return true;
+    }
+
+    public boolean filterAccepteds(String userId, String friendshipId){
+        Friendship friendship = friendshipRepo.findByFriendshipId(friendshipId);
+        if (friendship.getUserId().equals(userId) && friendship.getStatus().equals("ACCEPTED")){
+            return true;
+        }
+        return false;
     }
 
     public FriendshipStatus getFriendshipStatus(String friendshipId){

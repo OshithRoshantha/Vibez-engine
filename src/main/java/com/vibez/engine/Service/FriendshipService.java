@@ -17,5 +17,6 @@ public interface FriendshipService {
     boolean checkFriendship(String userId, String friendshipId);
     List<String> getLinkedProfiles(String userId);
     boolean filterPendings(String userId, String friendshipId);
+    boolean filterAccepteds(String userId, String friendshipId);
     FriendshipStatus getFriendshipStatus(String friendshipId);
 }
