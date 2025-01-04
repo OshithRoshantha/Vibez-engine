@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vibez.engine.Model.Friendship;
+import com.vibez.engine.Model.LinkedProfile;
 import com.vibez.engine.Service.FriendshipService;
 
 @CrossOrigin(origins = "*" , allowedHeaders = "*")
@@ -34,9 +35,9 @@ public class FriendshipController {
         return ResponseEntity.ok(pendingRequests);
     }
     
-    @GetMapping("/friends/friendshipInfo/{friendshipId}") //get friendship info
-    public ResponseEntity<Friendship> getFriendshipInfo(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String friendshipId){
-        return ResponseEntity.ok(friendshipService.getFriendshipInfo(friendshipId));
+    @GetMapping("/friends/friendshipInfo/{friendshipId}/{userId}") //get friendship info
+    public ResponseEntity<LinkedProfile> getFriendshipInfo(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String friendshipId, @PathVariable String userId){
+        return ResponseEntity.ok(friendshipService.getFriendshipInfo(friendshipId, userId));
     }
 
     @GetMapping("/friends/{userId}/{friendId}") //get friendshipId
