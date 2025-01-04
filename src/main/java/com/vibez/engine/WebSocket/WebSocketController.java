@@ -1,5 +1,6 @@
 package com.vibez.engine.WebSocket;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -144,7 +145,10 @@ public class WebSocketController implements WebSocketHandler {
                 friendshipService.blockFriend(friendship.getFriendshipId());
             }
         }
-        broadcastToSubscribers("friendshipService", friendshipId);
+        Map<String, Object> message = new HashMap<>();
+        message.put("action", "friendshipService");
+        message.put("body", friendshipId);
+        broadcastToSubscribers("friendshipService", message);
     }
 
     private void handleGroups(Map<String, Object> messageData) {
@@ -190,7 +194,12 @@ public class WebSocketController implements WebSocketHandler {
             existingUser.setProfilePicture(userUpdate.getProfilePicture());
         }
         String userId = userService.updateProfile(existingUser);
-        broadcastToSubscribers("profileService", userId);
+
+        Map<String, Object> message = new HashMap<>();
+        message.put("action", "profileService");
+        message.put("body", userId);
+
+        broadcastToSubscribers("profileService", message);
     }
 
     private void handleChangeGroupName(Map<String, Object> messageData) {

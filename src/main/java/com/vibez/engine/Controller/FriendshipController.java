@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vibez.engine.Model.Friendship;
+import com.vibez.engine.Model.FriendshipStatus;
+import com.vibez.engine.Model.LinkedProfile;
 import com.vibez.engine.Service.FriendshipService;
 
 @CrossOrigin(origins = "*" , allowedHeaders = "*")
@@ -22,20 +24,51 @@ public class FriendshipController {
     @Autowired
     private FriendshipService friendshipService;
 
-    @GetMapping("/friends/{userId}") //find all friends of a user
+    @GetMapping("/friends/{userId}") //find all friends of a user (not used in the frontend)
     public ResponseEntity<List<String>> getFriends(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId) {
         List<String> friends = friendshipService.getFriends(userId);
         return ResponseEntity.ok(friends);
     }
 
-    @GetMapping("/friends/pending/{userId}") //find all pending requests of a user
+    @GetMapping("/friends/pending/{userId}") //find all pending requests of a user (not used in the frontend)
     public ResponseEntity<List<String>> getPendingRequests(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId) {
         List<String> pendingRequests = friendshipService.getPendingRequests(userId);
         return ResponseEntity.ok(pendingRequests);
     }
     
-    @GetMapping("friends/friendshipInfo/{friendshipId}") //get friendship info
-    public ResponseEntity<Friendship> getFriendshipInfo(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String friendshipId){
-        return ResponseEntity.ok(friendshipService.getFriendshipInfo(friendshipId));
+    @GetMapping("/friends/friendshipInfo/{friendshipId}/{userId}") //get friendship info
+    public ResponseEntity<LinkedProfile> getFriendshipInfo(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String friendshipId, @PathVariable String userId){
+        return ResponseEntity.ok(friendshipService.getFriendshipInfo(friendshipId, userId));
+    }
+
+    @GetMapping("/friends/{userId}/{friendId}") //get friendshipId
+    public ResponseEntity<String> getFriendshipId(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId, @PathVariable String friendId){
+        return ResponseEntity.ok(friendshipService.getFriendshipId(userId, friendId));
+    }
+
+    @GetMapping("/friends/check/{userId}/{friendshipId}") //check friendship
+    public ResponseEntity<Boolean> checkFriendship(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId, @PathVariable String friendshipId){
+        return ResponseEntity.ok(friendshipService.checkFriendship(userId, friendshipId));
+
+    }
+
+    @GetMapping("/friends/linked/{userId}") //get all linked profiles
+    public ResponseEntity<List<String>> getLinkedProfiles(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId){
+        return ResponseEntity.ok(friendshipService.getLinkedProfiles(userId));
+    }
+
+    @GetMapping("/friends/filterPendings/{userId}/{friendshipId}") //filter pending requests
+    public ResponseEntity<Boolean> filterPendings(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId, @PathVariable String friendshipId){
+        return ResponseEntity.ok(friendshipService.filterPendings(userId, friendshipId));
+    }
+
+    @GetMapping("/friends/filterAccepteds/{userId}/{friendshipId}")  //filter accepted requests
+    public ResponseEntity<Boolean> filterAccepteds(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId, @PathVariable String friendshipId){
+        return ResponseEntity.ok(friendshipService.filterAccepteds(userId, friendshipId));
+    }
+
+    @GetMapping("/friends/getStatus/{friendshipId}") //get status of a friendship
+    public ResponseEntity<FriendshipStatus> getStatus(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String friendshipId){
+        return ResponseEntity.ok(friendshipService.getFriendshipStatus(friendshipId));
     }
 }

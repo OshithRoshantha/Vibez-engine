@@ -18,7 +18,8 @@ import com.vibez.engine.Model.User;
 import com.vibez.engine.Service.JwtService;
 import com.vibez.engine.Service.UserService;
 
-@CrossOrigin(origins = "*" , allowedHeaders = "*")
+
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/vibez")
 public class UserController {
@@ -79,7 +80,7 @@ public class UserController {
         return ResponseEntity.ok(userService.getPublicKey(userId));
     }
 
-    @GetMapping("/search/{entity}")
+    @GetMapping("/search/{keyword}")
     public ResponseEntity<List<String>> searchAccount(@PathVariable String keyword) {
         return ResponseEntity.ok(userService.searchAccount(keyword));
     }
