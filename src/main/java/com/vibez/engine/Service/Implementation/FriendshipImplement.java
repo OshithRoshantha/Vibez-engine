@@ -89,4 +89,21 @@ public class FriendshipImplement implements FriendshipService {
         }
         return friendship.getFriendshipId();
     }
+
+    public boolean checkFriendship(String userId, String friendshipId){
+        Friendship friendship = friendshipRepo.findByFriendshipId(friendshipId);
+        if (friendship.getUserId().equals(userId) || friendship.getFriendId().equals(userId)){
+            return true;
+        }
+        return false;
+    }
+
+    public List<String> getLinkedProfiles(String userId){
+        List <Friendship> friends = friendshipRepo.findByUserIdOrFriendId(userId);
+        List <String> linkedProfiles = new ArrayList<>();
+        for (Friendship friend : friends){
+            linkedProfiles.add(friend.getFriendshipId());
+        }
+        return linkedProfiles;
+    }
 }
