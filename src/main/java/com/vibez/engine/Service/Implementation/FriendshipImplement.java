@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vibez.engine.Model.Friendship;
+import com.vibez.engine.Model.FriendshipStatus;
 import com.vibez.engine.Model.LinkedProfile;
 import com.vibez.engine.Model.User;
 import com.vibez.engine.Repository.FriendshipRepo;
@@ -143,5 +144,14 @@ public class FriendshipImplement implements FriendshipService {
             return false;
         }
         return true;
+    }
+
+    public FriendshipStatus getFriendshipStatus(String friendshipId){
+        Friendship friendship = friendshipRepo.findByFriendshipId(friendshipId);
+        FriendshipStatus status = new FriendshipStatus();
+        status.setStatus(friendship.getStatus());
+        status.setUserId(friendship.getUserId());
+        status.setFriendId(friendship.getFriendId());
+        return status;
     }
 }

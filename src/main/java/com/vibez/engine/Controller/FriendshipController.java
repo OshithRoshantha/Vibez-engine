@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vibez.engine.Model.Friendship;
+import com.vibez.engine.Model.FriendshipStatus;
 import com.vibez.engine.Model.LinkedProfile;
 import com.vibez.engine.Service.FriendshipService;
 
@@ -59,5 +60,10 @@ public class FriendshipController {
     @GetMapping("/friends/filterPendings/{userId}/{friendshipId}") //filter pending requests
     public ResponseEntity<Boolean> filterPendings(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId, @PathVariable String friendshipId){
         return ResponseEntity.ok(friendshipService.filterPendings(userId, friendshipId));
+    }
+
+    @GetMapping("/friends/getStatus/{friendshipId}") //get status of a friendship
+    public ResponseEntity<FriendshipStatus> getStatus(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String friendshipId){
+        return ResponseEntity.ok(friendshipService.getFriendshipStatus(friendshipId));
     }
 }
