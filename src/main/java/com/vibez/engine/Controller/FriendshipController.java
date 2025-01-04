@@ -55,4 +55,9 @@ public class FriendshipController {
     public ResponseEntity<List<String>> getLinkedProfiles(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId){
         return ResponseEntity.ok(friendshipService.getLinkedProfiles(userId));
     }
+
+    @GetMapping("/friends/filterPendings/{userId}/{friendshipId}") //filter pending requests
+    public ResponseEntity<Boolean> filterPendings(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId, @PathVariable String friendshipId){
+        return ResponseEntity.ok(friendshipService.filterPendings(userId, friendshipId));
+    }
 }

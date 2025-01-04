@@ -136,4 +136,12 @@ public class FriendshipImplement implements FriendshipService {
         }
         return linkedProfiles;
     }
+
+    public boolean filterPendings(String userId, String friendshipId){
+        Friendship friendship = friendshipRepo.findByFriendshipId(friendshipId);
+        if (friendship.getUserId().equals(userId) && friendship.getStatus().equals("PENDING")){
+            return false;
+        }
+        return true;
+    }
 }
