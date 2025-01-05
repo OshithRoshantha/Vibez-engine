@@ -139,7 +139,7 @@ public class WebSocketController implements WebSocketHandler {
             friendshipId = friendship.getFriendshipId();
             if (friendship.getStatus().equals("ACCEPTED")) {
                 friendshipService.acceptFriendRequest(friendship.getFriendshipId());
-            } else if (friendship.getStatus().equals("REJECTED")) {
+            } else if (friendship.getStatus().equals("UNFRIENDED")) {
                 friendshipService.unFriend(friendship.getFriendshipId());
             } else if (friendship.getStatus().equals("BLOCKED")) {
                 friendshipService.blockFriend(friendship.getFriendshipId());
@@ -147,7 +147,8 @@ public class WebSocketController implements WebSocketHandler {
         }
         Map<String, Object> message = new HashMap<>();
         message.put("action", "friendshipService");
-        message.put("body", friendshipId);
+        message.put("friendshipId", friendshipId);
+        message.put("status", friendship.getStatus());
         broadcastToSubscribers("friendshipService", message);
     }
 

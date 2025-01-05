@@ -50,8 +50,7 @@ public class FriendshipImplement implements FriendshipService {
     public String unFriend(String friendshipId) {
         Friendship friendship = friendshipRepo.findByFriendshipId(friendshipId);
         if ("ACCEPTED".equals(friendship.getStatus())) {
-            friendship.setStatus("REJECTED");
-            friendshipRepo.save(friendship);
+            friendshipRepo.deleteByFriendshipId(friendshipId);
             return friendshipId;
         }
         return "Not Allowed"; 
