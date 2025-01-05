@@ -133,22 +133,27 @@ public class WebSocketController implements WebSocketHandler {
     private void handleFriendships(Map<String, Object> messageData) {
         Friendship friendship = objectMapper.convertValue(messageData.get("body"), Friendship.class);
         String friendshipId = null;
+        String status = null;
         if (friendship.getFriendshipId() == null) {
             friendshipId = friendshipService.sendFriendRequest(friendship.getUserId(), friendship.getFriendId());
+            status = "PENDING";
         } else {
             friendshipId = friendship.getFriendshipId();
             if (friendship.getStatus().equals("ACCEPTED")) {
                 friendshipService.acceptFriendRequest(friendship.getFriendshipId());
+                status = "ACCEPTED";
             } else if (friendship.getStatus().equals("UNFRIENDED")) {
                 friendshipService.unFriend(friendship.getFriendshipId());
+                status = "UNFRIENDED";
             } else if (friendship.getStatus().equals("BLOCKED")) {
                 friendshipService.blockFriend(friendship.getFriendshipId());
+                status = "BLOCKED";
             }
         }
         Map<String, Object> message = new HashMap<>();
         message.put("action", "friendshipService");
         message.put("friendshipId", friendshipId);
-        message.put("status", friendship.getStatus());
+        message.put("status", status);
         broadcastToSubscribers("friendshipService", message);
     }
 
