@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vibez.engine.Model.Friendship;
 import com.vibez.engine.Model.FriendshipStatus;
 import com.vibez.engine.Model.LinkedProfile;
 import com.vibez.engine.Service.FriendshipService;
@@ -24,18 +23,6 @@ public class FriendshipController {
     @Autowired
     private FriendshipService friendshipService;
 
-    @GetMapping("/friends/{userId}") //find all friends of a user (not used in the frontend)
-    public ResponseEntity<List<String>> getFriends(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId) {
-        List<String> friends = friendshipService.getFriends(userId);
-        return ResponseEntity.ok(friends);
-    }
-
-    @GetMapping("/friends/pending/{userId}") //find all pending requests of a user (not used in the frontend)
-    public ResponseEntity<List<String>> getPendingRequests(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId) {
-        List<String> pendingRequests = friendshipService.getPendingRequests(userId);
-        return ResponseEntity.ok(pendingRequests);
-    }
-    
     @GetMapping("/friends/friendshipInfo/{friendshipId}/{userId}") //get friendship info
     public ResponseEntity<LinkedProfile> getFriendshipInfo(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String friendshipId, @PathVariable String userId){
         return ResponseEntity.ok(friendshipService.getFriendshipInfo(friendshipId, userId));
@@ -49,7 +36,6 @@ public class FriendshipController {
     @GetMapping("/friends/check/{userId}/{friendshipId}") //check friendship
     public ResponseEntity<Boolean> checkFriendship(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId, @PathVariable String friendshipId){
         return ResponseEntity.ok(friendshipService.checkFriendship(userId, friendshipId));
-
     }
 
     @GetMapping("/friends/linked/{userId}") //get all linked profiles
