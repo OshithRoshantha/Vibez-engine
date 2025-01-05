@@ -89,7 +89,7 @@ public class UserImplement implements UserService {
     }
 
     public List<String> searchAccount(String keyword) {
-        List<User> users = userRepo.findByEmailOrUserNameContaining(keyword);
+        List<User> users = userRepo.findByEmailOrUserNameStartingWith(keyword);
         List<String> result = new ArrayList<>();
         for (User user : users) {
             result.add(user.getUserId());
