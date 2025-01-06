@@ -122,10 +122,16 @@ public class FriendshipImplement implements FriendshipService {
 
     public boolean checkFriendship(String userId, String friendshipId){
         Friendship friendship = friendshipRepo.findByFriendshipId(friendshipId);
-        if (friendship.getUserId().equals(userId) || friendship.getFriendId().equals(userId)){
-            return true;
+        if (friendship == null){
+            return false;
         }
-        return false;
+        else{
+            if (friendship.getUserId().equals(userId) || friendship.getFriendId().equals(userId)){
+                return true;
+            }
+            return false;
+        }
+
     }
 
     public List<String> getLinkedProfiles(String userId){
