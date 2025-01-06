@@ -236,6 +236,7 @@ public class WebSocketController implements WebSocketHandler {
         message.put("id", uniqeId);
         message.put("action", "marketplaceService");
         message.put("body", productId);
+        message.put("productAction", productAction);
 
         broadcastToSubscribers("marketplaceService", message);
     }
