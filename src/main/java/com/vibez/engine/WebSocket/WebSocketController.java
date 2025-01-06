@@ -221,12 +221,15 @@ public class WebSocketController implements WebSocketHandler {
         Marketplace product = objectMapper.convertValue(messageData.get("body"), Marketplace.class);
         String uniqeId = "message_" + System.currentTimeMillis();
         String productId = null;
+        String productAction = null;
         if(product.getProductId() == null) {
             Marketplace newProduct = marketplaceService.addItem(product);
             productId = newProduct.getProductId();
+            productAction = "ADDED";
         } else {
             Marketplace updatedProduct = marketplaceService.updateItem(product);
             productId = updatedProduct.getProductId();
+            productAction = "UPDATED";
         }
 
         Map<String, Object> message = new HashMap<>();
