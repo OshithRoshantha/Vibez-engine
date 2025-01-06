@@ -222,14 +222,21 @@ public class WebSocketController implements WebSocketHandler {
         String uniqeId = "message_" + System.currentTimeMillis();
         String productId = null;
         String productAction = null;
-        if(product.getProductId() == null) {
+
+        if (product.getProductAction().equals("ADD")){
             Marketplace newProduct = marketplaceService.addItem(product);
             productId = newProduct.getProductId();
             productAction = "ADDED";
-        } else {
+        }
+        else if (product.getProductAction().equals("UPDATE")){
             Marketplace updatedProduct = marketplaceService.updateItem(product);
             productId = updatedProduct.getProductId();
             productAction = "UPDATED";
+        }
+        else if (product.getProductAction().equals("REMOVE")){
+            marketplaceService.deleteItem(product.getProductId());
+            productId = product.getProductId();
+            productAction = "REMOVED";
         }
 
         Map<String, Object> message = new HashMap<>();

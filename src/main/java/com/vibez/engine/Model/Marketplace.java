@@ -17,6 +17,7 @@ public class Marketplace {
     private String location;
     private List<String> productPhotos;
     private boolean visibleToFriends;
+    private String productAction;
 
     public String getProductId() {
         return productId;
@@ -88,5 +89,13 @@ public class Marketplace {
 
     public void setVisibleToFriends(boolean visibleToFriends) {
         this.visibleToFriends = visibleToFriends;
+    }
+
+    public String getProductAction() {
+        return productAction;
+    }
+
+    public void setProductAction(String productAction) {
+        this.productAction = productAction;
     }
 }
