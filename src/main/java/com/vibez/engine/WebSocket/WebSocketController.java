@@ -128,6 +128,36 @@ public class WebSocketController implements WebSocketHandler {
         }
     }
 
+    private void handleGroups(Map<String, Object> messageData) {
+        String groupId = null;
+        if (messageData.get("groupAction") != null){
+            GroupAction groupAction = objectMapper.convertValue(messageData.get("groupAction"), GroupAction.class);
+            if (groupAction.getAction().equals("addUsers")){
+                groupId = groupsService.addUsersToGroup(groupAction.getGroupId(), groupAction.getUserIds());
+            } else if (groupAction.getAction().equals("removeUsers")){
+                groupId = groupsService.removeUsersFromGroup(groupAction.getGroupId(), groupAction.getUserIds());
+            }
+            broadcastToSubscribers("groupService", groupId);
+            return;
+        }
+        if (messageData.get("body") != null){
+            Groups group = objectMapper.convertValue(messageData.get("body"), Groups.class);
+            if (group.getGroupId() == null){
+                groupId = groupsService.createGroup(group, group.getCreatorId());
+            } else {
+                groupId = groupsService.changeGroup(group);
+            }
+            broadcastToSubscribers("groupService", groupId);
+            return;
+        }
+    }
+
+    private void handleDirectChats(Map<String, Object> messageData) {
+        DirectChat directChat = objectMapper.convertValue(messageData.get("body"), DirectChat.class);
+        String directChatId = directChatService.createDirectChat(directChat.getMemberIds().get(0), directChat.getMemberIds().get(1));
+        broadcastToSubscribers("directChatService", directChatId);
+    }
+
     private void handleMessages(Map<String, Object> messageData) {
         Message message = objectMapper.convertValue(messageData.get("body"), Message.class);
         String updatingId = messageService.sendMessage(message);
@@ -162,36 +192,6 @@ public class WebSocketController implements WebSocketHandler {
         message.put("friendshipId", friendshipId);
         message.put("status", status);
         broadcastToSubscribers("friendshipService", message);
-    }
-
-    private void handleGroups(Map<String, Object> messageData) {
-        String groupId = null;
-        if (messageData.get("groupAction") != null){
-            GroupAction groupAction = objectMapper.convertValue(messageData.get("groupAction"), GroupAction.class);
-            if (groupAction.getAction().equals("addUsers")){
-                groupId = groupsService.addUsersToGroup(groupAction.getGroupId(), groupAction.getUserIds());
-            } else if (groupAction.getAction().equals("removeUsers")){
-                groupId = groupsService.removeUsersFromGroup(groupAction.getGroupId(), groupAction.getUserIds());
-            }
-            broadcastToSubscribers("groupService", groupId);
-            return;
-        }
-        if (messageData.get("body") != null){
-            Groups group = objectMapper.convertValue(messageData.get("body"), Groups.class);
-            if (group.getGroupId() == null){
-                groupId = groupsService.createGroup(group, group.getCreatorId());
-            } else {
-                groupId = groupsService.changeGroup(group);
-            }
-            broadcastToSubscribers("groupService", groupId);
-            return;
-        }
-    }
-
-    private void handleDirectChats(Map<String, Object> messageData) {
-        DirectChat directChat = objectMapper.convertValue(messageData.get("body"), DirectChat.class);
-        String directChatId = directChatService.createDirectChat(directChat.getMemberIds().get(0), directChat.getMemberIds().get(1));
-        broadcastToSubscribers("directChatService", directChatId);
     }
 
     private void handleProfileMetaData(Map<String, Object> messageData) {
