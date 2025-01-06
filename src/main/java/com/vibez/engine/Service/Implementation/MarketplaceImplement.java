@@ -1,5 +1,8 @@
 package com.vibez.engine.Service.Implementation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,15 +28,18 @@ public class MarketplaceImplement implements MarketplaceService {
         return marketplaceRepo.findByProductId(productId);
     }
 
-  /*   public List<Marketplace> getProductsExcludingHiddenByFriends(ObjectId userId) {
-        List<Friendship> friends = friendshipService.getFriends(userId);
-        List<ObjectId> friendIds = new ArrayList<>();
-        for (Friendship friend : friends) {
-            friendIds.add(friend.getUserId());
+    public List<String> getProductsExcludingHiddenByFriends(String userId) {
+        List<Marketplace> allProducts = marketplaceRepo.findAll();
+        List<String> productIds = new ArrayList<>();
+        List<String> friendIds = friendshipService.getFriends(userId);
+        for (Marketplace product : allProducts) {
+            if (!friendIds.contains(product.getSellerId())){
+                productIds.add(product.getProductId());
+            }
         }
-        return marketplaceRepo.findAllSellingProducts(friendIds);
+        return productIds;
     }
-*/
+
     public String generateShareableLink(String productId) {
         return "http://localhost:8080/vibez/product/find/" + productId;
     }

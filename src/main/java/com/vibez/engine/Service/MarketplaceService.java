@@ -1,5 +1,7 @@
 package com.vibez.engine.Service;
 
+import java.util.List;
+
 import com.vibez.engine.Model.Marketplace;
 
 public interface MarketplaceService {
@@ -7,6 +9,6 @@ public interface MarketplaceService {
     Marketplace updateItem(Marketplace updatedProduct);
     String deleteItem(String productId);
     Marketplace getItemById(String productId);
-    //List<Marketplace> getProductsExcludingHiddenByFriends(ObjectId userId);
+    List<String> getProductsExcludingHiddenByFriends(String userId);
     String generateShareableLink(String itemId);
 }
