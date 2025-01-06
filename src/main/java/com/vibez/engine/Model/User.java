@@ -1,5 +1,7 @@
 package com.vibez.engine.Model;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -15,6 +17,7 @@ public class User {
     private String about; 
     private boolean darkMode;
     private String publicKey;
+    private List<String> blockedUsers;
 
     public String getUserId(){
         return userId;
@@ -78,6 +81,14 @@ public class User {
 
     public void setPublicKey(String publicKey) {
         this.publicKey = publicKey;
+    }
+
+    public List<String> getBlockedUsers() {
+        return blockedUsers;
+    }
+
+    public void setBlockedUsers(List<String> blockedUsers) {
+        this.blockedUsers = blockedUsers;
     }
 
 }

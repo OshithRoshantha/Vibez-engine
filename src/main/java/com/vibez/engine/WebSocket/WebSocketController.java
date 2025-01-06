@@ -132,22 +132,30 @@ public class WebSocketController implements WebSocketHandler {
 
     private void handleFriendships(Map<String, Object> messageData) {
         Friendship friendship = objectMapper.convertValue(messageData.get("body"), Friendship.class);
+        String uniqueId = "message_" + System.currentTimeMillis();
         String friendshipId = null;
+        String status = null;
         if (friendship.getFriendshipId() == null) {
             friendshipId = friendshipService.sendFriendRequest(friendship.getUserId(), friendship.getFriendId());
+            status = "PENDING";
         } else {
             friendshipId = friendship.getFriendshipId();
             if (friendship.getStatus().equals("ACCEPTED")) {
                 friendshipService.acceptFriendRequest(friendship.getFriendshipId());
-            } else if (friendship.getStatus().equals("REJECTED")) {
+                status = "ACCEPTED";
+            } else if (friendship.getStatus().equals("UNFRIENDED")) {
                 friendshipService.unFriend(friendship.getFriendshipId());
+                status = "UNFRIENDED";
             } else if (friendship.getStatus().equals("BLOCKED")) {
                 friendshipService.blockFriend(friendship.getFriendshipId());
+                status = "BLOCKED";
             }
         }
         Map<String, Object> message = new HashMap<>();
         message.put("action", "friendshipService");
-        message.put("body", friendshipId);
+        message.put("id", uniqueId);
+        message.put("friendshipId", friendshipId);
+        message.put("status", status);
         broadcastToSubscribers("friendshipService", message);
     }
 
@@ -183,6 +191,7 @@ public class WebSocketController implements WebSocketHandler {
 
     private void handleProfileMetaData(Map<String, Object> messageData) {
         UserUpdate userUpdate = objectMapper.convertValue(messageData.get("body"), UserUpdate.class);
+        String uniqueId = "message_" + System.currentTimeMillis();
         User existingUser = userService.getUserById(userUpdate.getUserId());
         if (userUpdate.getUserName() != null) {
             existingUser.setUserName(userUpdate.getUserName());
@@ -196,6 +205,7 @@ public class WebSocketController implements WebSocketHandler {
         String userId = userService.updateProfile(existingUser);
 
         Map<String, Object> message = new HashMap<>();
+        message.put("id", uniqueId);
         message.put("action", "profileService");
         message.put("body", userId);
 

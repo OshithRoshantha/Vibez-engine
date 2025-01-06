@@ -15,4 +15,5 @@ public interface FriendshipRepo extends MongoRepository<Friendship, String> {
     List<Friendship> findByUserId(String userId);
     @Query("{ '$or': [ { 'userId': ?0 }, { 'friendId': ?0 } ] }")
     List<Friendship> findByUserIdOrFriendId(String userId);
+    void deleteByFriendshipId(String friendshipId);
 }

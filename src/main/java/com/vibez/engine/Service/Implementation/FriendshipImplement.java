@@ -50,8 +50,7 @@ public class FriendshipImplement implements FriendshipService {
     public String unFriend(String friendshipId) {
         Friendship friendship = friendshipRepo.findByFriendshipId(friendshipId);
         if ("ACCEPTED".equals(friendship.getStatus())) {
-            friendship.setStatus("REJECTED");
-            friendshipRepo.save(friendship);
+            friendshipRepo.deleteByFriendshipId(friendshipId);
             return friendshipId;
         }
         return "Not Allowed"; 
@@ -59,6 +58,24 @@ public class FriendshipImplement implements FriendshipService {
 
     public String blockFriend(String friendshipId) {
         Friendship friendship = friendshipRepo.findByFriendshipId(friendshipId);
+        User user1 = userService.getUserById(friendship.getUserId());
+        User user2 = userService.getUserById(friendship.getFriendId());
+        if (user1.getBlockedUsers() == null) {
+            ArrayList<String> blockedUsers = new ArrayList<>();
+            blockedUsers.add(user2.getUserId());
+            user1.setBlockedUsers(blockedUsers);
+        }
+        else{
+            user1.getBlockedUsers().add(user2.getUserId());
+        }
+        if (user2.getBlockedUsers() == null){
+            ArrayList<String> blockedUsers = new ArrayList<>();
+            blockedUsers.add(user1.getUserId());
+            user2.setBlockedUsers(blockedUsers);
+        }
+        else{
+            user2.getBlockedUsers().add(user1.getUserId());
+        }
         friendship.setStatus("BLOCKED");
         friendshipRepo.save(friendship);
         return friendshipId;
@@ -123,10 +140,16 @@ public class FriendshipImplement implements FriendshipService {
 
     public boolean checkFriendship(String userId, String friendshipId){
         Friendship friendship = friendshipRepo.findByFriendshipId(friendshipId);
-        if (friendship.getUserId().equals(userId) || friendship.getFriendId().equals(userId)){
-            return true;
+        if (friendship == null){
+            return false;
         }
-        return false;
+        else{
+            if (friendship.getUserId().equals(userId) || friendship.getFriendId().equals(userId)){
+                return true;
+            }
+            return false;
+        }
+
     }
 
     public List<String> getLinkedProfiles(String userId){
