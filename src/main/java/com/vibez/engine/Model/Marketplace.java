@@ -2,15 +2,14 @@ package com.vibez.engine.Model;
 
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "marketplace")
 public class Marketplace {
     @Id
-    private ObjectId productId;
-    private ObjectId sellerId;
+    private String productId;
+    private String sellerId;
     private String productTitle;
     private String productDesc; 
     private String condition;
@@ -19,19 +18,19 @@ public class Marketplace {
     private List<String> productPhotos;
     private boolean visibleToFriends;
 
-    public ObjectId getProductId() {
+    public String getProductId() {
         return productId;
     }
 
-    public void setProductId(ObjectId productId) {
+    public void setProductId(String productId) {
         this.productId = productId;
     }
 
-    public ObjectId getSellerId() {
+    public String getSellerId() {
         return sellerId;
     }
 
-    public void setSellerId(ObjectId sellerId) {
+    public void setSellerId(String sellerId) {
         this.sellerId = sellerId;
     }
 

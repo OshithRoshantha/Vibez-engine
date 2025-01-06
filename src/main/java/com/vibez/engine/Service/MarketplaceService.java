@@ -7,8 +7,8 @@ import org.bson.types.ObjectId;
 import com.vibez.engine.Model.Marketplace;
 
 public interface MarketplaceService {
-    boolean addItem(ObjectId sellerId, Marketplace newItem);
+    Marketplace addItem(Marketplace newProduct);
     Marketplace getItemById(ObjectId productId);
-    List<Marketplace> getProductsExcludingHiddenByFriends(ObjectId userId);
+    //List<Marketplace> getProductsExcludingHiddenByFriends(ObjectId userId);
     String generateShareableLink(ObjectId itemId);
 }

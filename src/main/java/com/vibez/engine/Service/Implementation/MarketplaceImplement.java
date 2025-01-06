@@ -22,17 +22,15 @@ public class MarketplaceImplement implements MarketplaceService {
     @Autowired
     private FriendshipService friendshipService;
 
-    public boolean addItem(ObjectId sellerId, Marketplace newProduct) {
-        newProduct.setSellerId(sellerId);
-        marketplaceRepo.save(newProduct);
-        return true;
+    public Marketplace addItem(Marketplace newProduct) {
+        return  marketplaceRepo.save(newProduct);
     }
 
     public Marketplace getItemById(ObjectId productId) {
         return marketplaceRepo.findByProductId(productId);
     }
 
-    public List<Marketplace> getProductsExcludingHiddenByFriends(ObjectId userId) {
+  /*   public List<Marketplace> getProductsExcludingHiddenByFriends(ObjectId userId) {
         List<Friendship> friends = friendshipService.getFriends(userId);
         List<ObjectId> friendIds = new ArrayList<>();
         for (Friendship friend : friends) {
@@ -40,7 +38,7 @@ public class MarketplaceImplement implements MarketplaceService {
         }
         return marketplaceRepo.findAllSellingProducts(friendIds);
     }
-
+*/
     public String generateShareableLink(ObjectId productId) {
         return "http://localhost:8080/vibez/product/find/" + productId.toHexString();
     }

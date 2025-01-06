@@ -18,12 +18,14 @@ import com.vibez.engine.Model.DirectChat;
 import com.vibez.engine.Model.Friendship;
 import com.vibez.engine.Model.GroupAction;
 import com.vibez.engine.Model.Groups;
+import com.vibez.engine.Model.Marketplace;
 import com.vibez.engine.Model.Message;
 import com.vibez.engine.Model.User;
 import com.vibez.engine.Model.UserUpdate;
 import com.vibez.engine.Service.DirectChatService;
 import com.vibez.engine.Service.FriendshipService;
 import com.vibez.engine.Service.GroupsService;
+import com.vibez.engine.Service.MarketplaceService;
 import com.vibez.engine.Service.MessageService;
 import com.vibez.engine.Service.UserService;
 
@@ -47,6 +49,9 @@ public class WebSocketController implements WebSocketHandler {
 
     @Autowired
     private FriendshipService friendshipService;
+
+    @Autowired
+    private MarketplaceService marketplaceService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -82,8 +87,8 @@ public class WebSocketController implements WebSocketHandler {
             case "profileService":
                 handleProfileMetaData(messageData);
                 break;
-            case "changeGroupDesc":
-                handleChangeGroupDesc(messageData);
+            case "marketplaceService":
+                handleMarketplace(messageData);
                 break;
             case "sendFriendRequest":
                 handleSendFriendRequest(messageData);
@@ -212,8 +217,23 @@ public class WebSocketController implements WebSocketHandler {
         broadcastToSubscribers("profileService", message);
     }
 
-    private void handleChangeGroupName(Map<String, Object> messageData) {
-        // Implement the logic to handle changing the group name
+    private void handleMarketplace(Map<String, Object> messageData) {
+        Marketplace product = objectMapper.convertValue(messageData.get("body"), Marketplace.class);
+        String uniqeId = "message_" + System.currentTimeMillis();
+        String productId = null;
+        if(product.getProductId() == null) {
+            Marketplace newProduct = marketplaceService.addItem(product);
+            productId = newProduct.getProductId();
+        } else {
+            //update
+        }
+
+        Map<String, Object> message = new HashMap<>();
+        message.put("id", uniqeId);
+        message.put("action", "marketplaceService");
+        message.put("body", productId);
+
+        broadcastToSubscribers("marketplaceService", message);
     }
 
     private void handleChangeGroupDesc(Map<String, Object> messageData) {

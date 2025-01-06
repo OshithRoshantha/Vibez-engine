@@ -25,20 +25,20 @@ public class MarketplaceController {
     @Autowired
     private MarketplaceService marketplaceService;
 
-    @PostMapping("/product/add/{sellerId}")
+  /*   @PostMapping("/product/add/{sellerId}")
     public ResponseEntity<Boolean> addSellProduct(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable ObjectId sellerId, @RequestBody Marketplace newProduct) {
         return ResponseEntity.ok(marketplaceService.addItem(sellerId, newProduct)); 
-    }
+    }*/
 
     @GetMapping("/product/find/{productId}") // find product by id
     public ResponseEntity<Marketplace> getItemById(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable ObjectId productId) {
         return ResponseEntity.ok(marketplaceService.getItemById(productId));
     }
 
-    @GetMapping("/product/findAll/{userId}") // find all products by user id
+   /*  @GetMapping("/product/findAll/{userId}") // find all products by user id
     public ResponseEntity<List<Marketplace>> getCommunityAndFriendsVisibleItems(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable ObjectId userId) {
         return ResponseEntity.ok(marketplaceService.getProductsExcludingHiddenByFriends(userId));
-    }
+    }*/
 
     @GetMapping("/product/share/{productId}") // generate shareable link
     public ResponseEntity<String> generateShareableLink(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable ObjectId productId) {
