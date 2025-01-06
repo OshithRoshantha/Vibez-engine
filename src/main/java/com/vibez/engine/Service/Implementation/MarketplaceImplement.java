@@ -33,9 +33,13 @@ public class MarketplaceImplement implements MarketplaceService {
         List<String> productIds = new ArrayList<>();
         List<String> friendIds = friendshipService.getFriends(userId);
         for (Marketplace product : allProducts) {
-            if (!friendIds.contains(product.getSellerId())){
+            if(product.isVisibleToFriends()){ //if we hide listing from friends put  true
+                if (!friendIds.contains(product.getSellerId())){
+                    productIds.add(product.getProductId());
+                }
+            } else{
                 productIds.add(product.getProductId());
-            }
+            }  
         }
         return productIds;
     }
