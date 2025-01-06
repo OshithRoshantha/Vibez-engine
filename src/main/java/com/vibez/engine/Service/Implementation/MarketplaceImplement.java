@@ -28,8 +28,9 @@ public class MarketplaceImplement implements MarketplaceService {
         return marketplaceRepo.findByProductId(productId);
     }
 
-    public List<String> getProductsExcludingHiddenByFriends(String userId) {
+    public List<Marketplace> getProductsExcludingHiddenByFriends(String userId) {
         List<Marketplace> allProducts = marketplaceRepo.findAll();
+        List<Marketplace> productDetails = new ArrayList<>();
         List<String> productIds = new ArrayList<>();
         List<String> friendIds = friendshipService.getFriends(userId);
         for (Marketplace product : allProducts) {
@@ -41,7 +42,10 @@ public class MarketplaceImplement implements MarketplaceService {
                 productIds.add(product.getProductId());
             }  
         }
-        return productIds;
+        for (String productId : productIds) {
+            productDetails.add(marketplaceRepo.findByProductId(productId));
+        }
+        return productDetails;
     }
 
     public String generateShareableLink(String productId) {

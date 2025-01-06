@@ -28,7 +28,7 @@ public class MarketplaceController {
     }
 
      @GetMapping("/product/findAll/{userId}") // find all products by user id
-    public ResponseEntity<List<String>> getCommunityAndFriendsVisibleItems(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId) {
+    public ResponseEntity<List<Marketplace>> getCommunityAndFriendsVisibleItems(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId) {
         return ResponseEntity.ok(marketplaceService.getProductsExcludingHiddenByFriends(userId));
     }
 

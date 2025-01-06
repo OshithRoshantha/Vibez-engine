@@ -9,6 +9,6 @@ public interface MarketplaceService {
     Marketplace updateItem(Marketplace updatedProduct);
     String deleteItem(String productId);
     Marketplace getItemById(String productId);
-    List<String> getProductsExcludingHiddenByFriends(String userId);
+    List<Marketplace> getProductsExcludingHiddenByFriends(String userId);
     String generateShareableLink(String itemId);
 }
