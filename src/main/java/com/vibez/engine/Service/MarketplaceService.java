@@ -8,7 +8,8 @@ import com.vibez.engine.Model.Marketplace;
 
 public interface MarketplaceService {
     Marketplace addItem(Marketplace newProduct);
-    Marketplace getItemById(ObjectId productId);
+    Marketplace updateItem(Marketplace updatedProduct);
+    Marketplace getItemById(String productId);
     //List<Marketplace> getProductsExcludingHiddenByFriends(ObjectId userId);
-    String generateShareableLink(ObjectId itemId);
+    String generateShareableLink(String itemId);
 }

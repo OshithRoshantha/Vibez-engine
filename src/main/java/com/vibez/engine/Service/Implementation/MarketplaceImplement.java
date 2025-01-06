@@ -3,7 +3,6 @@ package com.vibez.engine.Service.Implementation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +25,7 @@ public class MarketplaceImplement implements MarketplaceService {
         return  marketplaceRepo.save(newProduct);
     }
 
-    public Marketplace getItemById(ObjectId productId) {
+    public Marketplace getItemById(String productId) {
         return marketplaceRepo.findByProductId(productId);
     }
 
@@ -39,7 +38,19 @@ public class MarketplaceImplement implements MarketplaceService {
         return marketplaceRepo.findAllSellingProducts(friendIds);
     }
 */
-    public String generateShareableLink(ObjectId productId) {
-        return "http://localhost:8080/vibez/product/find/" + productId.toHexString();
+    public String generateShareableLink(String productId) {
+        return "http://localhost:8080/vibez/product/find/" + productId;
+    }
+
+    public Marketplace updateItem(Marketplace updatedProduct) {
+        Marketplace existingProduct = marketplaceRepo.findByProductId(updatedProduct.getProductId());
+        existingProduct.setProductTitle(updatedProduct.getProductTitle());
+        existingProduct.setProductDesc(updatedProduct.getProductDesc());
+        existingProduct.setCondition(updatedProduct.getCondition());
+        existingProduct.setPrice(updatedProduct.getPrice());
+        existingProduct.setLocation(updatedProduct.getLocation());
+        existingProduct.setProductPhotos(updatedProduct.getProductPhotos());
+        existingProduct.setVisibleToFriends(updatedProduct.isVisibleToFriends());
+        return marketplaceRepo.save(updatedProduct);
     }
 }
