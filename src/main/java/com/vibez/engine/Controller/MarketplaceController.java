@@ -1,5 +1,7 @@
 package com.vibez.engine.Controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,10 +27,10 @@ public class MarketplaceController {
         return ResponseEntity.ok(marketplaceService.getItemById(productId));
     }
 
-   /*  @GetMapping("/product/findAll/{userId}") // find all products by user id
+     @GetMapping("/product/findAll/{userId}") // find all products by user id
     public ResponseEntity<List<Marketplace>> getCommunityAndFriendsVisibleItems(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable ObjectId userId) {
         return ResponseEntity.ok(marketplaceService.getProductsExcludingHiddenByFriends(userId));
-    }*/
+    }
 
     @GetMapping("/product/share/{productId}") // generate shareable link
     public ResponseEntity<String> generateShareableLink(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String productId) {
