@@ -58,6 +58,24 @@ public class FriendshipImplement implements FriendshipService {
 
     public String blockFriend(String friendshipId) {
         Friendship friendship = friendshipRepo.findByFriendshipId(friendshipId);
+        User user1 = userService.getUserById(friendship.getUserId());
+        User user2 = userService.getUserById(friendship.getFriendId());
+        if (user1.getBlockedUsers() == null) {
+            ArrayList<String> blockedUsers = new ArrayList<>();
+            blockedUsers.add(user2.getUserId());
+            user1.setBlockedUsers(blockedUsers);
+        }
+        else{
+            user1.getBlockedUsers().add(user2.getUserId());
+        }
+        if (user2.getBlockedUsers() == null){
+            ArrayList<String> blockedUsers = new ArrayList<>();
+            blockedUsers.add(user1.getUserId());
+            user2.setBlockedUsers(blockedUsers);
+        }
+        else{
+            user2.getBlockedUsers().add(user1.getUserId());
+        }
         friendship.setStatus("BLOCKED");
         friendshipRepo.save(friendship);
         return friendshipId;
