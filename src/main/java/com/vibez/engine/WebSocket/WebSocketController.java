@@ -225,7 +225,8 @@ public class WebSocketController implements WebSocketHandler {
             Marketplace newProduct = marketplaceService.addItem(product);
             productId = newProduct.getProductId();
         } else {
-            //update
+            Marketplace updatedProduct = marketplaceService.updateItem(product);
+            productId = updatedProduct.getProductId();
         }
 
         Map<String, Object> message = new HashMap<>();

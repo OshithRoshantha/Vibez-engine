@@ -2,7 +2,6 @@ package com.vibez.engine.Controller;
 
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -31,7 +30,7 @@ public class MarketplaceController {
     }*/
 
     @GetMapping("/product/find/{productId}") // find product by id
-    public ResponseEntity<Marketplace> getItemById(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable ObjectId productId) {
+    public ResponseEntity<Marketplace> getItemById(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String productId) {
         return ResponseEntity.ok(marketplaceService.getItemById(productId));
     }
 
@@ -41,7 +40,7 @@ public class MarketplaceController {
     }*/
 
     @GetMapping("/product/share/{productId}") // generate shareable link
-    public ResponseEntity<String> generateShareableLink(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable ObjectId productId) {
+    public ResponseEntity<String> generateShareableLink(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String productId) {
         return ResponseEntity.ok(marketplaceService.generateShareableLink(productId));
     }
 
