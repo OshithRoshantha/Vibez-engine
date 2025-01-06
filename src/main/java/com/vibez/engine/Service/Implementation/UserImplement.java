@@ -92,8 +92,10 @@ public class UserImplement implements UserService {
         List<User> users = userRepo.findByEmailOrUserNameStartingWith(keyword);
         List<String> result = new ArrayList<>();
         for (User user : users) {
-            if (user.getBlockedUsers().contains(userId)) {
-                continue;
+            if(user.getBlockedUsers() != null){
+                if (user.getBlockedUsers().contains(userId)) {
+                    continue;
+                }
             }
             result.add(user.getUserId());
         }
