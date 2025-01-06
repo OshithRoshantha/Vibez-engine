@@ -12,5 +12,5 @@ public interface  UserService {
     void changeDarkMode(boolean darkMode, String userId);
     boolean isUserExist(String email);
     String getPublicKey(String userId);
-    List<String> searchAccount(String keyword);
+    List<String> searchAccount(String keyword, String userId);
 }

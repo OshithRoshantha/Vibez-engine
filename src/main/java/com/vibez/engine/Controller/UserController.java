@@ -80,8 +80,8 @@ public class UserController {
         return ResponseEntity.ok(userService.getPublicKey(userId));
     }
 
-    @GetMapping("/search/{keyword}")
-    public ResponseEntity<List<String>> searchAccount(@PathVariable String keyword) {
-        return ResponseEntity.ok(userService.searchAccount(keyword));
+    @GetMapping("/search/{userId}/{keyword}")
+    public ResponseEntity<List<String>> searchAccount(@PathVariable String keyword, @PathVariable String userId) {
+        return ResponseEntity.ok(userService.searchAccount(keyword, userId));
     }
 }
