@@ -234,8 +234,7 @@ public class WebSocketController implements WebSocketHandler {
             productAction = "UPDATED";
         }
         else if (product.getProductAction().equals("REMOVE")){
-            marketplaceService.deleteItem(product.getProductId());
-            productId = product.getProductId();
+            productId = marketplaceService.deleteItem(product.getProductId());
             productAction = "REMOVED";
         }
 

@@ -1,12 +1,8 @@
 package com.vibez.engine.Service.Implementation;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.vibez.engine.Model.Friendship;
 import com.vibez.engine.Model.Marketplace;
 import com.vibez.engine.Repository.MarketplaceRepo;
 import com.vibez.engine.Service.FriendshipService;
@@ -52,5 +48,11 @@ public class MarketplaceImplement implements MarketplaceService {
         existingProduct.setProductPhotos(updatedProduct.getProductPhotos());
         existingProduct.setVisibleToFriends(updatedProduct.isVisibleToFriends());
         return marketplaceRepo.save(updatedProduct);
+    }
+
+    public String deleteItem(String productId) {
+        Marketplace product = marketplaceRepo.findByProductId(productId);
+        marketplaceRepo.delete(product);
+        return productId;
     }
 }
