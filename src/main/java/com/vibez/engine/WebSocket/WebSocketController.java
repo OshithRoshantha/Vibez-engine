@@ -219,6 +219,7 @@ public class WebSocketController implements WebSocketHandler {
 
     private void handleMarketplace(Map<String, Object> messageData) {
         Marketplace product = objectMapper.convertValue(messageData.get("body"), Marketplace.class);
+        System.out.println(product);
         String uniqeId = "message_" + System.currentTimeMillis();
         String productId = null;
         String productAction = null;

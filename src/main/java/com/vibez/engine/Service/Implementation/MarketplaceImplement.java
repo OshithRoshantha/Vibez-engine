@@ -21,7 +21,7 @@ public class MarketplaceImplement implements MarketplaceService {
     private FriendshipService friendshipService;
 
     public Marketplace addItem(Marketplace newProduct) {
-        return  marketplaceRepo.save(newProduct);
+        return marketplaceRepo.save(newProduct);
     }
 
     public Marketplace getItemById(String productId) {
