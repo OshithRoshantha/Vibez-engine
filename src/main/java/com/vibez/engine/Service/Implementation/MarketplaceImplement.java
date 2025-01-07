@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.deser.std.StringArrayDeserializer;
 import com.vibez.engine.Model.Marketplace;
 import com.vibez.engine.Model.User;
 import com.vibez.engine.Repository.MarketplaceRepo;
@@ -32,6 +33,10 @@ public class MarketplaceImplement implements MarketplaceService {
             String defaultImage = "https://static7.depositphotos.com/1056394/786/v/450/depositphotos_7867981-stock-illustration-vector-cardboard-box.jpg";
             newProduct.getProductPhotos().add(defaultImage);
         }
+        String seller = newProduct.getSellerId();
+        User sellerDetails = userService.getUserById(seller);
+        newProduct.setSellerName(sellerDetails.getUserName());
+        newProduct.setSellerProfilePicture(sellerDetails.getProfilePicture());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
         String formattedDate = LocalDate.now().format(formatter);
         newProduct.setListedDate(formattedDate);
