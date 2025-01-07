@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vibez.engine.Model.Marketplace;
+import com.vibez.engine.Model.User;
 import com.vibez.engine.Repository.MarketplaceRepo;
 import com.vibez.engine.Service.FriendshipService;
 import com.vibez.engine.Service.MarketplaceService;
+import com.vibez.engine.Service.UserService;
 
 @Service
 public class MarketplaceImplement implements MarketplaceService {
@@ -21,6 +23,9 @@ public class MarketplaceImplement implements MarketplaceService {
 
     @Autowired
     private FriendshipService friendshipService;
+
+    @Autowired
+    private UserService userService;
 
     public Marketplace addItem(Marketplace newProduct) {
         if (newProduct.getProductPhotos().isEmpty()) {
@@ -34,7 +39,12 @@ public class MarketplaceImplement implements MarketplaceService {
     }
 
     public Marketplace getItemById(String productId) {
-        return marketplaceRepo.findByProductId(productId);
+        Marketplace product = marketplaceRepo.findByProductId(productId);
+        String seller = product.getSellerId();
+        User sellerDetails = userService.getUserById(seller);
+        product.setSellerName(sellerDetails.getUserName());
+        product.setSellerProfilePicture(sellerDetails.getProfilePicture());
+        return product;
     }
 
     public List<Marketplace> getProductsExcludingHiddenByFriends(String userId) {

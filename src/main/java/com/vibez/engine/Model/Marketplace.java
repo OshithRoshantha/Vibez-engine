@@ -10,6 +10,8 @@ public class Marketplace {
     @Id
     private String productId;
     private String sellerId;
+    private String sellerName;
+    private String sellerProfilePicture;
     private String productTitle;
     private String productDesc; 
     private String condition;
@@ -106,5 +108,21 @@ public class Marketplace {
 
     public void setListedDate(String listedDate) {
         this.listedDate = listedDate;
+    }
+
+    public String getSellerName() {
+        return sellerName;
+    }
+
+    public void setSellerName(String sellerName) {
+        this.sellerName = sellerName;
+    }
+
+    public String getSellerProfilePicture() {
+        return sellerProfilePicture;
+    }
+
+    public void setSellerProfilePicture(String sellerProfilePicture) {
+        this.sellerProfilePicture = sellerProfilePicture;
     }
 }
