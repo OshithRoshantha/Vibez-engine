@@ -69,4 +69,15 @@ public class MarketplaceImplement implements MarketplaceService {
         marketplaceRepo.delete(product);
         return productId;
     }
+
+    public Integer getActiveListingCount(String sellerId) {
+        List<Marketplace> allProducts = marketplaceRepo.findAll();
+        Integer count = 0;
+        for (Marketplace product : allProducts) {
+            if (product.getSellerId().equals(sellerId)) {
+                count++;
+            }
+        }
+        return count;
+    }
 }

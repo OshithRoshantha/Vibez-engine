@@ -37,4 +37,9 @@ public class MarketplaceController {
         return ResponseEntity.ok(marketplaceService.generateShareableLink(productId));
     }
 
-}
+    @GetMapping("/product/count/{sellerId}") // get active listning Count
+    public ResponseEntity<Integer> getActiveListingCount(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String sellerId) {
+        return ResponseEntity.ok(marketplaceService.getActiveListingCount(sellerId));
+    }
+
+}   

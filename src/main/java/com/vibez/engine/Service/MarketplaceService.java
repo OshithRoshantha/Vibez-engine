@@ -11,4 +11,5 @@ public interface MarketplaceService {
     Marketplace getItemById(String productId);
     List<Marketplace> getProductsExcludingHiddenByFriends(String userId);
     String generateShareableLink(String itemId);
+    Integer getActiveListingCount(String sellerId);
 }

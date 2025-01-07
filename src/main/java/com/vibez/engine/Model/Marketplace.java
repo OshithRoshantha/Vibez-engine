@@ -13,7 +13,7 @@ public class Marketplace {
     private String productTitle;
     private String productDesc; 
     private String condition;
-    private double price;
+    private String price;
     private String location;
     private List<String> productPhotos;
     private boolean visibleToFriends;
@@ -59,11 +59,11 @@ public class Marketplace {
         this.condition = condition;
     }
 
-    public double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
