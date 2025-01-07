@@ -1,5 +1,7 @@
 package com.vibez.engine.Service.Implementation;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +23,9 @@ public class MarketplaceImplement implements MarketplaceService {
     private FriendshipService friendshipService;
 
     public Marketplace addItem(Marketplace newProduct) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
+        String formattedDate = LocalDate.now().format(formatter);
+        newProduct.setListedDate(formattedDate);
         return marketplaceRepo.save(newProduct);
     }
 

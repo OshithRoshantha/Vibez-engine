@@ -15,6 +15,7 @@ public class Marketplace {
     private String condition;
     private String price;
     private String location;
+    private  String listedDate;
     private List<String> productPhotos;
     private boolean visibleToFriends;
     private String productAction;
@@ -97,5 +98,13 @@ public class Marketplace {
 
     public void setProductAction(String productAction) {
         this.productAction = productAction;
+    }
+
+    public String getListedDate() {
+        return listedDate;
+    }
+
+    public void setListedDate(String listedDate) {
+        this.listedDate = listedDate;
     }
 }
