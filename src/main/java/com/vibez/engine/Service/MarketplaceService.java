@@ -13,4 +13,5 @@ public interface MarketplaceService {
     String generateShareableLink(String itemId);
     Integer getActiveListingCount(String sellerId);
     List<Marketplace> getMyItems(String sellerId);
+    boolean isSeller(String userId);
 }

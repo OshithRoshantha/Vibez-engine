@@ -115,4 +115,14 @@ public class MarketplaceImplement implements MarketplaceService {
         }
         return myProducts;
     }
+
+    public boolean isSeller(String userId) {
+        List<Marketplace> allProducts = marketplaceRepo.findAll();
+        for (Marketplace product : allProducts) {
+            if (product.getSellerId().equals(userId)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

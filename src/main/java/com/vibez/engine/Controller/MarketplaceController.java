@@ -47,4 +47,9 @@ public class MarketplaceController {
         return ResponseEntity.ok(marketplaceService.getMyItems(sellerId));
     }
 
+    @GetMapping("/product/isSeller/{userId}") // is a seller	
+    public ResponseEntity<Boolean> isSeller(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String sellerId){
+        return ResponseEntity.ok(marketplaceService.isSeller(sellerId));
+    }
+
 }   
