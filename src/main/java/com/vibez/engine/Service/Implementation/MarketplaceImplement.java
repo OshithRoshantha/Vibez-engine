@@ -23,6 +23,10 @@ public class MarketplaceImplement implements MarketplaceService {
     private FriendshipService friendshipService;
 
     public Marketplace addItem(Marketplace newProduct) {
+        if (newProduct.getProductPhotos().isEmpty()) {
+            String defaultImage = "https://static7.depositphotos.com/1056394/786/v/450/depositphotos_7867981-stock-illustration-vector-cardboard-box.jpg";
+            newProduct.getProductPhotos().add(defaultImage);
+        }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
         String formattedDate = LocalDate.now().format(formatter);
         newProduct.setListedDate(formattedDate);
