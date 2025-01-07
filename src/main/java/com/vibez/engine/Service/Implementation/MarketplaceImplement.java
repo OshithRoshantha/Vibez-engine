@@ -80,4 +80,15 @@ public class MarketplaceImplement implements MarketplaceService {
         }
         return count;
     }
+
+    public List<Marketplace> getMyItems(String sellerId) {
+        List<Marketplace> allProducts = marketplaceRepo.findAll();
+        List<Marketplace> myProducts = new ArrayList<>();
+        for (Marketplace product : allProducts) {
+            if (product.getSellerId().equals(sellerId)) {
+                myProducts.add(product);
+            }
+        }
+        return myProducts;
+    }
 }

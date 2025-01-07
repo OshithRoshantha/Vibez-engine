@@ -42,4 +42,9 @@ public class MarketplaceController {
         return ResponseEntity.ok(marketplaceService.getActiveListingCount(sellerId));
     }
 
+    @GetMapping("/product/my/{sellerId}") // get all products by seller id
+    public ResponseEntity<List<Marketplace>> getMyItems(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String sellerId){
+        return ResponseEntity.ok(marketplaceService.getMyItems(sellerId));
+    }
+
 }   
