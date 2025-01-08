@@ -63,7 +63,7 @@ public class MarketplaceController {
         return ResponseEntity.ok(marketplaceService.getTotalClicks(sellerId));
     }
 
-    @GetMapping("/search/{userId}/{keyword}")
+    @GetMapping("/product/search/{userId}/{keyword}")
     public ResponseEntity<List<Marketplace>> searchProduct(@PathVariable String keyword, @PathVariable String userId) {
         return ResponseEntity.ok(marketplaceService.searchProduct(keyword, userId));
     }
