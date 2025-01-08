@@ -62,4 +62,9 @@ public class MarketplaceController {
     public ResponseEntity<Integer> getTotalClicks(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String sellerId){
         return ResponseEntity.ok(marketplaceService.getTotalClicks(sellerId));
     }
+
+    @GetMapping("/search/{userId}/{keyword}")
+    public ResponseEntity<List<Marketplace>> searchProduct(@PathVariable String keyword, @PathVariable String userId) {
+        return ResponseEntity.ok(marketplaceService.searchProduct(keyword, userId));
+    }
 }   

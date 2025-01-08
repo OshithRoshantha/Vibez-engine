@@ -8,7 +8,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.deser.std.StringArrayDeserializer;
 import com.vibez.engine.Model.Marketplace;
 import com.vibez.engine.Model.User;
 import com.vibez.engine.Repository.MarketplaceRepo;
@@ -143,5 +142,16 @@ public class MarketplaceImplement implements MarketplaceService {
             }
         }
         return totalClicks;
+    }
+
+    public List<Marketplace> searchProduct(String keyword, String userId) {
+        List<Marketplace> allProducts = getProductsExcludingHiddenByFriends(userId);
+        List<Marketplace> searchResults = new ArrayList<>();
+        for (Marketplace product : allProducts) {
+            if (product.getProductTitle().contains(keyword) || product.getProductDesc().contains(keyword)) {
+                searchResults.add(product);
+            }
+        }
+        return searchResults;
     }
 }

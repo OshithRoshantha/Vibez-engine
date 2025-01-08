@@ -16,4 +16,5 @@ public interface MarketplaceService {
     boolean isSeller(String userId);
     void  addClick(String productId);
     Integer getTotalClicks(String productId);
+    List<Marketplace> searchProduct(String keyword, String userId);
 }
