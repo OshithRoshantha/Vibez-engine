@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,4 +53,13 @@ public class MarketplaceController {
         return ResponseEntity.ok(marketplaceService.isSeller(sellerId));
     }
 
+    @PutMapping("/product/addClick/{productId}") 
+    public void addClick(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String productId){
+        marketplaceService.addClick(productId);
+    }
+
+    @GetMapping("/product/totalClicks/{sellerId}") 
+    public ResponseEntity<Integer> getTotalClicks(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String sellerId){
+        return ResponseEntity.ok(marketplaceService.getTotalClicks(sellerId));
+    }
 }   

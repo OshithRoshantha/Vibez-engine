@@ -21,6 +21,7 @@ public class Marketplace {
     private List<String> productPhotos;
     private boolean visibleToFriends;
     private String productAction;
+    private Integer totalClicks;
 
     public String getProductId() {
         return productId;
@@ -124,5 +125,13 @@ public class Marketplace {
 
     public void setSellerProfilePicture(String sellerProfilePicture) {
         this.sellerProfilePicture = sellerProfilePicture;
+    }
+
+    public Integer getTotalClicks() {
+        return totalClicks;
+    }
+
+    public void setTotalClicks(Integer totalClicks) {
+        this.totalClicks = totalClicks;
     }
 }

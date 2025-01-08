@@ -14,4 +14,6 @@ public interface MarketplaceService {
     Integer getActiveListingCount(String sellerId);
     List<Marketplace> getMyItems(String sellerId);
     boolean isSeller(String userId);
+    void  addClick(String productId);
+    Integer getTotalClicks(String productId);
 }

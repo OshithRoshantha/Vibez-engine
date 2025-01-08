@@ -37,6 +37,7 @@ public class MarketplaceImplement implements MarketplaceService {
         User sellerDetails = userService.getUserById(seller);
         newProduct.setSellerName(sellerDetails.getUserName());
         newProduct.setSellerProfilePicture(sellerDetails.getProfilePicture());
+        newProduct.setTotalClicks(0);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
         String formattedDate = LocalDate.now().format(formatter);
         newProduct.setListedDate(formattedDate);
@@ -124,5 +125,23 @@ public class MarketplaceImplement implements MarketplaceService {
             }
         }
         return false;
+    }
+
+    public void addClick(String productId) {
+        Marketplace product = marketplaceRepo.findByProductId(productId);
+        Integer clicks = product.getTotalClicks();
+        product.setTotalClicks(clicks + 1);
+        marketplaceRepo.save(product);
+    }
+
+    public Integer getTotalClicks(String sellerId) {
+        List<Marketplace> allProducts = marketplaceRepo.findAll();
+        Integer totalClicks = 0;
+        for (Marketplace product : allProducts) {
+            if (product.getSellerId().equals(sellerId)) {
+                totalClicks += product.getTotalClicks();
+            }
+        }
+        return totalClicks;
     }
 }
