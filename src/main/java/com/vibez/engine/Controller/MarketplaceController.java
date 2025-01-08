@@ -23,32 +23,32 @@ public class MarketplaceController {
     @Autowired
     private MarketplaceService marketplaceService;
 
-    @GetMapping("/product/find/{productId}") // find product by id
+    @GetMapping("/product/find/{productId}")
     public ResponseEntity<Marketplace> getItemById(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String productId) {
         return ResponseEntity.ok(marketplaceService.getItemById(productId));
     }
 
-     @GetMapping("/product/findAll/{userId}") // find all products by user id
+     @GetMapping("/product/findAll/{userId}")
     public ResponseEntity<List<Marketplace>> getCommunityAndFriendsVisibleItems(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId) {
         return ResponseEntity.ok(marketplaceService.getProductsExcludingHiddenByFriends(userId));
     }
 
-    @GetMapping("/product/share/{productId}") // generate shareable link
+    @GetMapping("/product/share/{productId}")
     public ResponseEntity<String> generateShareableLink(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String productId) {
         return ResponseEntity.ok(marketplaceService.generateShareableLink(productId));
     }
 
-    @GetMapping("/product/count/{sellerId}") // get active listning Count
+    @GetMapping("/product/count/{sellerId}") 
     public ResponseEntity<Integer> getActiveListingCount(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String sellerId) {
         return ResponseEntity.ok(marketplaceService.getActiveListingCount(sellerId));
     }
 
-    @GetMapping("/product/my/{sellerId}") // get all products by seller id
+    @GetMapping("/product/my/{sellerId}") 
     public ResponseEntity<List<Marketplace>> getMyItems(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String sellerId){
         return ResponseEntity.ok(marketplaceService.getMyItems(sellerId));
     }
 
-    @GetMapping("/product/isSeller/{userId}") // is a seller	
+    @GetMapping("/product/isSeller/{userId}")	
     public ResponseEntity<Boolean> isSeller(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String sellerId){
         return ResponseEntity.ok(marketplaceService.isSeller(sellerId));
     }
@@ -66,5 +66,10 @@ public class MarketplaceController {
     @GetMapping("/product/search/{userId}/{keyword}")
     public ResponseEntity<List<Marketplace>> searchProduct(@PathVariable String keyword, @PathVariable String userId) {
         return ResponseEntity.ok(marketplaceService.searchProduct(keyword, userId));
+    }
+
+    @GetMapping("/product/isAdded/{productId}/{userId}")
+    public ResponseEntity<Boolean> isAdded(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String productId, @PathVariable String userId) {
+        return ResponseEntity.ok(marketplaceService.isAdded(productId, userId));
     }
 }   

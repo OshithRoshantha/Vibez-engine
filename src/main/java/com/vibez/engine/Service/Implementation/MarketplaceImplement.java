@@ -156,4 +156,9 @@ public class MarketplaceImplement implements MarketplaceService {
         }
         return searchResults;
     }
+
+    public boolean isAdded(String productId, String userId) {
+        Marketplace product = marketplaceRepo.findByProductId(productId);
+        return product.getSellerId().equals(userId);
+    }
 }
