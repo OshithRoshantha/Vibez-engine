@@ -18,12 +18,14 @@ import com.vibez.engine.Model.DirectChat;
 import com.vibez.engine.Model.Friendship;
 import com.vibez.engine.Model.GroupAction;
 import com.vibez.engine.Model.Groups;
+import com.vibez.engine.Model.Marketplace;
 import com.vibez.engine.Model.Message;
 import com.vibez.engine.Model.User;
 import com.vibez.engine.Model.UserUpdate;
 import com.vibez.engine.Service.DirectChatService;
 import com.vibez.engine.Service.FriendshipService;
 import com.vibez.engine.Service.GroupsService;
+import com.vibez.engine.Service.MarketplaceService;
 import com.vibez.engine.Service.MessageService;
 import com.vibez.engine.Service.UserService;
 
@@ -47,6 +49,9 @@ public class WebSocketController implements WebSocketHandler {
 
     @Autowired
     private FriendshipService friendshipService;
+
+    @Autowired
+    private MarketplaceService marketplaceService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -82,8 +87,8 @@ public class WebSocketController implements WebSocketHandler {
             case "profileService":
                 handleProfileMetaData(messageData);
                 break;
-            case "changeGroupDesc":
-                handleChangeGroupDesc(messageData);
+            case "marketplaceService":
+                handleMarketplace(messageData);
                 break;
             case "sendFriendRequest":
                 handleSendFriendRequest(messageData);
@@ -123,6 +128,36 @@ public class WebSocketController implements WebSocketHandler {
         }
     }
 
+    private void handleGroups(Map<String, Object> messageData) {
+        String groupId = null;
+        if (messageData.get("groupAction") != null){
+            GroupAction groupAction = objectMapper.convertValue(messageData.get("groupAction"), GroupAction.class);
+            if (groupAction.getAction().equals("addUsers")){
+                groupId = groupsService.addUsersToGroup(groupAction.getGroupId(), groupAction.getUserIds());
+            } else if (groupAction.getAction().equals("removeUsers")){
+                groupId = groupsService.removeUsersFromGroup(groupAction.getGroupId(), groupAction.getUserIds());
+            }
+            broadcastToSubscribers("groupService", groupId);
+            return;
+        }
+        if (messageData.get("body") != null){
+            Groups group = objectMapper.convertValue(messageData.get("body"), Groups.class);
+            if (group.getGroupId() == null){
+                groupId = groupsService.createGroup(group, group.getCreatorId());
+            } else {
+                groupId = groupsService.changeGroup(group);
+            }
+            broadcastToSubscribers("groupService", groupId);
+            return;
+        }
+    }
+
+    private void handleDirectChats(Map<String, Object> messageData) {
+        DirectChat directChat = objectMapper.convertValue(messageData.get("body"), DirectChat.class);
+        String directChatId = directChatService.createDirectChat(directChat.getMemberIds().get(0), directChat.getMemberIds().get(1));
+        broadcastToSubscribers("directChatService", directChatId);
+    }
+
     private void handleMessages(Map<String, Object> messageData) {
         Message message = objectMapper.convertValue(messageData.get("body"), Message.class);
         String updatingId = messageService.sendMessage(message);
@@ -159,36 +194,6 @@ public class WebSocketController implements WebSocketHandler {
         broadcastToSubscribers("friendshipService", message);
     }
 
-    private void handleGroups(Map<String, Object> messageData) {
-        String groupId = null;
-        if (messageData.get("groupAction") != null){
-            GroupAction groupAction = objectMapper.convertValue(messageData.get("groupAction"), GroupAction.class);
-            if (groupAction.getAction().equals("addUsers")){
-                groupId = groupsService.addUsersToGroup(groupAction.getGroupId(), groupAction.getUserIds());
-            } else if (groupAction.getAction().equals("removeUsers")){
-                groupId = groupsService.removeUsersFromGroup(groupAction.getGroupId(), groupAction.getUserIds());
-            }
-            broadcastToSubscribers("groupService", groupId);
-            return;
-        }
-        if (messageData.get("body") != null){
-            Groups group = objectMapper.convertValue(messageData.get("body"), Groups.class);
-            if (group.getGroupId() == null){
-                groupId = groupsService.createGroup(group, group.getCreatorId());
-            } else {
-                groupId = groupsService.changeGroup(group);
-            }
-            broadcastToSubscribers("groupService", groupId);
-            return;
-        }
-    }
-
-    private void handleDirectChats(Map<String, Object> messageData) {
-        DirectChat directChat = objectMapper.convertValue(messageData.get("body"), DirectChat.class);
-        String directChatId = directChatService.createDirectChat(directChat.getMemberIds().get(0), directChat.getMemberIds().get(1));
-        broadcastToSubscribers("directChatService", directChatId);
-    }
-
     private void handleProfileMetaData(Map<String, Object> messageData) {
         UserUpdate userUpdate = objectMapper.convertValue(messageData.get("body"), UserUpdate.class);
         String uniqueId = "message_" + System.currentTimeMillis();
@@ -208,12 +213,37 @@ public class WebSocketController implements WebSocketHandler {
         message.put("id", uniqueId);
         message.put("action", "profileService");
         message.put("body", userId);
-
         broadcastToSubscribers("profileService", message);
     }
 
-    private void handleChangeGroupName(Map<String, Object> messageData) {
-        // Implement the logic to handle changing the group name
+    private void handleMarketplace(Map<String, Object> messageData) {
+        Marketplace product = objectMapper.convertValue(messageData.get("body"), Marketplace.class);
+        System.out.println(product);
+        String uniqeId = "message_" + System.currentTimeMillis();
+        String productId = null;
+        String productAction = null;
+
+        if (product.getProductAction().equals("ADD")){
+            Marketplace newProduct = marketplaceService.addItem(product);
+            productId = newProduct.getProductId();
+            productAction = "ADDED";
+        }
+        else if (product.getProductAction().equals("UPDATE")){
+            Marketplace updatedProduct = marketplaceService.updateItem(product);
+            productId = updatedProduct.getProductId();
+            productAction = "UPDATED";
+        }
+        else if (product.getProductAction().equals("REMOVE")){
+            productId = marketplaceService.deleteItem(product.getProductId());
+            productAction = "REMOVED";
+        }
+
+        Map<String, Object> message = new HashMap<>();
+        message.put("id", uniqeId);
+        message.put("action", "marketplaceService");
+        message.put("body", productId);
+        message.put("productAction", productAction);
+        broadcastToSubscribers("marketplaceService", message);
     }
 
     private void handleChangeGroupDesc(Map<String, Object> messageData) {
