@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.vibez.engine.Model.DirectChat;
 import com.vibez.engine.Model.User;
 import com.vibez.engine.Repository.DirectChatRepo;
+import com.vibez.engine.Repository.UserRepo;
 import com.vibez.engine.Service.DirectChatService;
 import com.vibez.engine.Service.UserService;
 
@@ -20,6 +21,9 @@ public class DirectChatImplemet implements DirectChatService{
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepo userRepo;
 
     public List<String> getDirectChatsByUser(String userId) {
         List<DirectChat> directChat = directChatRepo.findByMemberIds(userId);
@@ -43,17 +47,21 @@ public class DirectChatImplemet implements DirectChatService{
             List<String> directChatIds = new ArrayList<>();
             directChatIds.add(savedDirectChat.getChatId());
             user1.setDirectChatIds(directChatIds);
+            userRepo.save(user1);
         }
         else{
             user1.getDirectChatIds().add(savedDirectChat.getChatId());
+            userRepo.save(user1);
         }
         if (user2.getDirectChatIds() == null){
             List<String> directChatIds = new ArrayList<>();
             directChatIds.add(savedDirectChat.getChatId());
             user2.setDirectChatIds(directChatIds);
+            userRepo.save(user2);
         }
         else{
             user2.getDirectChatIds().add(savedDirectChat.getChatId());
+            userRepo.save(user2);
         }
         return savedDirectChat.getChatId();
     }

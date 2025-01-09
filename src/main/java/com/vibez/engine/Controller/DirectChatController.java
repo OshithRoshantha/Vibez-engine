@@ -37,4 +37,9 @@ public class DirectChatController {
     public ResponseEntity<String> favoriteDirectChat(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String chatId, @PathVariable String userId){
         return ResponseEntity.ok(directChatService.favoriteDirectChat(chatId, userId));
     }
+
+    @GetMapping("/directChat/available/{userId1}/{userId2}") //check if a direct chat is available
+    public ResponseEntity<Boolean> isAvailableDirectChat(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId1, @PathVariable String userId2){
+        return ResponseEntity.ok(directChatService.isAvailableDirectChat(userId1, userId2));
+    }
 }

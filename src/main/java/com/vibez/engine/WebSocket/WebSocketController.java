@@ -154,7 +154,12 @@ public class WebSocketController implements WebSocketHandler {
 
     private void handleDirectChats(Map<String, Object> messageData) {
         DirectChat directChat = objectMapper.convertValue(messageData.get("body"), DirectChat.class);
+        String uniqueId = "message_" + System.currentTimeMillis();
         String directChatId = directChatService.createDirectChat(directChat.getMemberIds().get(0), directChat.getMemberIds().get(1));
+        Map<String, Object> message = new HashMap<>();
+        message.put("action", "directChatService");
+        message.put("id", uniqueId);
+        message.put("body", directChatId);
         broadcastToSubscribers("directChatService", directChatId);
     }
 
