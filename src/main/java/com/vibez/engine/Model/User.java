@@ -18,6 +18,7 @@ public class User {
     private boolean darkMode;
     private String publicKey;
     private List<String> blockedUsers;
+    private List<String> directChatIds;
 
     public String getUserId(){
         return userId;
@@ -89,6 +90,14 @@ public class User {
 
     public void setBlockedUsers(List<String> blockedUsers) {
         this.blockedUsers = blockedUsers;
+    }
+
+    public List<String> getDirectChatIds() {
+        return directChatIds;
+    }
+
+    public void setDirectChatIds(List<String> directChatIds) {
+        this.directChatIds = directChatIds;
     }
 
 }
