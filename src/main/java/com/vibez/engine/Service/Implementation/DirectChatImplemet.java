@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vibez.engine.Model.DirectChat;
+import com.vibez.engine.Model.Receipt;
 import com.vibez.engine.Model.User;
 import com.vibez.engine.Repository.DirectChatRepo;
 import com.vibez.engine.Repository.UserRepo;
@@ -90,6 +91,20 @@ public class DirectChatImplemet implements DirectChatService{
         favoritedBy.add(userId);
         chat.setFavoritedBy(favoritedBy);
         return "Chat favorited";
+    }
+
+    public Receipt getReceipt(String userId, String directChatId) {
+        DirectChat chat = directChatRepo.findByChatId(directChatId);
+        List<String> memberIds = chat.getMemberIds();
+        String friendId = memberIds.stream()
+            .filter(memberId -> !memberId.equals(userId))
+            .findFirst()
+            .orElse(null);
+        User friend = userService.getUserById(friendId);
+        Receipt receipt = new Receipt();
+        receipt.setName(friend.getUserName());
+        receipt.setProfilePicture(friend.getProfilePicture());
+        return receipt;
     }
     
 }
