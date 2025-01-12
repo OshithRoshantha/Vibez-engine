@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vibez.engine.Model.DirectChat;
-import com.vibez.engine.Model.Receipt;
 import com.vibez.engine.Service.DirectChatService;
 
 @CrossOrigin(origins = "*" , allowedHeaders = "*")
@@ -44,8 +43,4 @@ public class DirectChatController {
         return ResponseEntity.ok(directChatService.isAvailableDirectChat(userId1, userId2));
     }
 
-    @GetMapping("/directChat/getReceipt/{userId}/{directChatId}") //get receipt of a direct chat
-    public ResponseEntity<Receipt> getReceipt(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId, @PathVariable String directChatId){
-        return ResponseEntity.ok(directChatService.getReceipt(userId, directChatId));
-    }
 }
