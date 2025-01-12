@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vibez.engine.Model.DirectChat;
+import com.vibez.engine.Model.DirectChatPreview;
 import com.vibez.engine.Service.DirectChatService;
 
 @CrossOrigin(origins = "*" , allowedHeaders = "*")
@@ -33,9 +34,19 @@ public class DirectChatController {
         return ResponseEntity.ok(directChatService.getDirectChatById(chatId));
     }
 
+    @GetMapping("/directChat/preview/{userId}/{chatId}") //get direct chat preview
+    public ResponseEntity<DirectChatPreview> getDirectChatPreview(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId, @PathVariable String chatId){
+        return ResponseEntity.ok(directChatService.getDirectChatPreview(chatId, userId));
+    }
+
     @PutMapping("/directChat/favorite/{userId}/{chatId}") //favorite a direct chat
     public ResponseEntity<String> favoriteDirectChat(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String chatId, @PathVariable String userId){
         return ResponseEntity.ok(directChatService.favoriteDirectChat(chatId, userId));
+    }
+
+    @PutMapping("/directChat/unfavorite/{userId}/{chatId}") //unfavorite a direct chat
+    public ResponseEntity<String> unfavoriteDirectChat(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String chatId, @PathVariable String userId){
+        return ResponseEntity.ok(directChatService.unfavoriteDirectChat(chatId, userId));
     }
 
     @GetMapping("/directChat/available/{userId1}/{userId2}") //check if a direct chat is available

@@ -10,12 +10,14 @@ import org.springframework.stereotype.Service;
 import com.vibez.engine.Model.DirectChat;
 import com.vibez.engine.Model.Groups;
 import com.vibez.engine.Model.Message;
+import com.vibez.engine.Model.User;
 import com.vibez.engine.Repository.DirectChatRepo;
 import com.vibez.engine.Repository.GroupRepo;
 import com.vibez.engine.Repository.MessageRepo;
 import com.vibez.engine.Service.DirectChatService;
 import com.vibez.engine.Service.GroupsService;
 import com.vibez.engine.Service.MessageService;
+import com.vibez.engine.Service.UserService;
 
 @Service
 public class MessageImplement implements MessageService {
@@ -25,6 +27,9 @@ public class MessageImplement implements MessageService {
 
     @Autowired
     private  GroupsService groupsService;
+
+    @Autowired
+    private  UserService userService;
 
     @Autowired
     private  GroupRepo groupRepo;
@@ -57,6 +62,8 @@ public class MessageImplement implements MessageService {
             DirectChat directChat = directChatService.getDirectChatById(message.getDirectChatId());
             directChat.setLastUpdate(LocalDateTime.now());
             directChat.setLastMessage(message.getMessage());
+            User sender = userService.getUserById(message.getSenderId());
+            directChat.setLastMessageSender(sender.getUserName());
             if (directChat.getMessageIds() == null){
                 directChat.setMessageIds(new ArrayList<>());
             }

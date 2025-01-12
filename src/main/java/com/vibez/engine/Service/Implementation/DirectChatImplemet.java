@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vibez.engine.Model.DirectChat;
+import com.vibez.engine.Model.DirectChatPreview;
 import com.vibez.engine.Model.User;
 import com.vibez.engine.Repository.DirectChatRepo;
 import com.vibez.engine.Repository.UserRepo;
@@ -81,15 +82,41 @@ public class DirectChatImplemet implements DirectChatService{
     }
 
     public String favoriteDirectChat(String chatId, String userId) {
-        DirectChat chat = directChatRepo.findByChatId(chatId);
-        List<String> favoritedBy = chat.getFavoritedBy();
-        if(favoritedBy == null){
-            favoritedBy = new ArrayList<>();
-            favoritedBy.add(userId);
+        User user = userService.getUserById(userId);
+        if(user.getFavoriteDirectChats() == null){
+            List<String> favoriteDirectChats = new ArrayList<>();
+            favoriteDirectChats.add(chatId);
+            user.setFavoriteDirectChats(favoriteDirectChats);
+            userRepo.save(user);
         }
-        favoritedBy.add(userId);
-        chat.setFavoritedBy(favoritedBy);
+        else{
+            user.getFavoriteDirectChats().add(chatId);
+            userRepo.save(user);
+        }
         return "Chat favorited";
+    }
+
+    public String unfavoriteDirectChat(String chatId, String userId) {
+        User user = userService.getUserById(userId);
+        user.getFavoriteDirectChats().remove(chatId);
+        userRepo.save(user);
+        return "Chat unfavorited";
+    }
+
+    public DirectChatPreview getDirectChatPreview(String chatId, String userId) {
+        DirectChat chat = directChatRepo.findByChatId(chatId);
+        DirectChatPreview chatPreview = new DirectChatPreview();
+        String friendId = chat.getMemberIds().stream()
+                        .filter(memberId -> !memberId.equals(userId))
+                        .findFirst()
+                        .orElse(null);
+        chatPreview.setFriendId(friendId);
+        chatPreview.setFriendName(userService.getUserById(friendId).getUserName());
+        chatPreview.setFriendAvatar(userService.getUserById(friendId).getProfilePicture());
+        chatPreview.setLastMessage(chat.getLastMessage());
+        chatPreview.setLastMessageSender(chat.getLastMessageSender());
+        chatPreview.setLastActiveTime(chat.getLastUpdate());
+        return chatPreview;
     }
     
 }
