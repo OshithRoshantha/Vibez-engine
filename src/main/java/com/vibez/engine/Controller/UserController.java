@@ -84,4 +84,15 @@ public class UserController {
     public ResponseEntity<List<String>> searchAccount(@PathVariable String keyword, @PathVariable String userId) {
         return ResponseEntity.ok(userService.searchAccount(keyword, userId));
     }
+
+    @GetMapping("/allChats/{userId}")
+    public ResponseEntity<List<String>> getDirectChatsByUser(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId) {
+        return ResponseEntity.ok(userService.getDirectChatsByUser(userId));
+    }
+
+    @GetMapping("/favoriteChats/{userId}")
+    public ResponseEntity<List<String>> getFavoriteChatsByUser(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId){
+        return ResponseEntity.ok(userService.getFavoriteChatsByUser(userId));
+    }
+
 }

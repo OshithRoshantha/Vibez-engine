@@ -101,4 +101,20 @@ public class UserImplement implements UserService {
         }
         return result;
     }
+
+    public List<String> getFavoriteChatsByUser(String userId) {
+        User existingUser = userRepo.findByUserId(userId);
+        if (existingUser.getFavoriteDirectChats() == null) {
+            return new ArrayList<>();
+        }
+        return existingUser.getFavoriteDirectChats();
+    }
+
+    public List<String> getDirectChatsByUser(String userId) {
+        User existingUser = userRepo.findByUserId(userId);
+        if (existingUser.getDirectChatIds() == null) {
+            return new ArrayList<>();
+        }
+        return existingUser.getDirectChatIds();
+    }
 }

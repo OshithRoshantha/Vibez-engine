@@ -72,6 +72,21 @@ public class MessageImplement implements MessageService {
             updatingId = directChat.getChatId();
         }
 
+        else if (message.getDirectChatId() == null){
+           updatingId = directChatService.createDirectChat(message.getSenderId(), message.getReceiverId());
+           DirectChat directChat = directChatService.getDirectChatById(updatingId);
+           directChat.setLastUpdate(LocalDateTime.now());
+           directChat.setLastMessage(message.getMessage());
+           User sender = userService.getUserById(message.getSenderId());
+           directChat.setLastMessageSender(sender.getUserName());
+           if (directChat.getMessageIds() == null){
+               directChat.setMessageIds(new ArrayList<>());
+           }
+           directChat.getMessageIds().add(message.getMessageId());
+           directChatRepo.save(directChat);
+           updatingId = directChat.getChatId();
+        }
+
         return updatingId;
     }
 

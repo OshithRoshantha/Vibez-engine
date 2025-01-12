@@ -10,6 +10,7 @@ public class Message {
     @Id
     private String messageId;
     private String senderId;
+    private String receiverId; //null for group messages
     private String directChatId; //null for group messages
     private String groupId; //null for direct messages
     private String message;
@@ -30,6 +31,14 @@ public class Message {
 
     public void setSenderId(String senderId) {
         this.senderId = senderId;
+    }
+
+    public String getReceiverId() {
+        return receiverId;
+    }
+
+    public void setReceiverId(String receiverId) {
+        this.receiverId = receiverId;
     }
 
     public String getDirectChatId() {
