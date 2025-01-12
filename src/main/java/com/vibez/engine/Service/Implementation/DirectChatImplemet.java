@@ -105,6 +105,9 @@ public class DirectChatImplemet implements DirectChatService{
 
     public DirectChatPreview getDirectChatPreview(String chatId, String userId) {
         DirectChat chat = directChatRepo.findByChatId(chatId);
+        User user = userService.getUserById(userId);
+        String myName = user.getUserName();
+        String senderName = chat.getLastMessageSender().equals(myName) ? "Me" : chat.getLastMessageSender();        
         DirectChatPreview chatPreview = new DirectChatPreview();
         String friendId = chat.getMemberIds().stream()
                         .filter(memberId -> !memberId.equals(userId))
@@ -114,7 +117,7 @@ public class DirectChatImplemet implements DirectChatService{
         chatPreview.setFriendName(userService.getUserById(friendId).getUserName());
         chatPreview.setFriendAvatar(userService.getUserById(friendId).getProfilePicture());
         chatPreview.setLastMessage(chat.getLastMessage());
-        chatPreview.setLastMessageSender(chat.getLastMessageSender());
+        chatPreview.setLastMessageSender(senderName);
         chatPreview.setLastActiveTime(chat.getLastUpdate());
         return chatPreview;
     }
