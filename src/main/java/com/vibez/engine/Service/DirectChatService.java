@@ -8,7 +8,7 @@ import com.vibez.engine.Model.DirectChatPreview;
 public interface  DirectChatService {
     List<String> getDirectChatsByUser(String userId);
     String createDirectChat(String userId1, String userId2);
-    boolean isAvailableDirectChat(String userId1, String userId2);
+    String isAvailableDirectChat(String userId1, String userId2);
     DirectChat getDirectChatById(String chatId);
     String favoriteDirectChat(String chatId, String userId);
     String unfavoriteDirectChat(String chatId, String userId);

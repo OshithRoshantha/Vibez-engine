@@ -67,13 +67,13 @@ public class DirectChatImplemet implements DirectChatService{
         return savedDirectChat.getChatId();
     }
 
-    public boolean isAvailableDirectChat(String userId1, String userId2) {
+    public String isAvailableDirectChat(String userId1, String userId2) {
         DirectChat chat = directChatRepo.findByBothMemberIds(userId1, userId2);
         if(chat == null){
-            return false;
+            return "null";
         }
         else {
-            return true;
+            return chat.getChatId();
         }
     }
 

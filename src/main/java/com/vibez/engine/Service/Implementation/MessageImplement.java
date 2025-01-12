@@ -53,41 +53,44 @@ public class MessageImplement implements MessageService {
             if (group.getMessageIds() == null){
                 group.setMessageIds(new ArrayList<>());
             }
-              group.getMessageIds().add(message.getMessageId());
-              groupRepo.save(group);
-              updatingId = group.getGroupId();
-        }
+            group.getMessageIds().add(message.getMessageId());
+            groupRepo.save(group);
+            updatingId = group.getGroupId();
+            return updatingId;
 
-        else if (message.getDirectChatId() != null){
-            DirectChat directChat = directChatService.getDirectChatById(message.getDirectChatId());
-            directChat.setLastUpdate(LocalDateTime.now());
-            directChat.setLastMessage(message.getMessage());
-            User sender = userService.getUserById(message.getSenderId());
-            directChat.setLastMessageSender(sender.getUserName());
-            if (directChat.getMessageIds() == null){
-                directChat.setMessageIds(new ArrayList<>());
+        }
+        else {
+            String chatId = directChatService.isAvailableDirectChat(message.getSenderId(), message.getReceiverId());
+            if (chatId.equals("null")){
+                updatingId = directChatService.createDirectChat(message.getSenderId(), message.getReceiverId());
+                DirectChat directChat = directChatService.getDirectChatById(message.getDirectChatId());
+                directChat.setLastUpdate(LocalDateTime.now());
+                directChat.setLastMessage(message.getMessage());
+                User sender = userService.getUserById(message.getSenderId());
+                directChat.setLastMessageSender(sender.getUserName());
+                if (directChat.getMessageIds() == null){
+                    directChat.setMessageIds(new ArrayList<>());
+                }
+                directChat.getMessageIds().add(message.getMessageId());
+                directChatRepo.save(directChat);
+                updatingId = directChat.getChatId();
+                return updatingId;
             }
-            directChat.getMessageIds().add(message.getMessageId());
-            directChatRepo.save(directChat);
-            updatingId = directChat.getChatId();
+            else {
+                DirectChat directChat = directChatService.getDirectChatById(chatId);
+                directChat.setLastUpdate(LocalDateTime.now());
+                directChat.setLastMessage(message.getMessage());
+                User sender = userService.getUserById(message.getSenderId());
+                directChat.setLastMessageSender(sender.getUserName());
+                if (directChat.getMessageIds() == null){
+                    directChat.setMessageIds(new ArrayList<>());
+                }
+                directChat.getMessageIds().add(message.getMessageId());
+                directChatRepo.save(directChat);
+                updatingId = directChat.getChatId();
+                return updatingId;
+            }
         }
-
-        else if (message.getDirectChatId() == null){
-           updatingId = directChatService.createDirectChat(message.getSenderId(), message.getReceiverId());
-           DirectChat directChat = directChatService.getDirectChatById(updatingId);
-           directChat.setLastUpdate(LocalDateTime.now());
-           directChat.setLastMessage(message.getMessage());
-           User sender = userService.getUserById(message.getSenderId());
-           directChat.setLastMessageSender(sender.getUserName());
-           if (directChat.getMessageIds() == null){
-               directChat.setMessageIds(new ArrayList<>());
-           }
-           directChat.getMessageIds().add(message.getMessageId());
-           directChatRepo.save(directChat);
-           updatingId = directChat.getChatId();
-        }
-
-        return updatingId;
     }
 
     public boolean markAsRead(String messageId){
