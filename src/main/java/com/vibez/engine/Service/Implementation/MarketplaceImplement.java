@@ -85,6 +85,7 @@ public class MarketplaceImplement implements MarketplaceService {
         existingProduct.setCondition(updatedProduct.getCondition());
         existingProduct.setPrice(updatedProduct.getPrice());
         existingProduct.setLocation(updatedProduct.getLocation());
+        existingProduct.setTotalClicks(updatedProduct.getTotalClicks());
         existingProduct.setProductPhotos(updatedProduct.getProductPhotos());
         existingProduct.setVisibleToFriends(updatedProduct.isVisibleToFriends());
         return marketplaceRepo.save(updatedProduct);
