@@ -165,9 +165,22 @@ public class WebSocketController implements WebSocketHandler {
 
     private void handleMessages(Map<String, Object> messageData) {
         Message message = objectMapper.convertValue(messageData.get("body"), Message.class);
+        String uniqueId = "message_" + System.currentTimeMillis();
+        String uniqueId2 = "message2_" + System.currentTimeMillis();
         String updatingId = messageService.sendMessage(message);
-        broadcastToSubscribers("updateService", updatingId);
-        broadcastToSubscribers("messageService", messageData.get("body"));
+
+        Map<String, Object> message2 = new HashMap<>();
+        message2.put("action", "updateService");
+        message2.put("id", uniqueId);
+        message2.put("chatId", updatingId);
+
+        Map<String, Object> message3 = new HashMap<>();
+        message3.put("action", "messageService");
+        message3.put("id", uniqueId2);
+        message3.put("body", messageData.get("body"));
+
+        broadcastToSubscribers("updateService", message2);
+        broadcastToSubscribers("messageService", message3);
     }
 
     private void handleFriendships(Map<String, Object> messageData) {

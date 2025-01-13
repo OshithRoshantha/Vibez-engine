@@ -121,5 +121,10 @@ public class DirectChatImplemet implements DirectChatService{
         chatPreview.setLastActiveTime(chat.getLastUpdate());
         return chatPreview;
     }
+
+    public Boolean isUserRelatedToDirectChat(String chatId, String userId) {
+        DirectChat chat = directChatRepo.findByChatId(chatId);
+        return chat.getMemberIds().contains(userId);
+    }
     
 }

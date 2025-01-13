@@ -42,4 +42,9 @@ public class DirectChatController {
         return ResponseEntity.ok(directChatService.unfavoriteDirectChat(chatId, userId));
     }
 
+    @GetMapping("/directChat/isRelated/{userId}/{chatId}") //check if a user is related to a direct chat
+    public ResponseEntity<Boolean> isUserRelatedToDirectChat(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String chatId, @PathVariable String userId){
+        return ResponseEntity.ok(directChatService.isUserRelatedToDirectChat(chatId, userId));
+    }
+
 }
