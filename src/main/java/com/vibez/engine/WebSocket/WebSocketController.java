@@ -78,12 +78,6 @@ public class WebSocketController implements WebSocketHandler {
             case "groupService":
                 handleGroups(messageData);
                 break;
-            case "directChatService":
-                handleDirectChats(messageData);
-                break;
-            case "updateService":
-                handleMessages(messageData);
-                break;
             case "profileService":
                 handleProfileMetaData(messageData);
                 break;
@@ -151,36 +145,17 @@ public class WebSocketController implements WebSocketHandler {
             return;
         }
     }
-
-    private void handleDirectChats(Map<String, Object> messageData) {
-        DirectChat directChat = objectMapper.convertValue(messageData.get("body"), DirectChat.class);
-        String uniqueId = "message_" + System.currentTimeMillis();
-        String directChatId = directChatService.createDirectChat(directChat.getMemberIds().get(0), directChat.getMemberIds().get(1));
-        Map<String, Object> message = new HashMap<>();
-        message.put("action", "directChatService");
-        message.put("id", uniqueId);
-        message.put("body", directChatId);
-        broadcastToSubscribers("directChatService", directChatId);
-    }
-
+    
     private void handleMessages(Map<String, Object> messageData) {
-        Message message = objectMapper.convertValue(messageData.get("body"), Message.class);
+        Message sendMessage = objectMapper.convertValue(messageData.get("body"), Message.class);
         String uniqueId = "message_" + System.currentTimeMillis();
-        String uniqueId2 = "message2_" + System.currentTimeMillis();
-        String updatingId = messageService.sendMessage(message);
-
-        Map<String, Object> message2 = new HashMap<>();
-        message2.put("action", "updateService");
-        message2.put("id", uniqueId);
-        message2.put("chatId", updatingId);
-
-        Map<String, Object> message3 = new HashMap<>();
-        message3.put("action", "messageService");
-        message3.put("id", uniqueId2);
-        message3.put("body", messageData.get("body"));
-
-        broadcastToSubscribers("updateService", message2);
-        broadcastToSubscribers("messageService", message3);
+        String updatingId = messageService.sendMessage(sendMessage);
+        Map<String, Object> message = new HashMap<>();
+        message.put("action", "messageService");
+        message.put("id", uniqueId);
+        message.put("chatId", updatingId);
+        message.put("body", messageData.get("body"));
+        broadcastToSubscribers("messageService", message);
     }
 
     private void handleFriendships(Map<String, Object> messageData) {
