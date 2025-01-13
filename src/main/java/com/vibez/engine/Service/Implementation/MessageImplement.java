@@ -1,6 +1,7 @@
 package com.vibez.engine.Service.Implementation;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.vibez.engine.Model.DirectChat;
 import com.vibez.engine.Model.Groups;
 import com.vibez.engine.Model.Message;
+import com.vibez.engine.Model.MessageInfo;
 import com.vibez.engine.Model.User;
 import com.vibez.engine.Repository.DirectChatRepo;
 import com.vibez.engine.Repository.GroupRepo;
@@ -112,13 +114,34 @@ public class MessageImplement implements MessageService {
         return messageIds;
     }
 
-    public List<String> getMessagesByDirectChat(String directChatId){
-        List <Message> messages = messageRepo.findByDirectChatId(directChatId);
-        List<String> messageIds = new ArrayList<>();
-        for (Message message : messages){
-            messageIds.add(message.getMessageId());
+    public List<MessageInfo> getMessagesByDirectChat(String userId, String reciverId){
+        String directChatId = directChatService.isAvailableDirectChat(userId, reciverId);
+        System.out.println(directChatId);
+        if (directChatId.equals("null")){
+            return null;
         }
-        return messageIds;
+        DirectChat directChat = directChatService.getDirectChatById(directChatId);
+        List<String> messageIds = directChat.getMessageIds();
+        List <Message> messages = new ArrayList<>();
+        for (String messageId : messageIds){
+            messages.add(messageRepo.findByMessageId(messageId));
+        }
+        List <MessageInfo> messageInfos = new ArrayList<>();
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        for (Message message : messages){
+            MessageInfo messageInfo = new MessageInfo();
+            messageInfo.setMessage(message.getMessage());
+            String formattedTimestamp = message.getTimestamp().format(timeFormatter);
+            messageInfo.setTimestamp(formattedTimestamp);
+            if (message.getSenderId().equals(userId)){
+                messageInfo.setIsSendByMe(true);
+            }
+            else {
+                messageInfo.setIsSendByMe(false);
+            }
+            messageInfos.add(messageInfo);
+        }
+        return messageInfos;
     }
 
     public Message getMessage(String messageId){
