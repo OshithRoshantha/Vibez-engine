@@ -116,7 +116,6 @@ public class MessageImplement implements MessageService {
 
     public List<MessageInfo> getMessagesByDirectChat(String userId, String reciverId){
         String directChatId = directChatService.isAvailableDirectChat(userId, reciverId);
-        System.out.println(directChatId);
         if (directChatId.equals("null")){
             return null;
         }
