@@ -13,6 +13,7 @@ public class DirectChat {
     private List<String> memberIds;
     private LocalDateTime lastUpdate;
     private String lastMessage;
+    private String lastMessageSender;
     private List<String> messageIds;
     private List<String> favoritedBy;
 
@@ -62,5 +63,13 @@ public class DirectChat {
 
     public void setFavoritedBy(List<String> favoritedBy) {
         this.favoritedBy = favoritedBy;
+    }
+
+    public String getLastMessageSender() {
+        return lastMessageSender;
+    }
+
+    public void setLastMessageSender(String lastMessageSender) {
+        this.lastMessageSender = lastMessageSender;
     }
 }

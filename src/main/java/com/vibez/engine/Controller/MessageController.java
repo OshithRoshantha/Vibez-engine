@@ -7,14 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vibez.engine.Model.Message;
+import com.vibez.engine.Model.MessageInfo;
 import com.vibez.engine.Service.MessageService;
 
 @CrossOrigin(origins = "*" , allowedHeaders = "*")
@@ -24,15 +23,16 @@ public class MessageController {
 
     @Autowired
     private MessageService messageService;
-
-    @PostMapping("/message/send")
-    public  ResponseEntity<String> sendMessage(@RequestHeader(value = "Authorization", required = true) String token, @RequestBody Message message) {
-        return ResponseEntity.ok(messageService.sendMessage(message));
-    }
     
-    @PutMapping("/message/markAsRead/{messageId}")
-    public ResponseEntity<Boolean> markAsRead(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String messageId) {
-        return ResponseEntity.ok(messageService.markAsRead(messageId));
+    @PutMapping("/message/markAsRead/{userId}/{receiverId}")
+    public ResponseEntity<Void> markAsRead(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId, @PathVariable String receiverId) {
+        messageService.markAsRead(userId, receiverId);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/message/unReadCount/{userId}")
+    public ResponseEntity<Integer> getUnReadCount(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId){
+        return ResponseEntity.ok(messageService.getUnReadCount(userId));
     }
 
     @GetMapping("/message/group/{groupId}") //find all messages in a group
@@ -40,13 +40,23 @@ public class MessageController {
         return ResponseEntity.ok(messageService.getMessagesByGroups(groupId));
     }
 
-    @GetMapping("/message/directChat/{directChatId}") //find all messages in a direct chat
-    public ResponseEntity<List<String>> getMessagesByDirectChat(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String directChatId){
-        return ResponseEntity.ok(messageService.getMessagesByDirectChat(directChatId));
+    @GetMapping("/message/directChat/{userId}/{reciverId}") 
+    public ResponseEntity<List<MessageInfo>> getMessagesByDirectChat(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId, @PathVariable String reciverId){
+        return ResponseEntity.ok(messageService.getMessagesByDirectChat(userId, reciverId));
     }
 
     @GetMapping("/message/{messageId}") //get message info
     public ResponseEntity<Message> getMessage(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String messageId) {
         return ResponseEntity.ok(messageService.getMessage(messageId));
+    }
+
+    @GetMapping("/messages/checkUnread/{chatId}/{userId}") //check if a direct chat has unread messages
+    public ResponseEntity<Boolean> checkUnreadMessages(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String chatId, @PathVariable String userId){
+        return ResponseEntity.ok(messageService.checkUnreadMessages(chatId, userId));
+    }
+
+    @GetMapping("/message/history/{userId}/{receiverId}") //get message history
+    public ResponseEntity<List<String>> getMessageHistory(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId, @PathVariable String receiverId){
+        return ResponseEntity.ok(messageService.getMessageHistory(userId, receiverId));
     }
 }

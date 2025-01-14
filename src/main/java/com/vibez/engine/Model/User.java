@@ -18,6 +18,8 @@ public class User {
     private boolean darkMode;
     private String publicKey;
     private List<String> blockedUsers;
+    private List<String> directChatIds;
+    private List<String> favoriteDirectChats;
 
     public String getUserId(){
         return userId;
@@ -89,6 +91,22 @@ public class User {
 
     public void setBlockedUsers(List<String> blockedUsers) {
         this.blockedUsers = blockedUsers;
+    }
+
+    public List<String> getDirectChatIds() {
+        return directChatIds;
+    }
+
+    public void setDirectChatIds(List<String> directChatIds) {
+        this.directChatIds = directChatIds;
+    }
+
+    public List<String> getFavoriteDirectChats() {
+        return favoriteDirectChats;
+    }
+
+    public void setFavoriteDirectChats(List<String> favoriteDirectChats) {
+        this.favoriteDirectChats = favoriteDirectChats;
     }
 
 }

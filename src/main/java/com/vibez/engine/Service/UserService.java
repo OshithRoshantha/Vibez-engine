@@ -13,4 +13,6 @@ public interface  UserService {
     boolean isUserExist(String email);
     String getPublicKey(String userId);
     List<String> searchAccount(String keyword, String userId);
+    List<String> getFavoriteChatsByUser(String userId);
+    List<String> getDirectChatsByUser(String userId);
 }
