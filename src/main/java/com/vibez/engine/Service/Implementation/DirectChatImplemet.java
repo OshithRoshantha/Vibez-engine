@@ -105,6 +105,9 @@ public class DirectChatImplemet implements DirectChatService{
 
     public DirectChatPreview getDirectChatPreview(String chatId, String userId) {
         DirectChat chat = directChatRepo.findByChatId(chatId);
+        if (chat == null){
+            return null;
+        }
         User user = userService.getUserById(userId);
         String myName = user.getUserName();
         String senderName = chat.getLastMessageSender().equals(myName) ? "Me" : chat.getLastMessageSender();        
