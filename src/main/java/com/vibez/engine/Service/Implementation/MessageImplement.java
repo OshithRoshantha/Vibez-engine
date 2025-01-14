@@ -95,13 +95,11 @@ public class MessageImplement implements MessageService {
         }
     }
 
-    public void markAsRead(String userId, String chatId){
-        List <Message> messages = messageRepo.findByDirectChatId(chatId);
+    public void markAsRead(String userId, String receiverId){
+        List <Message> messages = messageRepo.findBySenderIdAndReceiverId(userId, receiverId);
         for (Message message : messages){
-            if (message.getReceiverId().equals(userId)){
-                message.setRead(true);
-                messageRepo.save(message);
-            }
+            message.setRead(true);
+            messageRepo.save(message);
         }
     }
 

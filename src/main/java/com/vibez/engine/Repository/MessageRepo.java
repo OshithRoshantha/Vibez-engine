@@ -11,4 +11,5 @@ public interface  MessageRepo extends MongoRepository<Message, String>{
     List <Message> findByGroupId(String groupId);
     List <Message> findByDirectChatId(String directChatId);
     List <Message> findByReceiverId(String receiverId);
+    List<Message> findBySenderIdAndReceiverId(String senderId, String receiverId);
 }

@@ -10,6 +10,6 @@ public interface MessageService {
     Message getMessage(String messageId);
     List<String> getMessagesByGroups(String groupId);
     List<MessageInfo> getMessagesByDirectChat(String userId, String reciverId);
-    void markAsRead(String userId, String chatId);
+    void markAsRead(String userId, String receiverId);
     int getUnReadCount(String userId);
 }

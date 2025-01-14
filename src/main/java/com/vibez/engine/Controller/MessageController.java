@@ -24,9 +24,9 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
     
-    @PutMapping("/message/markAsRead/{userId}/{chatId}")
-    public ResponseEntity<Void> markAsRead(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId, @PathVariable String chatId) {
-        messageService.markAsRead(userId, chatId);
+    @PutMapping("/message/markAsRead/{userId}/{receiverId}")
+    public ResponseEntity<Void> markAsRead(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId, @PathVariable String receiverId) {
+        messageService.markAsRead(userId, receiverId);
         return ResponseEntity.ok().build();
     }
 
