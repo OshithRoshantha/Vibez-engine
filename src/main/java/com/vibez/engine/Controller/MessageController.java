@@ -24,9 +24,15 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
     
-    @PutMapping("/message/markAsRead/{messageId}")
-    public ResponseEntity<Boolean> markAsRead(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String messageId) {
-        return ResponseEntity.ok(messageService.markAsRead(messageId));
+    @PutMapping("/message/markAsRead/{userId}/{chatId}")
+    public ResponseEntity<Void> markAsRead(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId, @PathVariable String chatId) {
+        messageService.markAsRead(userId, chatId);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/message/unReadCount/{userId}")
+    public ResponseEntity<Integer> getUnReadCount(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId){
+        return ResponseEntity.ok(messageService.getUnReadCount(userId));
     }
 
     @GetMapping("/message/group/{groupId}") //find all messages in a group

@@ -95,14 +95,25 @@ public class MessageImplement implements MessageService {
         }
     }
 
-    public boolean markAsRead(String messageId){
-        Message message = messageRepo.findByMessageId(messageId);
-        if(message == null){
-            return false;
+    public void markAsRead(String userId, String chatId){
+        List <Message> messages = messageRepo.findByDirectChatId(chatId);
+        for (Message message : messages){
+            if (message.getReceiverId().equals(userId)){
+                message.setRead(true);
+                messageRepo.save(message);
+            }
         }
-        message.setRead(true);
-        messageRepo.save(message);
-        return true;
+    }
+
+    public int getUnReadCount(String userId){
+        List <Message> messages = messageRepo.findByReceiverId(userId);
+        int count = 0;
+        for (Message message : messages){
+            if (!message.isRead()){
+                count++;
+            }
+        }
+        return count;
     }
 
     public List<String> getMessagesByGroups(String groupId){
