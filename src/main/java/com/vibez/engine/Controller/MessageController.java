@@ -40,7 +40,7 @@ public class MessageController {
         return ResponseEntity.ok(messageService.getMessagesByGroups(groupId));
     }
 
-    @GetMapping("/message/directChat/{userId}/{reciverId}") //find all messages in a direct chat
+    @GetMapping("/message/directChat/{userId}/{reciverId}") 
     public ResponseEntity<List<MessageInfo>> getMessagesByDirectChat(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId, @PathVariable String reciverId){
         return ResponseEntity.ok(messageService.getMessagesByDirectChat(userId, reciverId));
     }
@@ -49,4 +49,11 @@ public class MessageController {
     public ResponseEntity<Message> getMessage(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String messageId) {
         return ResponseEntity.ok(messageService.getMessage(messageId));
     }
+
+    @GetMapping("/messages/checkUnread/{chatId}/{userId}") //check if a direct chat has unread messages
+    public ResponseEntity<Boolean> checkUnreadMessages(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String chatId, @PathVariable String userId){
+        return ResponseEntity.ok(messageService.checkUnreadMessages(chatId, userId));
+    }
+
+    
 }

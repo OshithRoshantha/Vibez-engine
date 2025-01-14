@@ -155,4 +155,16 @@ public class MessageImplement implements MessageService {
     public Message getMessage(String messageId){
         return messageRepo.findByMessageId(messageId);
     }
+
+    public Boolean checkUnreadMessages(String chatId, String userId) {
+        DirectChat chat = directChatRepo.findByChatId(chatId);
+        List <String> messageIds = chat.getMessageIds();
+        for(String messageId : messageIds){
+            Message message = messageRepo.findByMessageId(messageId);
+            if(message.getReceiverId().equals(userId) && !message.isRead()){
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 
 import com.vibez.engine.Model.DirectChat;
 import com.vibez.engine.Model.DirectChatPreview;
+import com.vibez.engine.Model.Message;
 import com.vibez.engine.Model.User;
 import com.vibez.engine.Repository.DirectChatRepo;
 import com.vibez.engine.Repository.UserRepo;
 import com.vibez.engine.Service.DirectChatService;
+import com.vibez.engine.Service.MessageService;
 import com.vibez.engine.Service.UserService;
 
 @Service
@@ -122,6 +124,7 @@ public class DirectChatImplemet implements DirectChatService{
         chatPreview.setLastMessage(chat.getLastMessage());
         chatPreview.setLastMessageSender(senderName);
         chatPreview.setLastActiveTime(chat.getLastUpdate());
+        chatPreview.setChatId(chatId);
         return chatPreview;
     }
 
@@ -129,5 +132,5 @@ public class DirectChatImplemet implements DirectChatService{
         DirectChat chat = directChatRepo.findByChatId(chatId);
         return chat.getMemberIds().contains(userId);
     }
-    
+
 }

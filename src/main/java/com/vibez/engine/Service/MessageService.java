@@ -12,4 +12,5 @@ public interface MessageService {
     List<MessageInfo> getMessagesByDirectChat(String userId, String reciverId);
     void markAsRead(String userId, String receiverId);
     int getUnReadCount(String userId);
+    Boolean checkUnreadMessages(String chatId, String userId);
 }

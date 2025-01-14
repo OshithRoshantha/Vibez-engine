@@ -151,6 +151,7 @@ public class WebSocketController implements WebSocketHandler {
         message.put("action", "messageService");
         message.put("id", uniqueId);
         message.put("chatId", updatingId);
+        message.put("sender",sendMessage.getSenderId());
         broadcastToSubscribers("messageService", message);
     }
 

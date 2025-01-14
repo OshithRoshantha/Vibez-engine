@@ -3,6 +3,8 @@ package com.vibez.engine.Model;
 import java.time.LocalDateTime;
 
 public class DirectChatPreview {
+
+    String chatId;
     String friendId;
     String friendName;
     String friendAvatar;
@@ -56,6 +58,14 @@ public class DirectChatPreview {
 
     public void setLastActiveTime(LocalDateTime lastActiveTime) {
         this.lastActiveTime = lastActiveTime;
+    }
+
+    public String getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(String chatId) {
+        this.chatId = chatId;
     }
 
 }

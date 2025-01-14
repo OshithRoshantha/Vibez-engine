@@ -26,7 +26,7 @@ public class DirectChatController {
     public ResponseEntity<DirectChat> getDirectChatById(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String chatId){
         return ResponseEntity.ok(directChatService.getDirectChatById(chatId));
     }
-
+    
     @GetMapping("/directChat/preview/{userId}/{chatId}") //get direct chat preview
     public ResponseEntity<DirectChatPreview> getDirectChatPreview(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId, @PathVariable String chatId){
         return ResponseEntity.ok(directChatService.getDirectChatPreview(chatId, userId));
