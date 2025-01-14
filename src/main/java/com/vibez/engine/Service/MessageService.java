@@ -13,4 +13,5 @@ public interface MessageService {
     void markAsRead(String userId, String receiverId);
     int getUnReadCount(String userId);
     Boolean checkUnreadMessages(String chatId, String userId);
+    List<String> getMessageHistory(String userId, String reciverId);
 }

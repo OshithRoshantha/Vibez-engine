@@ -3,10 +3,12 @@ from flask import Flask, request, jsonify
 import requests
 import os
 from dotenv import load_dotenv
+from flask_cors import CORS
 
 load_dotenv()
 
 vibezApi = Flask(__name__)
+CORS(vibezApi, origins=["http://localhost:5173"])
 
 model = os.getenv("MODEL")
 hfToken = os.getenv("HF_TOKEN")

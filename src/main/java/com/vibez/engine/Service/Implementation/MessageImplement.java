@@ -167,4 +167,19 @@ public class MessageImplement implements MessageService {
         }
         return false;
     }
+
+    public List<String> getMessageHistory(String userId, String reciverId){
+        String directChatId = directChatService.isAvailableDirectChat(userId, reciverId);
+        DirectChat directChat = directChatService.getDirectChatById(directChatId);
+        List<String> messageIds = directChat.getMessageIds();
+        List <Message> messages = new ArrayList<>();
+        for (String messageId : messageIds){
+            messages.add(messageRepo.findByMessageId(messageId));
+        }
+        List <String> messageHistory = new ArrayList<>();
+        for (Message message : messages){
+            messageHistory.add(message.getMessage());
+        }
+        return messageHistory;
+    }
 }
