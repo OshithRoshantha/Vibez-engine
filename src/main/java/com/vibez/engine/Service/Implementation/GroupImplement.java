@@ -123,7 +123,8 @@ public class GroupImplement implements GroupsService{
 
     public List<User> getAddList(String groupId, String userId) {
         Groups group = groupRepo.findByGroupId(groupId);
-        List<String> friendList = friendshipService.getFriends(userId);
+        List<String> friendList = friendshipService.getFriends(userId); //logic error in here
+        System.out.println(friendList);
         List<User> addList = new ArrayList<>();
         List<String> memberIds = group.getMemberIds();
         for (String friendId : friendList) {
