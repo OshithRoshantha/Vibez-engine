@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.vibez.engine.Model.Groups;
 import com.vibez.engine.Model.User;
 import com.vibez.engine.Repository.GroupRepo;
+import com.vibez.engine.Repository.UserRepo;
 import com.vibez.engine.Service.GroupsService;
 import com.vibez.engine.Service.UserService;
 
@@ -20,45 +21,64 @@ public class GroupImplement implements GroupsService{
     private GroupRepo groupRepo;
 
     @Autowired
+    private UserRepo userRepo;
+
+    @Autowired
     private UserService userService;
 
     public String createGroup(Groups newGroup , String creatorId){
         User creator = userService.getUserById(creatorId);
         newGroup.setCreatorId(creatorId);
-
         if (newGroup.getMemberIds() == null){
             newGroup.setMemberIds(new ArrayList<>());
         }
-
         newGroup.getMemberIds().add(creatorId);
         newGroup.setCreationDate(LocalDateTime.now());
         newGroup.setLastUpdate(LocalDateTime.now());
         newGroup.setLastMessage(creator.getUserName() + " created this group."); 
         groupRepo.save(newGroup);
+        List <String> memberIds = newGroup.getMemberIds();
+        for(String memberId : memberIds){
+            User member = userService.getUserById(memberId);
+            if (member.getGroupIds() == null){
+                member.setGroupIds(new ArrayList<>());
+            }
+            member.getGroupIds().add(newGroup.getGroupId());
+            userRepo.save(member);
+        }
         return newGroup.getGroupId();
     }
 
     public String addUsersToGroup(String groupId, List<String> newUsers){
         Groups group = groupRepo.findByGroupId(groupId);
-
         if (group.getMemberIds() == null){
             group.setMemberIds(new ArrayList<>());
         }
         for(String user : newUsers){
             group.getMemberIds().add(user);
         }
-
+        for (String user : newUsers){
+            User member = userService.getUserById(user);
+            if (member.getGroupIds() == null){
+                member.setGroupIds(new ArrayList<>());
+            }
+            member.getGroupIds().add(groupId);
+            userRepo.save(member);
+        }
         groupRepo.save(group);
         return groupId;
     }
 
     public String removeUsersFromGroup(String groupId, List<String> existingUsers){
         Groups group = groupRepo.findByGroupId(groupId);
-
         for(String existingUser : existingUsers){
             group.getMemberIds().remove(existingUser);
         }
-
+        for (String existingUser : existingUsers){
+            User member = userService.getUserById(existingUser);
+            member.getGroupIds().remove(groupId);
+            userRepo.save(member);
+        }
         groupRepo.save(group);
         return groupId;
     }
