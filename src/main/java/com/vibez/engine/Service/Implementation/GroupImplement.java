@@ -111,4 +111,9 @@ public class GroupImplement implements GroupsService{
         groupRepo.save(group);
         return updatedGroup.getGroupId();
     }
+
+    public boolean isAdmin(String groupId, String userId){
+        Groups group = groupRepo.findByGroupId(groupId);
+        return group.getCreatorId().equals(userId);
+    }
 }

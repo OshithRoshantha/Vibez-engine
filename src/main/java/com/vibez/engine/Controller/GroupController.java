@@ -1,7 +1,5 @@
 package com.vibez.engine.Controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,5 +23,10 @@ public class GroupController {
     @GetMapping("/group/info/{groupId}") //get group info
     public ResponseEntity<Groups> getGroupInfo(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String groupId){
         return ResponseEntity.ok(groupsService.getGroupById(groupId));
+    }
+
+    @GetMapping("/group/isAdmin/{groupId}/{userId}") //check if user is admin
+    public ResponseEntity<Boolean> isAdmin(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String groupId, @PathVariable String userId){
+        return ResponseEntity.ok(groupsService.isAdmin(groupId, userId));
     }
 }

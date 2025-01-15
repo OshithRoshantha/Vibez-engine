@@ -11,4 +11,5 @@ public interface GroupsService {
     List<String> getGroupsByUser(String user);
     Groups getGroupById(String groupId);
     String changeGroup(Groups updatedGroup);
+    boolean isAdmin(String groupId, String userId);
 }
