@@ -95,4 +95,8 @@ public class UserController {
         return ResponseEntity.ok(userService.getFavoriteChatsByUser(userId));
     }
 
+    @GetMapping("/allGroups/{userId}")
+    public ResponseEntity<List<String>> getGroupsByUser(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId){
+        return ResponseEntity.ok(userService.getGroupsByUser(userId));
+    }
 }

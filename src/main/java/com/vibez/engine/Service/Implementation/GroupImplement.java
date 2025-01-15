@@ -36,6 +36,7 @@ public class GroupImplement implements GroupsService{
         newGroup.setCreationDate(LocalDateTime.now());
         newGroup.setLastUpdate(LocalDateTime.now());
         newGroup.setLastMessage(creator.getUserName() + " created this group."); 
+        newGroup.setLastMessageSender(newGroup.getGroupName());
         groupRepo.save(newGroup);
         List <String> memberIds = newGroup.getMemberIds();
         for(String memberId : memberIds){
