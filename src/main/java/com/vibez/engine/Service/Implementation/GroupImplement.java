@@ -2,13 +2,17 @@ package com.vibez.engine.Service.Implementation;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.vibez.engine.Model.Friendship;
 import com.vibez.engine.Model.Groups;
 import com.vibez.engine.Model.User;
+import com.vibez.engine.Repository.FriendshipRepo;
 import com.vibez.engine.Repository.GroupRepo;
 import com.vibez.engine.Repository.UserRepo;
 import com.vibez.engine.Service.FriendshipService;
@@ -23,6 +27,9 @@ public class GroupImplement implements GroupsService{
 
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private  FriendshipRepo friendshipRepo;
 
     @Autowired
     private UserService userService;
@@ -123,11 +130,20 @@ public class GroupImplement implements GroupsService{
 
     public List<User> getAddList(String groupId, String userId) {
         Groups group = groupRepo.findByGroupId(groupId);
-        List<String> friendList = friendshipService.getFriends(userId); //logic error in here
-        System.out.println(friendList);
+        List<Friendship> friendships = friendshipRepo.findByUserIdOrFriendId(userId);
+        Set<String> friendIdsSet = new HashSet<>();
+        for (Friendship friendship : friendships) {
+            if (!friendship.getUserId().equals(userId)) {
+                friendIdsSet.add(friendship.getUserId());
+            }
+            if (!friendship.getFriendId().equals(userId)) {
+                friendIdsSet.add(friendship.getFriendId());
+            }
+        }
+        List<String> friendIds = new ArrayList<>(friendIdsSet);
         List<User> addList = new ArrayList<>();
         List<String> memberIds = group.getMemberIds();
-        for (String friendId : friendList) {
+        for (String friendId : friendIds) {
             if (!memberIds.contains(friendId)) {
                 User user = userRepo.findById(friendId).orElse(null); 
                 if (user != null) {
