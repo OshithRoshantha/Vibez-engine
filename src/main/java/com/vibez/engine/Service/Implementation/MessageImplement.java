@@ -52,6 +52,15 @@ public class MessageImplement implements MessageService {
             Groups group = groupsService.getGroupById(message.getGroupId());
             group.setLastUpdate(LocalDateTime.now());
             group.setLastMessage(message.getMessage());
+            group.setLastMessageSender(message.getSenderId());
+            List <String> memberIds = group.getMemberIds();
+            for (String memberId : memberIds) {
+                User member = userService.getUserById(memberId);
+                if (member.getGroupIds() == null){
+                    member.setGroupIds(new ArrayList<>());
+                }
+                member.getGroupIds().add(group.getGroupId());
+            }
             if (group.getMessageIds() == null){
                 group.setMessageIds(new ArrayList<>());
             }
