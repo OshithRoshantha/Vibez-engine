@@ -3,6 +3,7 @@ package com.vibez.engine.Service;
 import java.util.List;
 
 import com.vibez.engine.Model.Groups;
+import com.vibez.engine.Model.User;
 
 public interface GroupsService {
     String createGroup(Groups newGroup, String creatorId);
@@ -12,4 +13,5 @@ public interface GroupsService {
     Groups getGroupById(String groupId);
     String changeGroup(Groups updatedGroup);
     boolean isAdmin(String groupId, String userId);
+    List<User> getAddList(String groupId, String userId);
 }

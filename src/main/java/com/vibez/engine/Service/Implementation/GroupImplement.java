@@ -11,6 +11,7 @@ import com.vibez.engine.Model.Groups;
 import com.vibez.engine.Model.User;
 import com.vibez.engine.Repository.GroupRepo;
 import com.vibez.engine.Repository.UserRepo;
+import com.vibez.engine.Service.FriendshipService;
 import com.vibez.engine.Service.GroupsService;
 import com.vibez.engine.Service.UserService;
 
@@ -25,6 +26,9 @@ public class GroupImplement implements GroupsService{
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private FriendshipService friendshipService;
 
     public String createGroup(Groups newGroup , String creatorId){
         User creator = userService.getUserById(creatorId);
@@ -116,4 +120,21 @@ public class GroupImplement implements GroupsService{
         Groups group = groupRepo.findByGroupId(groupId);
         return group.getCreatorId().equals(userId);
     }
+
+    public List<User> getAddList(String groupId, String userId) {
+        Groups group = groupRepo.findByGroupId(groupId);
+        List<String> friendList = friendshipService.getFriends(userId);
+        List<User> addList = new ArrayList<>();
+        List<String> memberIds = group.getMemberIds();
+        for (String friendId : friendList) {
+            if (!memberIds.contains(friendId)) {
+                User user = userRepo.findById(friendId).orElse(null); 
+                if (user != null) {
+                    addList.add(user);
+                }
+            }
+        }
+        return addList;
+    }
+    
 }

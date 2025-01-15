@@ -1,5 +1,7 @@
 package com.vibez.engine.Controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vibez.engine.Model.Groups;
+import com.vibez.engine.Model.User;
 import com.vibez.engine.Service.GroupsService;
 
 @CrossOrigin(origins = "*" , allowedHeaders = "*")
@@ -28,5 +31,10 @@ public class GroupController {
     @GetMapping("/group/isAdmin/{groupId}/{userId}") //check if user is admin
     public ResponseEntity<Boolean> isAdmin(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String groupId, @PathVariable String userId){
         return ResponseEntity.ok(groupsService.isAdmin(groupId, userId));
+    }
+
+    @GetMapping("/group/getAddList/{groupId}/{userId}") //get list of users that can be added to group
+    public ResponseEntity<List<User>> getAddList(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String groupId, @PathVariable String userId){
+        return ResponseEntity.ok(groupsService.getAddList(groupId, userId));
     }
 }
