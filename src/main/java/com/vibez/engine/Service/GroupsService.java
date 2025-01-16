@@ -15,4 +15,5 @@ public interface GroupsService {
     String changeGroup(Groups updatedGroup);
     boolean isAdmin(String groupId, String userId);
     List<User> getAddList(String groupId, String userId);
+    boolean isRelated(String groupId, String userId);
 }

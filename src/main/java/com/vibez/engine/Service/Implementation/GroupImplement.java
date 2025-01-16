@@ -162,5 +162,11 @@ public class GroupImplement implements GroupsService{
         }
         return addList;
     }
+
+    public boolean isRelated(String groupId, String userId) {
+        Groups group = groupRepo.findByGroupId(groupId);
+        List<String> memberIds = group.getMemberIds();
+        return memberIds.contains(userId);
+    }
     
 }

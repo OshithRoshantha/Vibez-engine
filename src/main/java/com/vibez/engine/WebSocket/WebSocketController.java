@@ -118,6 +118,7 @@ public class WebSocketController implements WebSocketHandler {
     }
 
     private void handleGroups(Map<String, Object> messageData) {
+        String uniqueId = "message_" + System.currentTimeMillis();
         String groupId = null;
         if (messageData.get("groupAction") != null){
             GroupAction groupAction = objectMapper.convertValue(messageData.get("groupAction"), GroupAction.class);
@@ -128,7 +129,11 @@ public class WebSocketController implements WebSocketHandler {
             } else if (groupAction.getAction().equals("deleteGroup")){
                 groupId = groupsService.deleteGroup(groupAction.getGroupId());
             }
-            broadcastToSubscribers("groupService", groupId);
+            Map<String, Object> message = new HashMap<>();
+            message.put("action", "groupService");
+            message.put("id", uniqueId);
+            message.put("groupId", groupId);
+            broadcastToSubscribers("groupService", message);
             return;
         }
         if (messageData.get("body") != null){
@@ -138,7 +143,11 @@ public class WebSocketController implements WebSocketHandler {
             } else {
                 groupId = groupsService.changeGroup(group);
             }
-            broadcastToSubscribers("groupService", groupId);
+            Map<String, Object> message = new HashMap<>();
+            message.put("action", "groupService");
+            message.put("id", uniqueId);
+            message.put("groupId", groupId);
+            broadcastToSubscribers("groupService", message);
             return;
         }
     }

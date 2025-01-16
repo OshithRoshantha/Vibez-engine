@@ -37,4 +37,9 @@ public class GroupController {
     public ResponseEntity<List<User>> getAddList(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String groupId, @PathVariable String userId){
         return ResponseEntity.ok(groupsService.getAddList(groupId, userId));
     }
+
+    @GetMapping("/group/isRelated/{groupId}/{userId}") //check if user is related to group
+    public ResponseEntity<Boolean> isRelated(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String groupId, @PathVariable String userId){
+        return ResponseEntity.ok(groupsService.isRelated(groupId, userId));
+    }
 }
