@@ -187,4 +187,14 @@ public class FriendshipImplement implements FriendshipService {
         status.setFriendId(friendship.getFriendId());
         return status;
     }
+
+    public List<LinkedProfile> getAllFriends(String userId){
+        List <Friendship> friends = friendshipRepo.findByMatchStatusAndUserIdOrFriendId("ACCEPTED", userId);
+        List <LinkedProfile> linkedProfiles = new ArrayList<>();
+        for (Friendship friend : friends){
+            LinkedProfile linkedProfile = getFriendshipInfo(friend.getFriendshipId(), userId);
+            linkedProfiles.add(linkedProfile);
+        }
+        return linkedProfiles;
+    }
 }

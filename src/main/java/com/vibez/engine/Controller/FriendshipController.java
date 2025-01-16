@@ -57,4 +57,9 @@ public class FriendshipController {
     public ResponseEntity<FriendshipStatus> getStatus(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String friendshipId){
         return ResponseEntity.ok(friendshipService.getFriendshipStatus(friendshipId));
     }
+
+    @GetMapping("/friends/getAll/{userId}")
+    public ResponseEntity<List<LinkedProfile>> getAllFriends(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId){
+        return ResponseEntity.ok(friendshipService.getAllFriends(userId));
+    }
 }
