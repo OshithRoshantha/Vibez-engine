@@ -34,9 +34,6 @@ public class GroupImplement implements GroupsService{
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private FriendshipService friendshipService;
-
     public String createGroup(Groups newGroup , String creatorId){
         User creator = userService.getUserById(creatorId);
         newGroup.setCreatorId(creatorId);
@@ -48,8 +45,8 @@ public class GroupImplement implements GroupsService{
         newGroup.setLastUpdate(LocalDateTime.now());
         newGroup.setLastMessage(creator.getUserName() + " created this group."); 
         newGroup.setLastMessageSender(newGroup.getGroupName());
-        groupRepo.save(newGroup);
-        List <String> memberIds = newGroup.getMemberIds();
+        Groups savedGroup = groupRepo.save(newGroup);
+        List <String> memberIds = savedGroup.getMemberIds();
         for(String memberId : memberIds){
             User member = userService.getUserById(memberId);
             if (member.getGroupIds() == null){
