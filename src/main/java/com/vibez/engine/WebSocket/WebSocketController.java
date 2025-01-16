@@ -14,7 +14,6 @@ import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vibez.engine.Model.DirectChat;
 import com.vibez.engine.Model.Friendship;
 import com.vibez.engine.Model.GroupAction;
 import com.vibez.engine.Model.Groups;
@@ -22,7 +21,6 @@ import com.vibez.engine.Model.Marketplace;
 import com.vibez.engine.Model.Message;
 import com.vibez.engine.Model.User;
 import com.vibez.engine.Model.UserUpdate;
-import com.vibez.engine.Service.DirectChatService;
 import com.vibez.engine.Service.FriendshipService;
 import com.vibez.engine.Service.GroupsService;
 import com.vibez.engine.Service.MarketplaceService;
@@ -127,6 +125,8 @@ public class WebSocketController implements WebSocketHandler {
                 groupId = groupsService.addUsersToGroup(groupAction.getGroupId(), groupAction.getUserIds());
             } else if (groupAction.getAction().equals("removeUsers")){
                 groupId = groupsService.removeUsersFromGroup(groupAction.getGroupId(), groupAction.getUserIds());
+            } else if (groupAction.getAction().equals("deleteGroup")){
+                groupId = groupsService.deleteGroup(groupAction.getGroupId());
             }
             broadcastToSubscribers("groupService", groupId);
             return;

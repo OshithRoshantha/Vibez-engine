@@ -95,6 +95,18 @@ public class GroupImplement implements GroupsService{
         return groupId;
     }
 
+    public String deleteGroup(String groupId){
+        Groups group = groupRepo.findByGroupId(groupId);
+        List<String> memberIds = group.getMemberIds();
+        for(String memberId : memberIds){
+            User member = userService.getUserById(memberId);
+            member.getGroupIds().remove(groupId);
+            userRepo.save(member);
+        }
+        groupRepo.delete(group);
+        return groupId;
+    }
+
     public List<String> getGroupsByUser(String userId){
         List <Groups> groups = groupRepo.findByMemberIds(userId);
         List<String> groupIds = new ArrayList<>();
