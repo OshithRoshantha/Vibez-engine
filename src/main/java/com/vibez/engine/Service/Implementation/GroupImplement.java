@@ -164,6 +164,9 @@ public class GroupImplement implements GroupsService{
     }
 
     public boolean isRelated(String groupId, String userId) {
+        if(groupId == null || userId == null) {
+            return false;
+        }
         Groups group = groupRepo.findByGroupId(groupId);
         List<String> memberIds = group.getMemberIds();
         return memberIds.contains(userId);

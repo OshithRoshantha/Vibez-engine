@@ -127,7 +127,7 @@ public class WebSocketController implements WebSocketHandler {
             } else if (groupAction.getAction().equals("removeUsers")){
                 groupId = groupsService.removeUsersFromGroup(groupAction.getGroupId(), groupAction.getUserIds());
             } else if (groupAction.getAction().equals("deleteGroup")){
-                groupId = groupsService.deleteGroup(groupAction.getGroupId());
+                groupsService.deleteGroup(groupAction.getGroupId());
             }
             Map<String, Object> message = new HashMap<>();
             message.put("action", "groupService");
