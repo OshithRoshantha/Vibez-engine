@@ -33,6 +33,11 @@ public class FriendshipController {
         return ResponseEntity.ok(friendshipService.getFriendshipId(userId, friendId));
     }
 
+    @GetMapping("/friends/isFriends/{userId}/{friendId}")
+    public ResponseEntity<Boolean> isFriends(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId, @PathVariable String friendId){
+        return ResponseEntity.ok(friendshipService.isFriends(userId, friendId));
+    }
+
     @GetMapping("/friends/check/{userId}/{friendshipId}") 
     public ResponseEntity<Boolean> checkFriendship(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String userId, @PathVariable String friendshipId){
         return ResponseEntity.ok(friendshipService.checkFriendship(userId, friendshipId));

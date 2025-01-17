@@ -138,6 +138,20 @@ public class FriendshipImplement implements FriendshipService {
         return friendship.getFriendshipId();
     }
 
+    public boolean isFriends(String userId, String friendId){
+        Friendship friendship = friendshipRepo.findByUserIdAndFriendId(userId, friendId);
+        if (friendship == null){
+            friendship = friendshipRepo.findByUserIdAndFriendId(friendId, userId);
+            if (friendship == null){
+                return false;
+            }
+        }
+        if (friendship.getStatus().equals("ACCEPTED")){
+            return true;
+        }
+        return false;
+    }
+
     public boolean checkFriendship(String userId, String friendshipId){
         Friendship friendship = friendshipRepo.findByFriendshipId(friendshipId);
         if (friendship == null){
