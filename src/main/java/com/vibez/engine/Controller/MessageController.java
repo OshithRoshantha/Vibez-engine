@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vibez.engine.Model.GroupMessageInfo;
 import com.vibez.engine.Model.Message;
 import com.vibez.engine.Model.MessageInfo;
 import com.vibez.engine.Service.MessageService;
@@ -43,6 +44,11 @@ public class MessageController {
     @GetMapping("/message/directChat/{userId}/{reciverId}") 
     public ResponseEntity<List<MessageInfo>> getMessagesByDirectChat(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId, @PathVariable String reciverId){
         return ResponseEntity.ok(messageService.getMessagesByDirectChat(userId, reciverId));
+    }
+
+    @GetMapping("/message/groupChat/{userId}/{groupId}") 
+    public ResponseEntity<List<GroupMessageInfo>> getMessagesByGroupChat(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId, @PathVariable String groupId){
+        return ResponseEntity.ok(messageService.getMessagesByGroupChat(userId, groupId));
     }
 
     @GetMapping("/message/{messageId}") //get message info

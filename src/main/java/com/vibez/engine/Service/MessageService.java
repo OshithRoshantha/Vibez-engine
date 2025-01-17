@@ -2,6 +2,7 @@ package com.vibez.engine.Service;
 
 import java.util.List;
 
+import com.vibez.engine.Model.GroupMessageInfo;
 import com.vibez.engine.Model.Message;
 import com.vibez.engine.Model.MessageInfo;
 
@@ -14,4 +15,5 @@ public interface MessageService {
     int getUnReadCount(String userId);
     Boolean checkUnreadMessages(String chatId, String userId);
     List<String> getMessageHistory(String userId, String reciverId);
+    List<GroupMessageInfo> getMessagesByGroupChat(String userId, String groupId);
 }

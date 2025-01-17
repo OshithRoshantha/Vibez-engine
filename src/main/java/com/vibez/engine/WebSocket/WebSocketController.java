@@ -156,11 +156,20 @@ public class WebSocketController implements WebSocketHandler {
         Message sendMessage = objectMapper.convertValue(messageData.get("body"), Message.class);
         String uniqueId = "message_" + System.currentTimeMillis();
         String updatingId = messageService.sendMessage(sendMessage);
+        String messageType = null;
         Map<String, Object> message = new HashMap<>();
+        if(sendMessage.getGroupId() != null){
+            message.put("groupId", updatingId);
+            messageType = "group";
+        }
+        else{
+            message.put("chatId", updatingId);
+            messageType = "direct";
+        }
         message.put("action", "messageService");
         message.put("id", uniqueId);
-        message.put("chatId", updatingId);
         message.put("sender",sendMessage.getSenderId());
+        message.put("type", messageType);
         broadcastToSubscribers("messageService", message);
     }
 
