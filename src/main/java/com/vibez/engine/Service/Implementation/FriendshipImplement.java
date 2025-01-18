@@ -40,6 +40,10 @@ public class FriendshipImplement implements FriendshipService {
             else {
                 friendship = friendshipRepo.findByUserIdAndFriendId(friendId, userId);
             }
+            if (!friendship.getUserId().equals(userId)){
+                friendship.setUserId(userId);
+                friendship.setFriendId(friendId);
+            }
             friendship.setStatus("PENDING");
             friendshipRepo.save(friendship);
             return friendship.getFriendshipId();
