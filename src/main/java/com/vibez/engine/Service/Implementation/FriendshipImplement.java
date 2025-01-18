@@ -30,10 +30,20 @@ public class FriendshipImplement implements FriendshipService {
             friendship.setFriendId(friendId);
             friendship.setStatus("PENDING");
             friendship = friendshipRepo.save(friendship);
-            String friendshipId = friendship.getFriendshipId();
-            return friendshipId;	
+            return friendship.getFriendshipId();	
         }
-        return "Not Allowed"; 
+        else {
+            Friendship friendship = null;
+            if (friendshipRepo.findByUserIdAndFriendId(userId, friendId) != null) {
+                friendship = friendshipRepo.findByUserIdAndFriendId(userId, friendId);
+            }
+            else {
+                friendship = friendshipRepo.findByUserIdAndFriendId(friendId, userId);
+            }
+            friendship.setStatus("PENDING");
+            friendshipRepo.save(friendship);
+            return friendship.getFriendshipId();
+        }
     }
     
 
@@ -50,7 +60,8 @@ public class FriendshipImplement implements FriendshipService {
     public String unFriend(String friendshipId) {
         Friendship friendship = friendshipRepo.findByFriendshipId(friendshipId);
         if ("ACCEPTED".equals(friendship.getStatus())) {
-            friendshipRepo.deleteByFriendshipId(friendshipId);
+            friendship.setStatus("NOT_FRIENDS");
+            friendshipRepo.save(friendship);
             return friendshipId;
         }
         return "Not Allowed"; 

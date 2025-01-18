@@ -79,18 +79,6 @@ public class WebSocketController implements WebSocketHandler {
             case "marketplaceService":
                 handleMarketplace(messageData);
                 break;
-            case "sendFriendRequest":
-                handleSendFriendRequest(messageData);
-                break;
-            case "acceptFriendRequest":
-                handleAcceptFriendRequest(messageData);
-                break;
-            case "rejectFriendRequest":
-                handleRejectFriendRequest(messageData);
-                break;
-            case "blockFriend":
-                handleBlockFriend(messageData);
-                break;
             case "subscribe":
                 handleSubscribe(session, messageData);
                 break;
@@ -252,26 +240,6 @@ public class WebSocketController implements WebSocketHandler {
         message.put("body", productId);
         message.put("productAction", productAction);
         broadcastToSubscribers("marketplaceService", message);
-    }
-
-    private void handleChangeGroupDesc(Map<String, Object> messageData) {
-        // Implement the logic to handle changing the group description
-    }
-
-    private void handleSendFriendRequest(Map<String, Object> messageData) {
-        // Implement the logic to handle sending a friend request
-    }
-
-    private void handleAcceptFriendRequest(Map<String, Object> messageData) {
-        // Implement the logic to handle accepting a friend request
-    }
-
-    private void handleRejectFriendRequest(Map<String, Object> messageData) {
-        // Implement the logic to handle rejecting a friend request
-    }
-
-    private void handleBlockFriend(Map<String, Object> messageData) {
-        // Implement the logic to handle blocking a friend
     }
 
     @Override
