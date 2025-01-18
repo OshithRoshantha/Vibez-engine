@@ -168,6 +168,9 @@ public class GroupImplement implements GroupsService{
             return false;
         }
         Groups group = groupRepo.findByGroupId(groupId);
+        if(group == null) {
+            return false;
+        }
         List<String> memberIds = group.getMemberIds();
         return memberIds.contains(userId);
     }

@@ -120,6 +120,9 @@ public class MessageImplement implements MessageService {
     public List<String> getMessagesByGroups(String groupId){
         List <Message> messages = messageRepo.findByGroupId(groupId);
         List<String> messageIds = new ArrayList<>();
+        if (messages == null){
+            return null;
+        }
         for (Message message : messages){
             messageIds.add(message.getMessageId());
         }
@@ -158,6 +161,9 @@ public class MessageImplement implements MessageService {
 
     public List<GroupMessageInfo> getMessagesByGroupChat(String userId, String groupId){
         Groups group = groupsService.getGroupById(groupId);
+        if (group == null){
+            return null;
+        }
         List<String> messageIds = group.getMessageIds();
         List <Message> messages = new ArrayList<>();
         for (String messageId : messageIds){
