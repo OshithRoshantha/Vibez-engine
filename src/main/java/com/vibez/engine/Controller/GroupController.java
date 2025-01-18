@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vibez.engine.Model.Groups;
+import com.vibez.engine.Model.User;
 import com.vibez.engine.Service.GroupsService;
 
 @CrossOrigin(origins = "*" , allowedHeaders = "*")
@@ -21,14 +22,24 @@ public class GroupController {
 
     @Autowired
     private GroupsService groupsService;
-    
-    @GetMapping("group/{userId}") //find all groups that a user is in
-    public ResponseEntity<List<String>> getGroupsByUser(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId){
-        return ResponseEntity.ok(groupsService.getGroupsByUser(userId));
-    }
 
-    @GetMapping("group/info/{groupId}") //get group info
+    @GetMapping("/group/info/{groupId}") //get group info
     public ResponseEntity<Groups> getGroupInfo(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String groupId){
         return ResponseEntity.ok(groupsService.getGroupById(groupId));
+    }
+
+    @GetMapping("/group/isAdmin/{groupId}/{userId}") //check if user is admin
+    public ResponseEntity<Boolean> isAdmin(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String groupId, @PathVariable String userId){
+        return ResponseEntity.ok(groupsService.isAdmin(groupId, userId));
+    }
+
+    @GetMapping("/group/getAddList/{groupId}/{userId}") //get list of users that can be added to group
+    public ResponseEntity<List<User>> getAddList(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String groupId, @PathVariable String userId){
+        return ResponseEntity.ok(groupsService.getAddList(groupId, userId));
+    }
+
+    @GetMapping("/group/isRelated/{groupId}/{userId}") //check if user is related to group
+    public ResponseEntity<Boolean> isRelated(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String groupId, @PathVariable String userId){
+        return ResponseEntity.ok(groupsService.isRelated(groupId, userId));
     }
 }

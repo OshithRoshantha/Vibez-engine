@@ -30,10 +30,24 @@ public class FriendshipImplement implements FriendshipService {
             friendship.setFriendId(friendId);
             friendship.setStatus("PENDING");
             friendship = friendshipRepo.save(friendship);
-            String friendshipId = friendship.getFriendshipId();
-            return friendshipId;	
+            return friendship.getFriendshipId();	
         }
-        return "Not Allowed"; 
+        else {
+            Friendship friendship = null;
+            if (friendshipRepo.findByUserIdAndFriendId(userId, friendId) != null) {
+                friendship = friendshipRepo.findByUserIdAndFriendId(userId, friendId);
+            }
+            else {
+                friendship = friendshipRepo.findByUserIdAndFriendId(friendId, userId);
+            }
+            if (!friendship.getUserId().equals(userId)){
+                friendship.setUserId(userId);
+                friendship.setFriendId(friendId);
+            }
+            friendship.setStatus("PENDING");
+            friendshipRepo.save(friendship);
+            return friendship.getFriendshipId();
+        }
     }
     
 
@@ -50,7 +64,8 @@ public class FriendshipImplement implements FriendshipService {
     public String unFriend(String friendshipId) {
         Friendship friendship = friendshipRepo.findByFriendshipId(friendshipId);
         if ("ACCEPTED".equals(friendship.getStatus())) {
-            friendshipRepo.deleteByFriendshipId(friendshipId);
+            friendship.setStatus("NOT_FRIENDS");
+            friendshipRepo.save(friendship);
             return friendshipId;
         }
         return "Not Allowed"; 
@@ -138,6 +153,20 @@ public class FriendshipImplement implements FriendshipService {
         return friendship.getFriendshipId();
     }
 
+    public boolean isFriends(String userId, String friendId){
+        Friendship friendship = friendshipRepo.findByUserIdAndFriendId(userId, friendId);
+        if (friendship == null){
+            friendship = friendshipRepo.findByUserIdAndFriendId(friendId, userId);
+            if (friendship == null){
+                return false;
+            }
+        }
+        if (friendship.getStatus().equals("ACCEPTED")){
+            return true;
+        }
+        return false;
+    }
+
     public boolean checkFriendship(String userId, String friendshipId){
         Friendship friendship = friendshipRepo.findByFriendshipId(friendshipId);
         if (friendship == null){
@@ -186,5 +215,15 @@ public class FriendshipImplement implements FriendshipService {
         status.setUserId(friendship.getUserId());
         status.setFriendId(friendship.getFriendId());
         return status;
+    }
+
+    public List<LinkedProfile> getAllFriends(String userId){
+        List <Friendship> friends = friendshipRepo.findByMatchStatusAndUserIdOrFriendId("ACCEPTED", userId);
+        List <LinkedProfile> linkedProfiles = new ArrayList<>();
+        for (Friendship friend : friends){
+            LinkedProfile linkedProfile = getFriendshipInfo(friend.getFriendshipId(), userId);
+            linkedProfiles.add(linkedProfile);
+        }
+        return linkedProfiles;
     }
 }

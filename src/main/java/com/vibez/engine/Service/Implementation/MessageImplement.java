@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vibez.engine.Model.DirectChat;
+import com.vibez.engine.Model.GroupMessageInfo;
 import com.vibez.engine.Model.Groups;
 import com.vibez.engine.Model.Message;
 import com.vibez.engine.Model.MessageInfo;
@@ -52,6 +53,8 @@ public class MessageImplement implements MessageService {
             Groups group = groupsService.getGroupById(message.getGroupId());
             group.setLastUpdate(LocalDateTime.now());
             group.setLastMessage(message.getMessage());
+            User sender = userService.getUserById(message.getSenderId());
+            group.setLastMessageSender(sender.getUserName());
             if (group.getMessageIds() == null){
                 group.setMessageIds(new ArrayList<>());
             }
@@ -117,11 +120,15 @@ public class MessageImplement implements MessageService {
     public List<String> getMessagesByGroups(String groupId){
         List <Message> messages = messageRepo.findByGroupId(groupId);
         List<String> messageIds = new ArrayList<>();
+        if (messages == null){
+            return null;
+        }
         for (Message message : messages){
             messageIds.add(message.getMessageId());
         }
         return messageIds;
     }
+
 
     public List<MessageInfo> getMessagesByDirectChat(String userId, String reciverId){
         String directChatId = directChatService.isAvailableDirectChat(userId, reciverId);
@@ -139,6 +146,38 @@ public class MessageImplement implements MessageService {
         for (Message message : messages){
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setMessage(message.getMessage());
+            String formattedTimestamp = message.getTimestamp().format(timeFormatter);
+            messageInfo.setTimestamp(formattedTimestamp);
+            if (message.getSenderId().equals(userId)){
+                messageInfo.setIsSendByMe(true);
+            }
+            else {
+                messageInfo.setIsSendByMe(false);
+            }
+            messageInfos.add(messageInfo);
+        }
+        return messageInfos;
+    }
+
+    public List<GroupMessageInfo> getMessagesByGroupChat(String userId, String groupId){
+        Groups group = groupsService.getGroupById(groupId);
+        if (group == null){
+            return null;
+        }
+        List<String> messageIds = group.getMessageIds();
+        if (messageIds == null){
+            return null;
+        }
+        List <Message> messages = new ArrayList<>();
+        for (String messageId : messageIds){
+            messages.add(messageRepo.findByMessageId(messageId));
+        }
+        List <GroupMessageInfo> messageInfos = new ArrayList<>();
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        for (Message message : messages){
+            GroupMessageInfo messageInfo = new GroupMessageInfo();
+            messageInfo.setMessage(message.getMessage());
+            messageInfo.setSender(userService.getUserById(message.getSenderId()).getUserName());
             String formattedTimestamp = message.getTimestamp().format(timeFormatter);
             messageInfo.setTimestamp(formattedTimestamp);
             if (message.getSenderId().equals(userId)){

@@ -14,7 +14,6 @@ import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vibez.engine.Model.DirectChat;
 import com.vibez.engine.Model.Friendship;
 import com.vibez.engine.Model.GroupAction;
 import com.vibez.engine.Model.Groups;
@@ -22,7 +21,6 @@ import com.vibez.engine.Model.Marketplace;
 import com.vibez.engine.Model.Message;
 import com.vibez.engine.Model.User;
 import com.vibez.engine.Model.UserUpdate;
-import com.vibez.engine.Service.DirectChatService;
 import com.vibez.engine.Service.FriendshipService;
 import com.vibez.engine.Service.GroupsService;
 import com.vibez.engine.Service.MarketplaceService;
@@ -81,18 +79,6 @@ public class WebSocketController implements WebSocketHandler {
             case "marketplaceService":
                 handleMarketplace(messageData);
                 break;
-            case "sendFriendRequest":
-                handleSendFriendRequest(messageData);
-                break;
-            case "acceptFriendRequest":
-                handleAcceptFriendRequest(messageData);
-                break;
-            case "rejectFriendRequest":
-                handleRejectFriendRequest(messageData);
-                break;
-            case "blockFriend":
-                handleBlockFriend(messageData);
-                break;
             case "subscribe":
                 handleSubscribe(session, messageData);
                 break;
@@ -120,6 +106,7 @@ public class WebSocketController implements WebSocketHandler {
     }
 
     private void handleGroups(Map<String, Object> messageData) {
+        String uniqueId = "message_" + System.currentTimeMillis();
         String groupId = null;
         if (messageData.get("groupAction") != null){
             GroupAction groupAction = objectMapper.convertValue(messageData.get("groupAction"), GroupAction.class);
@@ -127,8 +114,14 @@ public class WebSocketController implements WebSocketHandler {
                 groupId = groupsService.addUsersToGroup(groupAction.getGroupId(), groupAction.getUserIds());
             } else if (groupAction.getAction().equals("removeUsers")){
                 groupId = groupsService.removeUsersFromGroup(groupAction.getGroupId(), groupAction.getUserIds());
+            } else if (groupAction.getAction().equals("deleteGroup")){
+                groupId = groupsService.deleteGroup(groupAction.getGroupId());
             }
-            broadcastToSubscribers("groupService", groupId);
+            Map<String, Object> message = new HashMap<>();
+            message.put("action", "groupService");
+            message.put("id", uniqueId);
+            message.put("groupId", groupId);
+            broadcastToSubscribers("groupService", message);
             return;
         }
         if (messageData.get("body") != null){
@@ -138,7 +131,11 @@ public class WebSocketController implements WebSocketHandler {
             } else {
                 groupId = groupsService.changeGroup(group);
             }
-            broadcastToSubscribers("groupService", groupId);
+            Map<String, Object> message = new HashMap<>();
+            message.put("action", "groupService");
+            message.put("id", uniqueId);
+            message.put("groupId", groupId);
+            broadcastToSubscribers("groupService", message);
             return;
         }
     }
@@ -147,11 +144,20 @@ public class WebSocketController implements WebSocketHandler {
         Message sendMessage = objectMapper.convertValue(messageData.get("body"), Message.class);
         String uniqueId = "message_" + System.currentTimeMillis();
         String updatingId = messageService.sendMessage(sendMessage);
+        String messageType = null;
         Map<String, Object> message = new HashMap<>();
+        if(sendMessage.getGroupId() != null){
+            message.put("groupId", updatingId);
+            messageType = "group";
+        }
+        else{
+            message.put("chatId", updatingId);
+            messageType = "direct";
+        }
         message.put("action", "messageService");
         message.put("id", uniqueId);
-        message.put("chatId", updatingId);
         message.put("sender",sendMessage.getSenderId());
+        message.put("type", messageType);
         broadcastToSubscribers("messageService", message);
     }
 
@@ -234,26 +240,6 @@ public class WebSocketController implements WebSocketHandler {
         message.put("body", productId);
         message.put("productAction", productAction);
         broadcastToSubscribers("marketplaceService", message);
-    }
-
-    private void handleChangeGroupDesc(Map<String, Object> messageData) {
-        // Implement the logic to handle changing the group description
-    }
-
-    private void handleSendFriendRequest(Map<String, Object> messageData) {
-        // Implement the logic to handle sending a friend request
-    }
-
-    private void handleAcceptFriendRequest(Map<String, Object> messageData) {
-        // Implement the logic to handle accepting a friend request
-    }
-
-    private void handleRejectFriendRequest(Map<String, Object> messageData) {
-        // Implement the logic to handle rejecting a friend request
-    }
-
-    private void handleBlockFriend(Map<String, Object> messageData) {
-        // Implement the logic to handle blocking a friend
     }
 
     @Override

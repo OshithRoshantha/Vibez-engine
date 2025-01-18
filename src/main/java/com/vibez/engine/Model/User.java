@@ -19,6 +19,7 @@ public class User {
     private String publicKey;
     private List<String> blockedUsers;
     private List<String> directChatIds;
+    private List<String> groupIds;
     private List<String> favoriteDirectChats;
 
     public String getUserId(){
@@ -107,6 +108,14 @@ public class User {
 
     public void setFavoriteDirectChats(List<String> favoriteDirectChats) {
         this.favoriteDirectChats = favoriteDirectChats;
+    }
+
+    public List<String> getGroupIds() {
+        return groupIds;
+    }
+
+    public void setGroupIds(List<String> groupIds) {
+        this.groupIds = groupIds;
     }
 
 }

@@ -117,4 +117,12 @@ public class UserImplement implements UserService {
         }
         return existingUser.getDirectChatIds();
     }
+
+    public List<String> getGroupsByUser(String userId) {
+        User existingUser = userRepo.findByUserId(userId);
+        if (existingUser.getGroupIds() == null) {
+            return new ArrayList<>();
+        }
+        return existingUser.getGroupIds();
+    }
 }

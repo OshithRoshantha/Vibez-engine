@@ -18,6 +18,7 @@ public class Groups {
     private LocalDateTime creationDate;
     private  LocalDateTime lastUpdate;
     private  String lastMessage;
+    private String lastMessageSender;
     private List<String> messageIds;
 
     public String getGroupId() {
@@ -98,5 +99,13 @@ public class Groups {
 
     public void setLastMessage(String lastMessage) {
         this.lastMessage = lastMessage;
+    }
+
+    public String getLastMessageSender() {
+        return lastMessageSender;
+    }
+
+    public void setLastMessageSender(String lastMessageSender) {
+        this.lastMessageSender = lastMessageSender;
     }
 }
