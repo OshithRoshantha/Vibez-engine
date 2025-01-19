@@ -44,11 +44,15 @@ public class MessageImplement implements MessageService {
     private DirectChatRepo directChatRepo;
 
     public String sendMessage(Message message){
-        message.setRead(false);
         message.setTimestamp(LocalDateTime.now());
-        List <String> readBy = new ArrayList<>();
-        readBy.add(message.getSenderId());
-        message.setReadBy(readBy);
+        if (message.getGroupId() != null) {
+            List <String> readBy = new ArrayList<>();
+            readBy.add(message.getSenderId());
+            message.setReadBy(readBy);
+        }
+        else{
+            message.setRead(false);
+        }
         message = messageRepo.save(message);
         String updatingId = null;
 
@@ -147,6 +151,9 @@ public class MessageImplement implements MessageService {
     public int unreadGroupMessageCount(String userId){
         User user = userService.getUserById(userId);
         List <String> groups = user.getGroupIds();
+        if (groups == null){
+            return 0;
+        }
         int count = 0;
         for (String groupId : groups){
             Groups group = groupsService.getGroupById(groupId);
