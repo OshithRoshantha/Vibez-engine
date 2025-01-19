@@ -116,6 +116,9 @@ public class MessageImplement implements MessageService {
     public void markAsReadGroup(String userId, String groupId){
         Groups group = groupsService.getGroupById(groupId);
         List <String> messageIds = group.getMessageIds();
+        if (messageIds == null){
+            return;
+        }
         for (String messageId : messageIds){
             Message message = messageRepo.findByMessageId(messageId);
             if (!message.getReadBy().contains(userId)){
@@ -251,6 +254,9 @@ public class MessageImplement implements MessageService {
     public Boolean checkUnreadGroupMessages(String groupId, String userId) {
         Groups group = groupRepo.findByGroupId(groupId);
         List <String> messageIds = group.getMessageIds();
+        if (messageIds == null){
+            return false;
+        }
         for(String messageId : messageIds){
             Message message = messageRepo.findByMessageId(messageId);
             if(!message.getReadBy().contains(userId)){
