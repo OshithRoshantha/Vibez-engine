@@ -61,6 +61,11 @@ public class MessageController {
         return ResponseEntity.ok(messageService.checkUnreadMessages(chatId, userId));
     }
 
+    @GetMapping("/messages/checkUnreadGroup/{groupId}/{userId}") //check if a group chat has unread messages
+    public ResponseEntity<Boolean> checkUnreadGroupMessages(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId, @PathVariable String groupId){
+        return ResponseEntity.ok(messageService.checkUnreadGroupMessages(groupId, userId));
+    }
+
     @GetMapping("/message/unreadGroup/{userId}") //count unread group messages
     public ResponseEntity<Integer> unreadMessageCount(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId){
         return ResponseEntity.ok(messageService.unreadGroupMessageCount(userId));

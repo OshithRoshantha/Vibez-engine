@@ -248,6 +248,18 @@ public class MessageImplement implements MessageService {
         return false;
     }
 
+    public Boolean checkUnreadGroupMessages(String groupId, String userId) {
+        Groups group = groupRepo.findByGroupId(groupId);
+        List <String> messageIds = group.getMessageIds();
+        for(String messageId : messageIds){
+            Message message = messageRepo.findByMessageId(messageId);
+            if(!message.getReadBy().contains(userId)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public List<String> getMessageHistory(String userId, String reciverId){
         String directChatId = directChatService.isAvailableDirectChat(userId, reciverId);
         DirectChat directChat = directChatService.getDirectChatById(directChatId);

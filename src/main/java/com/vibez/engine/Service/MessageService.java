@@ -15,6 +15,7 @@ public interface MessageService {
     void markAsReadGroup(String userId, String groupId);
     int getUnReadCount(String userId);
     Boolean checkUnreadMessages(String chatId, String userId);
+    Boolean checkUnreadGroupMessages(String groupId, String userId);
     int unreadGroupMessageCount(String userId);
     List<String> getMessageHistory(String userId, String reciverId);
     List<GroupMessageInfo> getMessagesByGroupChat(String userId, String groupId);
