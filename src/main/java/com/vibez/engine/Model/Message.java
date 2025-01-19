@@ -1,6 +1,7 @@
 package com.vibez.engine.Model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -16,6 +17,7 @@ public class Message {
     private String message;
     private LocalDateTime timestamp;
     private boolean isRead;
+    private List<String> readBy;
 
     public String getMessageId() {
         return messageId;
@@ -79,5 +81,13 @@ public class Message {
 
     public void setRead(boolean isRead) {
         this.isRead = isRead;
+    }
+
+    public List<String> getReadBy() {
+        return readBy;
+    }
+
+    public void setReadBy(List<String> readBy) {
+        this.readBy = readBy;
     }
 }

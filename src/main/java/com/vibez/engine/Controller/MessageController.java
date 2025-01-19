@@ -61,6 +61,18 @@ public class MessageController {
         return ResponseEntity.ok(messageService.checkUnreadMessages(chatId, userId));
     }
 
+    @GetMapping("/message/unreadGroup/{userId}") //count unread group messages
+    public ResponseEntity<Integer> unreadMessageCount(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId){
+        return ResponseEntity.ok(messageService.unreadGroupMessageCount(userId));
+    }
+
+    @PutMapping("/message/markAsReadGroup/{userId}/{groupId}") //mark group messages as read
+    public ResponseEntity<Void> markAsReadGroup(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId, @PathVariable String groupId){
+        messageService.markAsReadGroup(userId, groupId);
+        return ResponseEntity.ok().build();
+    }
+
+
     @GetMapping("/message/history/{userId}/{receiverId}") //get message history
     public ResponseEntity<List<String>> getMessageHistory(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId, @PathVariable String receiverId){
         return ResponseEntity.ok(messageService.getMessageHistory(userId, receiverId));

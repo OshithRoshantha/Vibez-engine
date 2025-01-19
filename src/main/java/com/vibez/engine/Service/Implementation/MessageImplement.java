@@ -46,6 +46,9 @@ public class MessageImplement implements MessageService {
     public String sendMessage(Message message){
         message.setRead(false);
         message.setTimestamp(LocalDateTime.now());
+        List <String> readBy = new ArrayList<>();
+        readBy.add(message.getSenderId());
+        message.setReadBy(readBy);
         message = messageRepo.save(message);
         String updatingId = null;
 
@@ -106,6 +109,18 @@ public class MessageImplement implements MessageService {
         }
     }
 
+    public void markAsReadGroup(String userId, String groupId){
+        Groups group = groupsService.getGroupById(groupId);
+        List <String> messageIds = group.getMessageIds();
+        for (String messageId : messageIds){
+            Message message = messageRepo.findByMessageId(messageId);
+            if (!message.getReadBy().contains(userId)){
+                message.getReadBy().add(userId);
+                messageRepo.save(message);
+            }
+        }
+    }
+
     public int getUnReadCount(String userId){
         List <Message> messages = messageRepo.findByReceiverId(userId);
         int count = 0;
@@ -127,6 +142,25 @@ public class MessageImplement implements MessageService {
             messageIds.add(message.getMessageId());
         }
         return messageIds;
+    }
+
+    public int unreadGroupMessageCount(String userId){
+        User user = userService.getUserById(userId);
+        List <String> groups = user.getGroupIds();
+        int count = 0;
+        for (String groupId : groups){
+            Groups group = groupsService.getGroupById(groupId);
+            List <String> messageIds = group.getMessageIds();
+            for (String messageId : messageIds){
+                Message message = messageRepo.findByMessageId(messageId);
+                if (message.getReadBy() != null){
+                    if (!message.getReadBy().contains(userId)){
+                        count++;
+                    }
+                }
+            }
+        }
+        return count;
     }
 
 
