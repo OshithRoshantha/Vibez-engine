@@ -1,5 +1,7 @@
 package com.vibez.engine.Controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -45,6 +47,11 @@ public class DirectChatController {
     @GetMapping("/directChat/isRelated/{userId}/{chatId}") //check if a user is related to a direct chat
     public ResponseEntity<Boolean> isUserRelatedToDirectChat(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String chatId, @PathVariable String userId){
         return ResponseEntity.ok(directChatService.isUserRelatedToDirectChat(chatId, userId));
+    }
+
+    @GetMapping("/directChat/find/{userId}/{keyword}") //find direct chat by keyword
+    public ResponseEntity <List<String>> findDirectChatByKeyword(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String keyword, @PathVariable String userId){
+        return ResponseEntity.ok(directChatService.findDirectChat(keyword, userId));
     }
 
 }

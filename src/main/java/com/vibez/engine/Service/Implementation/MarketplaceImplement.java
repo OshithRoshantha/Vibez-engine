@@ -150,13 +150,19 @@ public class MarketplaceImplement implements MarketplaceService {
     public List<Marketplace> searchProduct(String keyword, String userId) {
         List<Marketplace> allProducts = getProductsExcludingHiddenByFriends(userId);
         List<Marketplace> searchResults = new ArrayList<>();
+        String keywordLower = keyword.toLowerCase();
+    
         for (Marketplace product : allProducts) {
-            if (product.getProductTitle().contains(keyword) || product.getProductDesc().contains(keyword)) {
+            String titleLower = product.getProductTitle().toLowerCase();
+            String descLower = product.getProductDesc().toLowerCase();
+    
+            if (titleLower.startsWith(keywordLower) || descLower.startsWith(keywordLower)) {
                 searchResults.add(product);
             }
         }
         return searchResults;
     }
+    
 
     public boolean isAdded(String productId, String userId) {
         Marketplace product = marketplaceRepo.findByProductId(productId);

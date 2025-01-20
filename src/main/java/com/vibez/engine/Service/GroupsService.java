@@ -16,4 +16,5 @@ public interface GroupsService {
     boolean isAdmin(String groupId, String userId);
     List<User> getAddList(String groupId, String userId);
     boolean isRelated(String groupId, String userId);
+    List<String> findGroup(String keyword, String userId);
 }
