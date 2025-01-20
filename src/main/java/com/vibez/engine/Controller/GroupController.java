@@ -42,4 +42,9 @@ public class GroupController {
     public ResponseEntity<Boolean> isRelated(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String groupId, @PathVariable String userId){
         return ResponseEntity.ok(groupsService.isRelated(groupId, userId));
     }
+
+    @GetMapping("/group/find/{userId}/{keyword}") //find group by keyword
+    public ResponseEntity <List<String>> findDirectChatByKeyword(@RequestHeader(value = "Authorization", required = true)  String token, @PathVariable String keyword, @PathVariable String userId){
+        return ResponseEntity.ok(groupsService.findGroup(keyword, userId));
+    }
 }

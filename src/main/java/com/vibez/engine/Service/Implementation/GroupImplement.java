@@ -174,5 +174,17 @@ public class GroupImplement implements GroupsService{
         List<String> memberIds = group.getMemberIds();
         return memberIds.contains(userId);
     }
+
+    public List<String> findGroup(String keyword, String userId) {
+        List<Groups> groups = groupRepo.findByMemberIds(userId);
+        List<String> groupIds = new ArrayList<>();
+        String normalizedKeyword = keyword.toLowerCase();
+        for (Groups group : groups) {
+            if (group.getGroupName().toLowerCase().contains(normalizedKeyword)) {
+                groupIds.add(group.getGroupId());
+            }
+        }
+        return groupIds;
+    }
     
 }
