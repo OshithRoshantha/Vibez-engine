@@ -131,4 +131,21 @@ public class DirectChatImplemet implements DirectChatService{
         return chat.getMemberIds().contains(userId);
     }
 
+    public List<String> findDirectChat(String keyword, String userId) {
+        List<DirectChat> directChats = directChatRepo.findByMemberIdsContaining(userId);
+        List<String> chatIds = new ArrayList<>();
+        String normalizedKeyword = keyword.toLowerCase();
+        for (DirectChat chat : directChats) {
+            List<String> memberIds = chat.getMemberIds();
+            memberIds.remove(userId);
+            String friendName = userService.getUserById(memberIds.get(0)).getUserName();
+            String normalizedFriendName = friendName.toLowerCase();
+            if (normalizedFriendName.startsWith(normalizedKeyword)) {
+                chatIds.add(chat.getChatId());
+            }
+        }
+        return chatIds;
+    }
+    
+
 }

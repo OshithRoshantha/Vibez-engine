@@ -14,4 +14,5 @@ public interface  DirectChatService {
     String unfavoriteDirectChat(String chatId, String userId);
     DirectChatPreview getDirectChatPreview(String chatId, String userId);
     Boolean isUserRelatedToDirectChat(String chatId, String userId);
+    List<String> findDirectChat(String keyword, String userId);
 }
