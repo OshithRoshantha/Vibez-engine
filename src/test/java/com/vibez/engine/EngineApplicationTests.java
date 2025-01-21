@@ -3,11 +3,11 @@ package com.vibez.engine;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class EngineApplicationTests {
+@SpringBootTest(classes = EngineApplication.class)
+public class EngineApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
-
+    @Test
+    public void contextLoads() {
+        // This will test if the Spring context loads without issues
+    }
 }
