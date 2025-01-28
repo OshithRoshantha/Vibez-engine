@@ -27,6 +27,10 @@ public class UserImplement implements UserService {
     AuthenticationManager authenticationManager;
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
+    public List<User> getAllUsers() {
+        return userRepo.findAll();
+    }
     
     public boolean createUser(User newUser) {
         User existingUser = userRepo.findByEmail(newUser.getEmail());

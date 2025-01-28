@@ -33,7 +33,6 @@ public class WebSocketController implements WebSocketHandler {
     private static final Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
     private Map<String, List<WebSocketSession>> subscriptions = new HashMap<>();
     
-
     @Autowired
     private MessageService messageService;
 
@@ -94,7 +93,6 @@ public class WebSocketController implements WebSocketHandler {
         String topicWithUserId = topic + "_" + userId;
         subscriptions.computeIfAbsent(topicWithUserId, k -> new ArrayList<>()).add(session);
     }
-
 
     private void broadcastToSubscribers(String topic, List<String> userIds, Object message) {
         for (String userId : userIds) {
@@ -204,10 +202,18 @@ public class WebSocketController implements WebSocketHandler {
         message.put("id", uniqueId);
         message.put("friendshipId", friendshipId);
         message.put("status", status);
-        broadcastToSubscribers("friendshipService", message);
+        List <String> relatedIds = new ArrayList<>();
+        relatedIds.add(friendship.getUserId());
+        relatedIds.add(friendship.getFriendId()); 
+        broadcastToSubscribers("friendshipService", relatedIds, message);
     }
 
     private void handleProfileMetaData(Map<String, Object> messageData) {
+        List <User> users = userService.getAllUsers();
+        List <String> userIds = new ArrayList<>();
+        for (User user : users){
+            userIds.add(user.getUserId());
+        }
         UserUpdate userUpdate = objectMapper.convertValue(messageData.get("body"), UserUpdate.class);
         String uniqueId = "message_" + System.currentTimeMillis();
         User existingUser = userService.getUserById(userUpdate.getUserId());
@@ -226,10 +232,15 @@ public class WebSocketController implements WebSocketHandler {
         message.put("id", uniqueId);
         message.put("action", "profileService");
         message.put("body", userId);
-        broadcastToSubscribers("profileService", message);
+        broadcastToSubscribers("profileService", userIds, message);
     }
 
     private void handleMarketplace(Map<String, Object> messageData) {
+        List <User> users = userService.getAllUsers();
+        List <String> userIds = new ArrayList<>();
+        for (User user : users){
+            userIds.add(user.getUserId());
+        }
         Marketplace product = objectMapper.convertValue(messageData.get("body"), Marketplace.class);
         System.out.println(product);
         String uniqeId = "message_" + System.currentTimeMillis();
@@ -256,7 +267,7 @@ public class WebSocketController implements WebSocketHandler {
         message.put("action", "marketplaceService");
         message.put("body", productId);
         message.put("productAction", productAction);
-        broadcastToSubscribers("marketplaceService", message);
+        broadcastToSubscribers("marketplaceService", userIds, message);
     }
 
     @Override

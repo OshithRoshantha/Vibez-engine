@@ -4,6 +4,7 @@ import java.util.List;
 import com.vibez.engine.Model.User;
 
 public interface  UserService {
+    List<User> getAllUsers();
     boolean createUser(User newUser);
     String authenticateUser(User existingUser);
     User getUserProfile(String email);
