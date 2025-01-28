@@ -101,8 +101,8 @@ public class UserController {
         return ResponseEntity.ok(userService.getGroupsByUser(userId));
     }
 
-    @DeleteMapping("/delete/{userId}")
-    public ResponseEntity<Boolean> deleteUser(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId){
+    @DeleteMapping("/delete/{userId}/{email}")
+    public ResponseEntity<Boolean> deleteUser(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId, @PathVariable String email){
         return ResponseEntity.ok(userService.deleteUser(userId));
     }
 

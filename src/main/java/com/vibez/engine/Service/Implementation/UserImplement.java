@@ -126,9 +126,12 @@ public class UserImplement implements UserService {
         return existingUser.getGroupIds();
     }
 
-    public boolean deleteUser(String userId) {
+    public boolean deleteUser(String userId, String email) {
         User existingUser = userRepo.findByUserId(userId);
         if (existingUser == null) {
+            return false;
+        }
+        if (!existingUser.getEmail().equals(email)) {
             return false;
         }
         userRepo.delete(existingUser);
