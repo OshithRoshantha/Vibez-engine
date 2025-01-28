@@ -156,20 +156,26 @@ public class WebSocketController implements WebSocketHandler {
         String uniqueId = "message_" + System.currentTimeMillis();
         String updatingId = messageService.sendMessage(sendMessage);
         String messageType = null;
+        List <String> relatedIds = new ArrayList<>();
         Map<String, Object> message = new HashMap<>();
         if(sendMessage.getGroupId() != null){
             message.put("groupId", updatingId);
             messageType = "group";
+            Groups group = groupsService.getGroupById(updatingId);
+            relatedIds.addAll(group.getMemberIds());
         }
         else{
             message.put("chatId", updatingId);
             messageType = "direct";
+            Message messageToSend = messageService.getMessage(updatingId);
+            relatedIds.add(messageToSend.getSenderId());
+            relatedIds.add(messageToSend.getReceiverId());
         }
         message.put("action", "messageService");
         message.put("id", uniqueId);
         message.put("sender",sendMessage.getSenderId());
         message.put("type", messageType);
-        broadcastToSubscribers("messageService", message);
+        broadcastToSubscribers("messageService", relatedIds, message);
     }
 
     private void handleFriendships(Map<String, Object> messageData) {
