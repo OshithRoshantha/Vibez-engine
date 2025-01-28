@@ -103,7 +103,7 @@ public class UserController {
 
     @DeleteMapping("/delete/{userId}/{email}")
     public ResponseEntity<Boolean> deleteUser(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId, @PathVariable String email){
-        return ResponseEntity.ok(userService.deleteUser(userId));
+        return ResponseEntity.ok(userService.deleteUser(userId, email));
     }
 
     @PutMapping("/delete/directChats/{userId}")
