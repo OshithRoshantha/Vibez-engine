@@ -117,8 +117,15 @@ public class DirectChatImplemet implements DirectChatService{
                         .findFirst()
                         .orElse(null);
         chatPreview.setFriendId(friendId);
-        chatPreview.setFriendName(userService.getUserById(friendId).getUserName());
-        chatPreview.setFriendAvatar(userService.getUserById(friendId).getProfilePicture());
+
+        if (userService.getUserById(friendId) == null){
+            chatPreview.setFriendName("Account not exists");
+            chatPreview.setFriendAvatar("");
+        }
+        else{
+            chatPreview.setFriendName(userService.getUserById(friendId).getUserName());
+            chatPreview.setFriendAvatar(userService.getUserById(friendId).getProfilePicture());
+        }
         chatPreview.setLastMessage(chat.getLastMessage());
         chatPreview.setLastMessageSender(senderName);
         chatPreview.setLastActiveTime(chat.getLastUpdate());
