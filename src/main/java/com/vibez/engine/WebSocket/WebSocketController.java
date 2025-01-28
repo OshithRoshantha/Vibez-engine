@@ -191,14 +191,13 @@ public class WebSocketController implements WebSocketHandler {
         if (friendship.getFriendshipId() == null) {
             friendshipId = friendshipService.sendFriendRequest(friendship.getUserId(), friendship.getFriendId());
             status = "PENDING";
-            relatedIds.clear();
             relatedIds.add(friendship.getUserId());
             relatedIds.add(friendship.getFriendId()); 
         } else {
-            relatedIds.clear();
             friendshipId = friendship.getFriendshipId();
-            relatedIds.add(friendship.getUserId());
-            relatedIds.add(friendship.getFriendId());
+            Friendship currentFriendship = friendshipService.getFriendship(friendshipId);
+            relatedIds.add(currentFriendship.getUserId());
+            relatedIds.add(currentFriendship.getFriendId());
             if (friendship.getStatus().equals("ACCEPTED")) {
                 friendshipService.acceptFriendRequest(friendship.getFriendshipId());
                 status = "ACCEPTED";

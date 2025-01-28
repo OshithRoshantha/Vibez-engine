@@ -226,4 +226,8 @@ public class FriendshipImplement implements FriendshipService {
         }
         return linkedProfiles;
     }
+
+    public Friendship getFriendship(String friendshipId){
+        return friendshipRepo.findByFriendshipId(friendshipId);
+    }
 }

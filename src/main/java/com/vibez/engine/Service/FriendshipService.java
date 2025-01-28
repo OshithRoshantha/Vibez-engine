@@ -2,6 +2,7 @@ package com.vibez.engine.Service;
 
 import java.util.List;
 
+import com.vibez.engine.Model.Friendship;
 import com.vibez.engine.Model.FriendshipStatus;
 import com.vibez.engine.Model.LinkedProfile;
 
@@ -21,4 +22,5 @@ public interface FriendshipService {
     FriendshipStatus getFriendshipStatus(String friendshipId);
     List<LinkedProfile> getAllFriends(String userId);
     boolean isFriends(String userId, String friendId);
+    Friendship getFriendship(String friendshipId);
 }
