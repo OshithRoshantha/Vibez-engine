@@ -120,7 +120,7 @@ public class DirectChatImplemet implements DirectChatService{
 
         if (userService.getUserById(friendId) == null){
             chatPreview.setFriendName("No longer available");
-            chatPreview.setFriendAvatar("https://img.freepik.com/premium-vector/user-error-warning-icon-with-editable-line_625445-186.jpg?w=360");
+            chatPreview.setFriendAvatar("https://static.thenounproject.com/png/4604295-200.png");
         }
         else{
             chatPreview.setFriendName(userService.getUserById(friendId).getUserName());
