@@ -14,6 +14,7 @@ import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vibez.engine.Model.DirectChat;
 import com.vibez.engine.Model.Friendship;
 import com.vibez.engine.Model.GroupAction;
 import com.vibez.engine.Model.Groups;
@@ -21,6 +22,7 @@ import com.vibez.engine.Model.Marketplace;
 import com.vibez.engine.Model.Message;
 import com.vibez.engine.Model.User;
 import com.vibez.engine.Model.UserUpdate;
+import com.vibez.engine.Service.DirectChatService;
 import com.vibez.engine.Service.FriendshipService;
 import com.vibez.engine.Service.GroupsService;
 import com.vibez.engine.Service.MarketplaceService;
@@ -41,6 +43,9 @@ public class WebSocketController implements WebSocketHandler {
 
     @Autowired
     private GroupsService groupsService;
+
+    @Autowired
+    private DirectChatService directChatService;
 
     @Autowired
     private FriendshipService friendshipService;
@@ -157,17 +162,18 @@ public class WebSocketController implements WebSocketHandler {
         List <String> relatedIds = new ArrayList<>();
         Map<String, Object> message = new HashMap<>();
         if(sendMessage.getGroupId() != null){
+            relatedIds.clear();
             message.put("groupId", updatingId);
             messageType = "group";
-            Groups group = groupsService.getGroupById(updatingId);
-            relatedIds.addAll(group.getMemberIds());
+            Groups groupToSend = groupsService.getGroupById(updatingId);
+            relatedIds.addAll(groupToSend.getMemberIds());
         }
         else{
+            relatedIds.clear();
             message.put("chatId", updatingId);
             messageType = "direct";
-            Message messageToSend = messageService.getMessage(updatingId);
-            relatedIds.add(messageToSend.getSenderId());
-            relatedIds.add(messageToSend.getReceiverId());
+            DirectChat chatToSend = directChatService.getDirectChatById(updatingId);
+            relatedIds.addAll(chatToSend.getMemberIds());
         }
         message.put("action", "messageService");
         message.put("id", uniqueId);
@@ -181,11 +187,18 @@ public class WebSocketController implements WebSocketHandler {
         String uniqueId = "message_" + System.currentTimeMillis();
         String friendshipId = null;
         String status = null;
+        List <String> relatedIds = new ArrayList<>();
         if (friendship.getFriendshipId() == null) {
             friendshipId = friendshipService.sendFriendRequest(friendship.getUserId(), friendship.getFriendId());
             status = "PENDING";
+            relatedIds.clear();
+            relatedIds.add(friendship.getUserId());
+            relatedIds.add(friendship.getFriendId()); 
         } else {
+            relatedIds.clear();
             friendshipId = friendship.getFriendshipId();
+            relatedIds.add(friendship.getUserId());
+            relatedIds.add(friendship.getFriendId());
             if (friendship.getStatus().equals("ACCEPTED")) {
                 friendshipService.acceptFriendRequest(friendship.getFriendshipId());
                 status = "ACCEPTED";
@@ -202,9 +215,6 @@ public class WebSocketController implements WebSocketHandler {
         message.put("id", uniqueId);
         message.put("friendshipId", friendshipId);
         message.put("status", status);
-        List <String> relatedIds = new ArrayList<>();
-        relatedIds.add(friendship.getUserId());
-        relatedIds.add(friendship.getFriendId()); 
         broadcastToSubscribers("friendshipService", relatedIds, message);
     }
 
