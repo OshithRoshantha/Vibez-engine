@@ -1,10 +1,10 @@
 package com.vibez.engine.WebSocket;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.CloseStatus;
@@ -31,7 +31,8 @@ import com.vibez.engine.Service.UserService;
 public class WebSocketController implements WebSocketHandler {
 
     private static final Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
-    private static final Map<String, List<WebSocketSession>> subscriptions = new ConcurrentHashMap<>();
+    private Map<String, List<WebSocketSession>> subscriptions = new HashMap<>();
+    
 
     @Autowired
     private MessageService messageService;
@@ -89,17 +90,23 @@ public class WebSocketController implements WebSocketHandler {
 
     private void handleSubscribe(WebSocketSession session, Map<String, Object> messageData) {
         String topic = (String) messageData.get("topic");
-        subscriptions.computeIfAbsent(topic, k -> new CopyOnWriteArrayList<>()).add(session);
+        String userId = (String) messageData.get("userId");
+        String topicWithUserId = topic + "_" + userId;
+        subscriptions.computeIfAbsent(topicWithUserId, k -> new ArrayList<>()).add(session);
     }
 
-    private void broadcastToSubscribers(String topic, Object message) {
-        List<WebSocketSession> subscribers = subscriptions.get(topic);
-        if (subscribers != null) {
-            for (WebSocketSession subscriber : subscribers) {
-                try {
-                    subscriber.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
-                } catch (Exception e) {
-                    System.out.println("Error delivering message to subscriber: " + e.getMessage());
+
+    private void broadcastToSubscribers(String topic, List<String> userIds, Object message) {
+        for (String userId : userIds) {
+            String topicWithUserId = topic + "_" + userId;
+            List<WebSocketSession> subscribers = subscriptions.get(topicWithUserId);
+            if (subscribers != null) {
+                for (WebSocketSession subscriber : subscribers) {
+                    try {
+                        subscriber.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
+                    } catch (Exception e) {
+                        System.out.println("Error delivering message to subscriber: " + e.getMessage());
+                    }
                 }
             }
         }
