@@ -34,6 +34,10 @@ public class UserImplement implements UserService {
             return false;
         }
         String hashedPassword = encoder.encode(newUser.getPassword());
+        List<String> directChats = new ArrayList<>();
+        List<String> groups = new ArrayList<>();
+        newUser.setDirectChatIds(directChats);
+        newUser.setGroupIds(groups);
         newUser.setPassword(hashedPassword);
         userRepo.save(newUser);
         return true;

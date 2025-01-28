@@ -17,6 +17,7 @@ import com.vibez.engine.Model.User;
 import com.vibez.engine.Repository.DirectChatRepo;
 import com.vibez.engine.Repository.GroupRepo;
 import com.vibez.engine.Repository.MessageRepo;
+import com.vibez.engine.Repository.UserRepo;
 import com.vibez.engine.Service.DirectChatService;
 import com.vibez.engine.Service.GroupsService;
 import com.vibez.engine.Service.MessageService;
@@ -36,6 +37,9 @@ public class MessageImplement implements MessageService {
 
     @Autowired
     private  GroupRepo groupRepo;
+
+    @Autowired
+    private UserRepo UserRepo;
 
     @Autowired
     private  DirectChatService directChatService;
@@ -90,6 +94,18 @@ public class MessageImplement implements MessageService {
             }
             else {
                 DirectChat directChat = directChatService.getDirectChatById(chatId);
+
+                User user1 = userService.getUserById(message.getSenderId());
+                User user2 = userService.getUserById(message.getReceiverId());
+                if (!user1.getDirectChatIds().contains(chatId)){
+                    user1.getDirectChatIds().add(chatId);
+                    UserRepo.save(user1);
+                }
+                if (!user2.getDirectChatIds().contains(chatId)){
+                    user2.getDirectChatIds().add(chatId);
+                    UserRepo.save(user2);
+                }
+
                 directChat.setLastUpdate(LocalDateTime.now());
                 directChat.setLastMessage(message.getMessage());
                 User sender = userService.getUserById(message.getSenderId());
