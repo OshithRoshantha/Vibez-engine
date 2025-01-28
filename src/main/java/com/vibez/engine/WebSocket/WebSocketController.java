@@ -150,8 +150,8 @@ public class WebSocketController implements WebSocketHandler {
             message.put("id", uniqueId);
             message.put("groupId", groupId);
             Groups currentGroup = groupsService.getGroupById(groupId);
-            List <String> memberIds = currentGroup.getMemberIds();
-            broadcastToSubscribers("groupService", memberIds, message);
+            List <String> memberIds2 = currentGroup.getMemberIds();
+            broadcastToSubscribers("groupService", memberIds2, message);
             return;
         }
     }
