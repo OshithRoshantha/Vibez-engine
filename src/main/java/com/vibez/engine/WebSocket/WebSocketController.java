@@ -118,21 +118,23 @@ public class WebSocketController implements WebSocketHandler {
     private void handleGroups(Map<String, Object> messageData) {
         String uniqueId = "message_" + System.currentTimeMillis();
         String groupId = null;
+        List <String> memberIds = new ArrayList<>();
         if (messageData.get("groupAction") != null){
             GroupAction groupAction = objectMapper.convertValue(messageData.get("groupAction"), GroupAction.class);
             if (groupAction.getAction().equals("addUsers")){
                 groupId = groupsService.addUsersToGroup(groupAction.getGroupId(), groupAction.getUserIds());
+                memberIds = groupsService.getGroupById(groupId).getMemberIds();
             } else if (groupAction.getAction().equals("removeUsers")){
+                memberIds = groupsService.getGroupById(groupId).getMemberIds();
                 groupId = groupsService.removeUsersFromGroup(groupAction.getGroupId(), groupAction.getUserIds());
             } else if (groupAction.getAction().equals("deleteGroup")){
+                memberIds = groupsService.getGroupById(groupId).getMemberIds();
                 groupId = groupsService.deleteGroup(groupAction.getGroupId());
             }
             Map<String, Object> message = new HashMap<>();
             message.put("action", "groupService");
             message.put("id", uniqueId);
             message.put("groupId", groupId);
-            Groups currentGroup = groupsService.getGroupById(groupId);
-            List <String> memberIds = currentGroup.getMemberIds();
             broadcastToSubscribers("groupService", memberIds, message);
             return;
         }
