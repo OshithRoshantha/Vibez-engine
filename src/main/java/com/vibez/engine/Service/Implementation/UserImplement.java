@@ -125,4 +125,13 @@ public class UserImplement implements UserService {
         }
         return existingUser.getGroupIds();
     }
+
+    public boolean deleteUser(String userId) {
+        User existingUser = userRepo.findByUserId(userId);
+        if (existingUser == null) {
+            return false;
+        }
+        userRepo.delete(existingUser);
+        return true;
+    }
 }

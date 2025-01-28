@@ -77,7 +77,6 @@ public class MessageController {
         return ResponseEntity.ok().build();
     }
 
-
     @GetMapping("/message/history/{userId}/{receiverId}") //get message history
     public ResponseEntity<List<String>> getMessageHistory(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId, @PathVariable String receiverId){
         return ResponseEntity.ok(messageService.getMessageHistory(userId, receiverId));

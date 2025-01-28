@@ -16,4 +16,5 @@ public interface  UserService {
     List<String> getFavoriteChatsByUser(String userId);
     List<String> getDirectChatsByUser(String userId);
     List<String> getGroupsByUser(String userId);
+    boolean deleteUser(String userId);
 }
