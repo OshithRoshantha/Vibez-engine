@@ -134,4 +134,24 @@ public class UserImplement implements UserService {
         userRepo.delete(existingUser);
         return true;
     }
+
+    public boolean deleteDirectChats(String userId) {
+        User existingUser = userRepo.findByUserId(userId);
+        if (existingUser == null) {
+            return false;
+        }
+        existingUser.setDirectChatIds(null);
+        userRepo.save(existingUser);
+        return true;
+    }
+
+    public boolean deleteGroupChats(String userId) {
+        User existingUser = userRepo.findByUserId(userId);
+        if (existingUser == null) {
+            return false;
+        }
+        existingUser.setGroupIds(null);
+        userRepo.save(existingUser);
+        return true;
+    }
 }

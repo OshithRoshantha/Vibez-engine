@@ -105,4 +105,15 @@ public class UserController {
     public ResponseEntity<Boolean> deleteUser(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId){
         return ResponseEntity.ok(userService.deleteUser(userId));
     }
+
+    @PutMapping("/delete/directChats/{userId}")
+    public ResponseEntity<Boolean> deleteDirectChats(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId){
+        return ResponseEntity.ok(userService.deleteDirectChats(userId));
+    }
+
+    @PutMapping("/delete/groupChats/{userId}")
+    public ResponseEntity<Boolean> deleteGroupChats(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId){
+        return ResponseEntity.ok(userService.deleteGroupChats(userId));
+    }
+
 }
