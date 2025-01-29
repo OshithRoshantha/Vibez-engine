@@ -329,25 +329,31 @@ public class WebSocketController implements WebSocketHandler {
                 User otherUserObj = userRepo.findByUserId(otherUser);
                 otherUserObj.getDirectChatIds().remove(directChatId);
                 userRepo.save(otherUserObj);
-                directChatRepo.deleteById(directChatId);
                 relatedIds.add(otherUser);
+                directChatRepo.deleteById(directChatId);
             }
             message.put("typeOfAction", "directChat");
             broadcastToSubscribers("accountDelete", relatedIds, message);
         }
         if (groups != null){
+            List <String> groupIds = new ArrayList<>();
             for (String groupId : groups) {
                 Groups group = groupRepo.findByGroupId(groupId);
+                groupIds.add(groupId);
                 group.getMemberIds().remove(user.getUserId());
                 groupRepo.save(group);
             }
             message.put("typeOfAction", "groupChat");
+            message.put("groupId", groupIds);
         }
         if (products != null){
+            List <String> productIds = new ArrayList<>();
             for (Marketplace product : products) {
+                productIds.add(product.getProductId());
                 MarketplaceRepo.deleteById(product.getProductId());
             }
             message.put("typeOfAction", "marketplace");
+            message.put("productId", productIds);
             broadcastToSubscribers("accountDelete", userIds, message);
         }
         userRepo.delete(existingUser);
