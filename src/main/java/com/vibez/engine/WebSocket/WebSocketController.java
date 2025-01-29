@@ -23,6 +23,7 @@ import com.vibez.engine.Model.Message;
 import com.vibez.engine.Model.User;
 import com.vibez.engine.Model.UserUpdate;
 import com.vibez.engine.Repository.DirectChatRepo;
+import com.vibez.engine.Repository.FriendshipRepo;
 import com.vibez.engine.Repository.GroupRepo;
 import com.vibez.engine.Repository.MarketplaceRepo;
 import com.vibez.engine.Repository.UserRepo;
@@ -68,6 +69,9 @@ public class WebSocketController implements WebSocketHandler {
 
     @Autowired
     private MarketplaceRepo MarketplaceRepo;
+
+    @Autowired
+    private FriendshipRepo FriendshipRepo;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -308,17 +312,30 @@ public class WebSocketController implements WebSocketHandler {
             userIds.add(user.getUserId());
         }
         User user = objectMapper.convertValue(messageData.get("body"), User.class);
-        String uniqeId = "message_" + System.currentTimeMillis();
         Map<String, Object> message = new HashMap<>();
-        message.put("id", uniqeId);
         message.put("action", "accountDelete");
         User existingUser = userRepo.findByUserId(user.getUserId());
         List <String> relatedIds = new ArrayList<>();
         List <Marketplace> products = MarketplaceRepo.findBySellerId(user.getUserId());
         List <String> directChats = existingUser.getDirectChatIds();
         List <String> groups = existingUser.getGroupIds();
+        List <String> friendships = friendshipService.getLinkedProfiles(user.getUserId());
 
+        if(friendships != null){
+            String uniqeId = "message_" + System.currentTimeMillis();
+            message.put("id", uniqeId);
+            for (String friendshipId : friendships) {
+                Friendship friendship = friendshipService.getFriendship(friendshipId);
+                relatedIds.add(friendship.getUserId());
+                relatedIds.add(friendship.getFriendId());
+                FriendshipRepo.deleteById(friendshipId);
+            }
+            message.put("typeOfAction", "friendship");
+            broadcastToSubscribers("accountDelete", relatedIds, message);
+        }
         if(directChats != null){
+            String uniqeId = "message_" + System.currentTimeMillis();
+            message.put("id", uniqeId);
             for (String directChatId : directChats) {
                 DirectChat  directChat = directChatRepo.findByChatId(directChatId);
                 List <String> memberIds = directChat.getMemberIds();
@@ -336,15 +353,24 @@ public class WebSocketController implements WebSocketHandler {
             broadcastToSubscribers("accountDelete", relatedIds, message);
         }
         if (groups != null){
+            String uniqeId = "message_" + System.currentTimeMillis();
+            message.put("id", uniqeId);
             List <String> groupIds = new ArrayList<>();
+            List <String> allMembers = new ArrayList<>();
             for (String groupId : groups) {
                 Groups group = groupRepo.findByGroupId(groupId);
                 groupIds.add(groupId);
+                allMembers.addAll(group.getMemberIds());
                 group.getMemberIds().remove(user.getUserId());
                 groupRepo.save(group);
             }
+            message.put("typeOfAction", "groupChat");
+            message.put("groupIds", groupIds);
+            broadcastToSubscribers("accountDelete", allMembers, message);
         }
         if (products != null){
+            String uniqeId = "message_" + System.currentTimeMillis();
+            message.put("id", uniqeId);
             List <String> productIds = new ArrayList<>();
             for (Marketplace product : products) {
                 productIds.add(product.getProductId());
