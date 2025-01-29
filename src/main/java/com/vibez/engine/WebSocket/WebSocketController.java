@@ -363,9 +363,11 @@ public class WebSocketController implements WebSocketHandler {
             message.put("id", uniqeId);
             List <String> groupIds = new ArrayList<>();
             List <String> allMembers = new ArrayList<>();
+            List <String> deletedGroups = new ArrayList<>();
             for (String groupId : groups) {
                 Groups group = groupRepo.findByGroupId(groupId);
                 if (group.getCreatorId().equals(user.getUserId())){
+                    deletedGroups.add(groupId);
                     groupRepo.deleteByGroupId(groupId);
                 }
                 groupIds.add(groupId);
@@ -375,6 +377,7 @@ public class WebSocketController implements WebSocketHandler {
             }
             message.put("typeOfAction", "groupChat");
             message.put("groupIds", groupIds);
+            message.put("deletedGroups", deletedGroups);
             broadcastToSubscribers("accountDelete", allMembers, message);
         }
         if (products != null){
