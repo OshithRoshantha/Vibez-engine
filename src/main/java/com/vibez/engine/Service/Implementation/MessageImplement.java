@@ -64,7 +64,8 @@ public class MessageImplement implements MessageService {
             Groups group = groupsService.getGroupById(message.getGroupId());
             for (String member : group.getMemberIds()) {
                 User user = userService.getUserById(member);
-                if (user.getGroupIds().add(message.getGroupId())) { 
+                if (!user.getGroupIds().contains(message.getGroupId())){ 
+                    user.getGroupIds().add(message.getGroupId());
                     UserRepo.save(user);
                 }
             }            

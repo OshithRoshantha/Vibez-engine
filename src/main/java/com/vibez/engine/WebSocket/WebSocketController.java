@@ -339,6 +339,11 @@ public class WebSocketController implements WebSocketHandler {
             message.put("id", uniqeId);
             for (String directChatId : directChats) {
                 DirectChat  directChat = directChatRepo.findByChatId(directChatId);
+                List <String> messageIds = directChat.getMessageIds();
+                for (String messageId : messageIds) {
+                    Message messageToDelete = messageService.getMessage(messageId);
+                    messageToDelete.setRead(true);
+                }
                 List <String> memberIds = directChat.getMemberIds();
                 String otherUser = memberIds.stream()
                                         .filter(id -> !id.equals(user.getUserId()))
