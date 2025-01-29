@@ -140,7 +140,7 @@ public class UserImplement implements UserService {
         if (existingUser == null) {
             return false;
         }
-        existingUser.setDirectChatIds(null);
+        existingUser.getDirectChatIds().clear();
         userRepo.save(existingUser);
         return true;
     }
@@ -150,7 +150,7 @@ public class UserImplement implements UserService {
         if (existingUser == null) {
             return false;
         }
-        existingUser.setGroupIds(null);
+        existingUser.getGroupIds().clear();
         userRepo.save(existingUser);
         return true;
     }
