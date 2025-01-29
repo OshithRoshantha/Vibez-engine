@@ -4,6 +4,7 @@ import java.util.List;
 import com.vibez.engine.Model.User;
 
 public interface  UserService {
+    List<User> getAllUsers();
     boolean createUser(User newUser);
     String authenticateUser(User existingUser);
     User getUserProfile(String email);
@@ -16,7 +17,6 @@ public interface  UserService {
     List<String> getFavoriteChatsByUser(String userId);
     List<String> getDirectChatsByUser(String userId);
     List<String> getGroupsByUser(String userId);
-    boolean deleteUser(String userId, String email);
     boolean deleteDirectChats(String userId);
     boolean deleteGroupChats(String userId);
 }

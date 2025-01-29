@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -99,11 +98,6 @@ public class UserController {
     @GetMapping("/allGroups/{userId}")
     public ResponseEntity<List<String>> getGroupsByUser(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId){
         return ResponseEntity.ok(userService.getGroupsByUser(userId));
-    }
-
-    @DeleteMapping("/delete/{userId}/{email}")
-    public ResponseEntity<Boolean> deleteUser(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId, @PathVariable String email){
-        return ResponseEntity.ok(userService.deleteUser(userId, email));
     }
 
     @PutMapping("/delete/directChats/{userId}")

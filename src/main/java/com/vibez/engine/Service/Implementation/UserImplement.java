@@ -17,6 +17,7 @@ import com.vibez.engine.Service.UserService;
 
 @Service
 public class UserImplement implements UserService {
+
     @Autowired
     private UserRepo userRepo;
 
@@ -27,6 +28,10 @@ public class UserImplement implements UserService {
     AuthenticationManager authenticationManager;
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
+    public List<User> getAllUsers() {
+        return userRepo.findAll();
+    }
     
     public boolean createUser(User newUser) {
         User existingUser = userRepo.findByEmail(newUser.getEmail());
@@ -130,24 +135,12 @@ public class UserImplement implements UserService {
         return existingUser.getGroupIds();
     }
 
-    public boolean deleteUser(String userId, String email) {
-        User existingUser = userRepo.findByUserId(userId);
-        if (existingUser == null) {
-            return false;
-        }
-        if (!existingUser.getEmail().equals(email)) {
-            return false;
-        }
-        userRepo.delete(existingUser);
-        return true;
-    }
-
     public boolean deleteDirectChats(String userId) {
         User existingUser = userRepo.findByUserId(userId);
         if (existingUser == null) {
             return false;
         }
-        existingUser.setDirectChatIds(null);
+        existingUser.getDirectChatIds().clear();
         userRepo.save(existingUser);
         return true;
     }
@@ -157,7 +150,7 @@ public class UserImplement implements UserService {
         if (existingUser == null) {
             return false;
         }
-        existingUser.setGroupIds(null);
+        existingUser.getGroupIds().clear();
         userRepo.save(existingUser);
         return true;
     }

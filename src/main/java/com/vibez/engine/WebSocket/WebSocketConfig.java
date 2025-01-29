@@ -18,7 +18,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(WebSocketController(), "/vibez-websocket")
-                .setAllowedOrigins("http://localhost:5173")
+                .setAllowedOrigins("*")
                 .addInterceptors(jwtHandshakeInterceptor);
     }
 

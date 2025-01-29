@@ -15,7 +15,6 @@ import com.vibez.engine.Model.User;
 import com.vibez.engine.Repository.FriendshipRepo;
 import com.vibez.engine.Repository.GroupRepo;
 import com.vibez.engine.Repository.UserRepo;
-import com.vibez.engine.Service.FriendshipService;
 import com.vibez.engine.Service.GroupsService;
 import com.vibez.engine.Service.UserService;
 
@@ -119,14 +118,17 @@ public class GroupImplement implements GroupsService{
 
     public String changeGroup(Groups updatedGroup){
         Groups group = groupRepo.findByGroupId(updatedGroup.getGroupId());
+        String groupIcon = group.getGroupIcon();
         if (updatedGroup.getGroupIcon() != null){
             group.setGroupIcon(updatedGroup.getGroupIcon());
         }
         if (updatedGroup.getGroupName() != null){
             group.setGroupName(updatedGroup.getGroupName());
+            group.setGroupIcon(groupIcon);
         }
         if (updatedGroup.getGroupDesc() != null){
             group.setGroupDesc(updatedGroup.getGroupDesc());
+            group.setGroupIcon(groupIcon);
         }
         groupRepo.save(group);
         return updatedGroup.getGroupId();

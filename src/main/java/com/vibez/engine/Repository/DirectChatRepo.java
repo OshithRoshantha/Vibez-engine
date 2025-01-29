@@ -12,5 +12,5 @@ public interface  DirectChatRepo extends MongoRepository<DirectChat, String> {
     @Query("{ 'memberIds': { $all: [?0, ?1] } }")
     DirectChat findByBothMemberIds(String userId1, String userId2);
     List<DirectChat> findByMemberIdsContaining(String userId);
-
+    DirectChat deleteByChatId(String chatId);
 }
