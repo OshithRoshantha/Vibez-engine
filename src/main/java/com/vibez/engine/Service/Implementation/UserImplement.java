@@ -145,14 +145,15 @@ public class UserImplement implements UserService {
         return existingUser.getGroupIds();
     }
 
-    public boolean deleteUser(String userId, String email) {
+    public List<String> deleteUser(String userId, String email) {
         User existingUser = userRepo.findByUserId(userId);
         if (existingUser == null) {
-            return false;
+            return null;
         }
         if (!existingUser.getEmail().equals(email)) {
-            return false;
+            return null;
         }
+        List <String> relatedIds = new ArrayList<>();
         List <String> directChats = existingUser.getDirectChatIds();
         List <String> groups = existingUser.getGroupIds();
         for (String directChatId : directChats) {
@@ -166,6 +167,7 @@ public class UserImplement implements UserService {
             otherUserObj.getDirectChatIds().remove(directChatId);
             userRepo.save(otherUserObj);
             directChatRepo.deleteById(directChatId);
+            relatedIds.add(otherUser);
         }
         for (String groupId : groups) {
             Groups group = groupRepo.findByGroupId(groupId);
@@ -173,7 +175,7 @@ public class UserImplement implements UserService {
             groupRepo.save(group);
         }
         userRepo.delete(existingUser);
-        return true;
+        return relatedIds;
     }
 
     public boolean deleteDirectChats(String userId) {

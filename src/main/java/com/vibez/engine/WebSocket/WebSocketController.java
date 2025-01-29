@@ -286,7 +286,12 @@ public class WebSocketController implements WebSocketHandler {
     }
 
     private void handleAccountDelete(Map<String, Object> messageData) {
-        
+        User user = objectMapper.convertValue(messageData.get("body"), User.class);
+        String uniqeId = "message_" + System.currentTimeMillis();
+        List <String> userIds = userService.deleteUser(user.getUserId(), user.getEmail());
+        Map<String, Object> message = new HashMap<>();
+        message.put("id", uniqeId);
+        broadcastToSubscribers("accountDelete", userIds, message);
     }
 
     @Override
