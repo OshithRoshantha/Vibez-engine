@@ -343,8 +343,6 @@ public class WebSocketController implements WebSocketHandler {
                 group.getMemberIds().remove(user.getUserId());
                 groupRepo.save(group);
             }
-            message.put("typeOfAction", "groupChat");
-            message.put("groupId", groupIds);
         }
         if (products != null){
             List <String> productIds = new ArrayList<>();
