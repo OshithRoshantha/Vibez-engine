@@ -8,5 +8,5 @@ import com.vibez.engine.Model.Groups;
 public interface GroupRepo extends  MongoRepository<Groups, String>{
     List<Groups> findByMemberIds(String userId);
     Groups findByGroupId(String groupId);
-    Groups deleteByGroupId(String groupId);
+    void deleteByGroupId(String groupId);
 }
