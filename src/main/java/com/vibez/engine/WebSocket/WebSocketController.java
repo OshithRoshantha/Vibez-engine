@@ -302,14 +302,22 @@ public class WebSocketController implements WebSocketHandler {
     }
 
     private void handleAccountDelete(Map<String, Object> messageData) {
+        List <User> users = userService.getAllUsers();
+        List <String> userIds = new ArrayList<>();
+        for (User user : users){
+            userIds.add(user.getUserId());
+        }
         User user = objectMapper.convertValue(messageData.get("body"), User.class);
         String uniqeId = "message_" + System.currentTimeMillis();
-        String typeOfAction = null;
+        Map<String, Object> message = new HashMap<>();
+        message.put("id", uniqeId);
+        message.put("action", "accountDelete");
         User existingUser = userRepo.findByUserId(user.getUserId());
+        List <String> relatedIds = new ArrayList<>();
         List <Marketplace> products = MarketplaceRepo.findBySellerId(user.getUserId());
         List <String> directChats = existingUser.getDirectChatIds();
         List <String> groups = existingUser.getGroupIds();
-        
+
         if(directChats != null){
             for (String directChatId : directChats) {
                 DirectChat  directChat = directChatRepo.findByChatId(directChatId);
@@ -322,30 +330,27 @@ public class WebSocketController implements WebSocketHandler {
                 otherUserObj.getDirectChatIds().remove(directChatId);
                 userRepo.save(otherUserObj);
                 directChatRepo.deleteById(directChatId);
-
-                typeOfAction = "directChat";
+                relatedIds.add(otherUser);
             }
+            message.put("typeOfAction", "directChat");
+            broadcastToSubscribers("accountDelete", relatedIds, message);
         }
         if (groups != null){
             for (String groupId : groups) {
                 Groups group = groupRepo.findByGroupId(groupId);
                 group.getMemberIds().remove(user.getUserId());
                 groupRepo.save(group);
-                typeOfAction = "groupChat";
             }
+            message.put("typeOfAction", "groupChat");
         }
         if (products != null){
             for (Marketplace product : products) {
                 MarketplaceRepo.deleteById(product.getProductId());
-                typeOfAction = "marketplace";
             }
+            message.put("typeOfAction", "marketplace");
+            broadcastToSubscribers("accountDelete", userIds, message);
         }
-
         userRepo.delete(existingUser);
-        Map<String, Object> message = new HashMap<>();
-        message.put("id", uniqeId);
-        message.put("typeOfAction", typeOfAction);
-        broadcastToSubscribers("accountDelete", relatedIds, message);
     }
 
     @Override
