@@ -125,10 +125,10 @@ public class WebSocketController implements WebSocketHandler {
                 groupId = groupsService.addUsersToGroup(groupAction.getGroupId(), groupAction.getUserIds());
                 memberIds = groupsService.getGroupById(groupId).getMemberIds();
             } else if (groupAction.getAction().equals("removeUsers")){
-                memberIds = groupsService.getGroupById(groupId).getMemberIds();
+                memberIds = groupsService.getGroupById(groupAction.getGroupId()).getMemberIds();
                 groupId = groupsService.removeUsersFromGroup(groupAction.getGroupId(), groupAction.getUserIds());
             } else if (groupAction.getAction().equals("deleteGroup")){
-                memberIds = groupsService.getGroupById(groupId).getMemberIds();
+                memberIds = groupsService.getGroupById(groupAction.getGroupId()).getMemberIds();
                 groupId = groupsService.deleteGroup(groupAction.getGroupId());
             }
             Map<String, Object> message = new HashMap<>();
