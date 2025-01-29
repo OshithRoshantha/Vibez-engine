@@ -84,6 +84,9 @@ public class WebSocketController implements WebSocketHandler {
             case "marketplaceService":
                 handleMarketplace(messageData);
                 break;
+            case "accountDelete":
+                handleAccountDelete(messageData);
+                break;
             case "subscribe":
                 handleSubscribe(session, messageData);
                 break;
@@ -280,6 +283,10 @@ public class WebSocketController implements WebSocketHandler {
         message.put("body", productId);
         message.put("productAction", productAction);
         broadcastToSubscribers("marketplaceService", userIds, message);
+    }
+
+    private void handleAccountDelete(Map<String, Object> messageData) {
+        
     }
 
     @Override
