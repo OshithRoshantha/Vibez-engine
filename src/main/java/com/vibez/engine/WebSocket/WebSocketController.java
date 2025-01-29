@@ -365,6 +365,9 @@ public class WebSocketController implements WebSocketHandler {
             List <String> allMembers = new ArrayList<>();
             for (String groupId : groups) {
                 Groups group = groupRepo.findByGroupId(groupId);
+                if (group.getCreatorId().equals(user.getUserId())){
+                    groupRepo.deleteByGroupId(groupId);
+                }
                 groupIds.add(groupId);
                 allMembers.addAll(group.getMemberIds());
                 group.getMemberIds().remove(user.getUserId());
