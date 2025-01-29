@@ -154,4 +154,14 @@ public class UserImplement implements UserService {
         userRepo.save(existingUser);
         return true;
     }
+
+    public boolean deleteChat(String userId, String chatId) {
+        User existingUser = userRepo.findByUserId(userId);
+        if (existingUser == null) {
+            return false;
+        }
+        existingUser.getDirectChatIds().remove(chatId);
+        userRepo.save(existingUser);
+        return true;
+    }
 }

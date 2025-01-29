@@ -105,6 +105,11 @@ public class UserController {
         return ResponseEntity.ok(userService.deleteDirectChats(userId));
     }
 
+    @PutMapping("/delete/chat/{chatId}/{userId}")
+    public ResponseEntity<Boolean> deleteChat(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId, @PathVariable String chatId){
+        return ResponseEntity.ok(userService.deleteChat(userId, chatId));
+    }
+
     @PutMapping("/delete/groupChats/{userId}")
     public ResponseEntity<Boolean> deleteGroupChats(@RequestHeader(value = "Authorization", required = true) String token, @PathVariable String userId){
         return ResponseEntity.ok(userService.deleteGroupChats(userId));

@@ -19,4 +19,5 @@ public interface  UserService {
     List<String> getGroupsByUser(String userId);
     boolean deleteDirectChats(String userId);
     boolean deleteGroupChats(String userId);
+    boolean deleteChat(String userId, String chatId);
 }
