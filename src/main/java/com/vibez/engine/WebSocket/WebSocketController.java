@@ -22,6 +22,9 @@ import com.vibez.engine.Model.Marketplace;
 import com.vibez.engine.Model.Message;
 import com.vibez.engine.Model.User;
 import com.vibez.engine.Model.UserUpdate;
+import com.vibez.engine.Repository.DirectChatRepo;
+import com.vibez.engine.Repository.GroupRepo;
+import com.vibez.engine.Repository.UserRepo;
 import com.vibez.engine.Service.DirectChatService;
 import com.vibez.engine.Service.FriendshipService;
 import com.vibez.engine.Service.GroupsService;
@@ -52,6 +55,15 @@ public class WebSocketController implements WebSocketHandler {
 
     @Autowired
     private MarketplaceService marketplaceService;
+
+    @Autowired
+    private UserRepo userRepo;
+
+    @Autowired
+    private GroupRepo groupRepo;
+
+    @Autowired
+    private DirectChatRepo directChatRepo;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -288,10 +300,38 @@ public class WebSocketController implements WebSocketHandler {
     private void handleAccountDelete(Map<String, Object> messageData) {
         User user = objectMapper.convertValue(messageData.get("body"), User.class);
         String uniqeId = "message_" + System.currentTimeMillis();
-        List <String> userIds = userService.deleteUser(user.getUserId(), user.getEmail());
+        String typeOfAction = null;
+        User existingUser = userRepo.findByUserId(user.getUserId());
+
+        List <String> directChats = existingUser.getDirectChatIds();
+        List <String> groups = existingUser.getGroupIds();
+        for (String directChatId : directChats) {
+            DirectChat  directChat = directChatRepo.findByChatId(directChatId);
+            List <String> memberIds = directChat.getMemberIds();
+            String otherUser = memberIds.stream()
+                                    .filter(id -> !id.equals(user.getUserId()))
+                                    .findFirst()
+                                    .orElse(null); 
+            User otherUserObj = userRepo.findByUserId(otherUser);
+            otherUserObj.getDirectChatIds().remove(directChatId);
+            userRepo.save(otherUserObj);
+            directChatRepo.deleteById(directChatId);
+
+            typeOfAction = "directChat";
+        }
+        for (String groupId : groups) {
+            Groups group = groupRepo.findByGroupId(groupId);
+            group.getMemberIds().remove(user.getUserId());
+            groupRepo.save(group);
+            typeOfAction = "groupChat";
+        }
+        
+        
+        userRepo.delete(existingUser);
         Map<String, Object> message = new HashMap<>();
         message.put("id", uniqeId);
-        broadcastToSubscribers("accountDelete", userIds, message);
+        message.put("typeOfAction", typeOfAction);
+        broadcastToSubscribers("accountDelete", relatedIds, message);
     }
 
     @Override

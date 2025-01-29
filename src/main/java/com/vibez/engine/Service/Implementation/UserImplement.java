@@ -10,11 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.vibez.engine.Model.DirectChat;
-import com.vibez.engine.Model.Groups;
 import com.vibez.engine.Model.User;
-import com.vibez.engine.Repository.DirectChatRepo;
-import com.vibez.engine.Repository.GroupRepo;
 import com.vibez.engine.Repository.UserRepo;
 import com.vibez.engine.Service.JwtService;
 import com.vibez.engine.Service.UserService;
@@ -24,12 +20,6 @@ public class UserImplement implements UserService {
 
     @Autowired
     private UserRepo userRepo;
-
-    @Autowired
-    private GroupRepo groupRepo;
-
-    @Autowired
-    private DirectChatRepo directChatRepo;
 
     @Autowired
     private JwtService jwtService;
@@ -143,39 +133,6 @@ public class UserImplement implements UserService {
             return new ArrayList<>();
         }
         return existingUser.getGroupIds();
-    }
-
-    public List<String> deleteUser(String userId, String email) {
-        User existingUser = userRepo.findByUserId(userId);
-        if (existingUser == null) {
-            return null;
-        }
-        if (!existingUser.getEmail().equals(email)) {
-            return null;
-        }
-        List <String> relatedIds = new ArrayList<>();
-        List <String> directChats = existingUser.getDirectChatIds();
-        List <String> groups = existingUser.getGroupIds();
-        for (String directChatId : directChats) {
-            DirectChat  directChat = directChatRepo.findByChatId(directChatId);
-            List <String> memberIds = directChat.getMemberIds();
-            String otherUser = memberIds.stream()
-                                    .filter(id -> !id.equals(userId))
-                                    .findFirst()
-                                    .orElse(null); 
-            User otherUserObj = userRepo.findByUserId(otherUser);
-            otherUserObj.getDirectChatIds().remove(directChatId);
-            userRepo.save(otherUserObj);
-            directChatRepo.deleteById(directChatId);
-            relatedIds.add(otherUser);
-        }
-        for (String groupId : groups) {
-            Groups group = groupRepo.findByGroupId(groupId);
-            group.getMemberIds().remove(userId);
-            groupRepo.save(group);
-        }
-        userRepo.delete(existingUser);
-        return relatedIds;
     }
 
     public boolean deleteDirectChats(String userId) {
