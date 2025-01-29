@@ -315,6 +315,7 @@ public class WebSocketController implements WebSocketHandler {
         Map<String, Object> message = new HashMap<>();
         message.put("action", "accountDelete");
         User existingUser = userRepo.findByUserId(user.getUserId());
+        userRepo.delete(existingUser);
         List <String> relatedIds = new ArrayList<>();
         List <Marketplace> products = MarketplaceRepo.findBySellerId(user.getUserId());
         List <String> directChats = existingUser.getDirectChatIds();
@@ -347,7 +348,7 @@ public class WebSocketController implements WebSocketHandler {
                 otherUserObj.getDirectChatIds().remove(directChatId);
                 userRepo.save(otherUserObj);
                 relatedIds.add(otherUser);
-                directChatRepo.deleteById(directChatId);
+                directChatRepo.deleteByChatId(directChatId);
             }
             message.put("typeOfAction", "directChat");
             broadcastToSubscribers("accountDelete", relatedIds, message);
@@ -380,7 +381,6 @@ public class WebSocketController implements WebSocketHandler {
             message.put("productId", productIds);
             broadcastToSubscribers("accountDelete", userIds, message);
         }
-        userRepo.delete(existingUser);
     }
 
     @Override
