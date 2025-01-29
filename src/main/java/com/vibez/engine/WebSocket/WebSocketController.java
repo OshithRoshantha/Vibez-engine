@@ -253,7 +253,6 @@ public class WebSocketController implements WebSocketHandler {
             userIds.add(user.getUserId());
         }
         Marketplace product = objectMapper.convertValue(messageData.get("body"), Marketplace.class);
-        System.out.println(product);
         String uniqeId = "message_" + System.currentTimeMillis();
         String productId = null;
         String productAction = null;
@@ -262,6 +261,8 @@ public class WebSocketController implements WebSocketHandler {
             Marketplace newProduct = marketplaceService.addItem(product);
             productId = newProduct.getProductId();
             productAction = "ADDED";
+            userIds.clear();
+            userIds.add(product.getSellerId());
         }
         else if (product.getProductAction().equals("UPDATE")){
             Marketplace updatedProduct = marketplaceService.updateItem(product);
