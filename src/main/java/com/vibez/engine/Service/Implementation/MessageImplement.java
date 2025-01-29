@@ -62,6 +62,11 @@ public class MessageImplement implements MessageService {
 
         if (message.getGroupId() != null){
             Groups group = groupsService.getGroupById(message.getGroupId());
+            for (String member : group.getMemberIds()) {
+                User user = userService.getUserById(member);
+                if (user.getGroupIds().add(message.getGroupId())) 
+                    UserRepo.save(user);
+            }            
             group.setLastUpdate(LocalDateTime.now());
             group.setLastMessage(message.getMessage());
             User sender = userService.getUserById(message.getSenderId());
@@ -94,7 +99,6 @@ public class MessageImplement implements MessageService {
             }
             else {
                 DirectChat directChat = directChatService.getDirectChatById(chatId);
-
                 User user1 = userService.getUserById(message.getSenderId());
                 User user2 = userService.getUserById(message.getReceiverId());
                 if (!user1.getDirectChatIds().contains(chatId)){
@@ -105,7 +109,6 @@ public class MessageImplement implements MessageService {
                     user2.getDirectChatIds().add(chatId);
                     UserRepo.save(user2);
                 }
-
                 directChat.setLastUpdate(LocalDateTime.now());
                 directChat.setLastMessage(message.getMessage());
                 User sender = userService.getUserById(message.getSenderId());
