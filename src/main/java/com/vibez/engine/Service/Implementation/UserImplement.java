@@ -25,6 +25,9 @@ public class UserImplement implements UserService {
     private JwtService jwtService;
 
     @Autowired
+    private OnboardChat onboardChat;
+
+    @Autowired
     AuthenticationManager authenticationManager;
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
@@ -45,6 +48,7 @@ public class UserImplement implements UserService {
         newUser.setGroupIds(groups);
         newUser.setPassword(hashedPassword);
         userRepo.save(newUser);
+        onboardChat.sendGreetings(newUser.getUserId());
         return true;
     }
 
