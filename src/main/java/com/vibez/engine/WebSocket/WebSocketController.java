@@ -22,6 +22,7 @@ import com.vibez.engine.Model.Marketplace;
 import com.vibez.engine.Model.Message;
 import com.vibez.engine.Model.User;
 import com.vibez.engine.Model.UserUpdate;
+import com.vibez.engine.RabbitMQ.Producer.RabbitMQProducer;
 import com.vibez.engine.Repository.DirectChatRepo;
 import com.vibez.engine.Repository.FriendshipRepo;
 import com.vibez.engine.Repository.GroupRepo;
@@ -34,7 +35,6 @@ import com.vibez.engine.Service.MarketplaceService;
 import com.vibez.engine.Service.MessageService;
 import com.vibez.engine.Service.UserService;
 
-
 public class WebSocketController implements WebSocketHandler {
 
     private static final Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
@@ -42,6 +42,9 @@ public class WebSocketController implements WebSocketHandler {
     
     @Autowired
     private MessageService messageService;
+
+    @Autowired
+    private RabbitMQProducer rabbitMQProducer;
 
     @Autowired
     private UserService userService;
@@ -204,6 +207,9 @@ public class WebSocketController implements WebSocketHandler {
         message.put("id", uniqueId);
         message.put("sender",sendMessage.getSenderId());
         message.put("type", messageType);
+
+        rabbitMQProducer.send(message);
+
         broadcastToSubscribers("messageService", relatedIds, message);
     }
 
