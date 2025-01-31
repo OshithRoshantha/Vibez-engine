@@ -1,5 +1,3 @@
-package com.vibez.engine.Config;
-
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
@@ -35,3 +33,4 @@ public class RabbitMQConfig {
         return BindingBuilder.bind(queue()).to(exchange()).with(routingKey);
     }
 }
+
