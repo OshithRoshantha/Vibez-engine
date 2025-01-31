@@ -9,6 +9,7 @@ public class RabbitMQ {
     private String type;
     private List<String> relatedIds;
     private String chatId;
+    private String groupId;
 
     public String getChatId() {
         return chatId;
@@ -16,6 +17,14 @@ public class RabbitMQ {
 
     public void setChatId(String chatId) {
         this.chatId = chatId;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
     public List<String> getRelatedIds() {

@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketHandler;
@@ -22,6 +22,7 @@ import com.vibez.engine.Model.GroupAction;
 import com.vibez.engine.Model.Groups;
 import com.vibez.engine.Model.Marketplace;
 import com.vibez.engine.Model.Message;
+import com.vibez.engine.Model.RabbitMQ;
 import com.vibez.engine.Model.User;
 import com.vibez.engine.Model.UserUpdate;
 import com.vibez.engine.RabbitMQ.Producer.RabbitMQProducer;
@@ -37,7 +38,6 @@ import com.vibez.engine.Service.MarketplaceService;
 import com.vibez.engine.Service.MessageService;
 import com.vibez.engine.Service.UserService;
 
-@Controller
 public class WebSocketController implements WebSocketHandler {
 
     private static final Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
@@ -144,6 +144,18 @@ public class WebSocketController implements WebSocketHandler {
         }
     }
 
+    @RabbitListener(queues = "${rabbitmq.queue.name}")
+    public void consumeMessage(String message) {
+        RabbitMQ messageObj = null;
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            messageObj = objectMapper.readValue(message, RabbitMQ.class);
+            broadcastToSubscribers("messageService", messageObj.getRelatedIds(), messageObj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void handleGroups(Map<String, Object> messageData) {
         String uniqueId = "message_" + System.currentTimeMillis();
         String groupId = null;
@@ -212,8 +224,6 @@ public class WebSocketController implements WebSocketHandler {
         message.put("type", messageType);
         message.put("relatedIds", relatedIds);
         rabbitMQProducer.send(toJson(message));
-
-       // broadcastToSubscribers("messageService", rabbitMQ.getRelatedIds(), rabbitMQ);
     }
 
     private void handleFriendships(Map<String, Object> messageData) {
