@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketHandler;
@@ -36,6 +37,7 @@ import com.vibez.engine.Service.MarketplaceService;
 import com.vibez.engine.Service.MessageService;
 import com.vibez.engine.Service.UserService;
 
+@Controller
 public class WebSocketController implements WebSocketHandler {
 
     private static final Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
@@ -126,7 +128,7 @@ public class WebSocketController implements WebSocketHandler {
         subscriptions.computeIfAbsent(topicWithUserId, k -> new ArrayList<>()).add(session);
     }
 
-    private void broadcastToSubscribers(String topic, List<String> userIds, Object message) {
+    public void broadcastToSubscribers(String topic, List<String> userIds, Object message) {
         for (String userId : userIds) {
             String topicWithUserId = topic + "_" + userId;
             List<WebSocketSession> subscribers = subscriptions.get(topicWithUserId);
@@ -208,10 +210,10 @@ public class WebSocketController implements WebSocketHandler {
         message.put("id", uniqueId);
         message.put("sender",sendMessage.getSenderId());
         message.put("type", messageType);
-
+        message.put("relatedIds", relatedIds);
         rabbitMQProducer.send(toJson(message));
 
-        broadcastToSubscribers("messageService", relatedIds, message);
+       // broadcastToSubscribers("messageService", rabbitMQ.getRelatedIds(), rabbitMQ);
     }
 
     private void handleFriendships(Map<String, Object> messageData) {
