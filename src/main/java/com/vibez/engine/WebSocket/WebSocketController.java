@@ -13,6 +13,7 @@ import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vibez.engine.Model.DirectChat;
 import com.vibez.engine.Model.Friendship;
@@ -208,7 +209,7 @@ public class WebSocketController implements WebSocketHandler {
         message.put("sender",sendMessage.getSenderId());
         message.put("type", messageType);
 
-        rabbitMQProducer.send(message);
+        rabbitMQProducer.send(toJson(message));
 
         broadcastToSubscribers("messageService", relatedIds, message);
     }
@@ -415,5 +416,13 @@ public class WebSocketController implements WebSocketHandler {
     @Override
     public boolean supportsPartialMessages() {
         return false;
+    }
+
+    private String toJson(Object object) {
+        try {
+            return objectMapper.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
