@@ -170,7 +170,7 @@ public class WebSocketController implements WebSocketHandler {
         String groupId = null;
         List <String> memberIds = new ArrayList<>();
         if (messageData.get("groupAction") != null){
-            GroupAction groupAction = objectMapper.convertValue(messageData.get("groupAction"), GroupAction.class);
+            GroupAction groupAction = objectMapper.convertValue(messageData.get("body"), GroupAction.class);
             if (groupAction.getAction().equals("addUsers")){
                 groupId = groupsService.addUsersToGroup(groupAction.getGroupId(), groupAction.getUserIds());
                 memberIds = groupsService.getGroupById(groupId).getMemberIds();
