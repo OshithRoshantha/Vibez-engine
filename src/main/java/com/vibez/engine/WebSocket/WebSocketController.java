@@ -318,13 +318,12 @@ public class WebSocketController implements WebSocketHandler {
         String uniqeId = "message_" + System.currentTimeMillis();
         String productId = null;
         String productAction = null;
-
+        String sellerId = null;
         if (product.getProductAction().equals("ADD")){
             Marketplace newProduct = marketplaceService.addItem(product);
             productId = newProduct.getProductId();
             productAction = "ADDED";
-            userIds.clear();
-            userIds.add(product.getSellerId());
+            sellerId = product.getSellerId();
         }
         else if (product.getProductAction().equals("UPDATE")){
             Marketplace updatedProduct = marketplaceService.updateItem(product);
@@ -338,6 +337,7 @@ public class WebSocketController implements WebSocketHandler {
 
         Map<String, Object> message = new HashMap<>();
         message.put("id", uniqeId);
+        message.put("sellerId", sellerId);
         message.put("action", "marketplaceService");
         message.put("body", productId);
         message.put("productAction", productAction);
