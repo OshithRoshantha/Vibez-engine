@@ -211,7 +211,7 @@ public class WebSocketController implements WebSocketHandler {
         String uniqueId = "message_" + System.currentTimeMillis();
         String updatingId = messageService.sendMessage(sendMessage);
         String messageType = null;
-        String senderName = null;
+        String senderName = userService.getUserById(sendMessage.getSenderId()).getUserName();
         List <String> relatedIds = new ArrayList<>();
         Map<String, Object> message = new HashMap<>();
         if(sendMessage.getGroupId() != null){
@@ -220,7 +220,6 @@ public class WebSocketController implements WebSocketHandler {
             messageType = "group";
             Groups groupToSend = groupsService.getGroupById(updatingId);
             relatedIds.addAll(groupToSend.getMemberIds());
-            senderName = userService.getUserById(sendMessage.getSenderId()).getUserName();
         }
         else{
             relatedIds.clear();
