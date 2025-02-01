@@ -169,8 +169,9 @@ public class WebSocketController implements WebSocketHandler {
         String uniqueId = "message_" + System.currentTimeMillis();
         String groupId = null;
         List <String> memberIds = new ArrayList<>();
-        if (messageData.get("groupAction") != null){
-            GroupAction groupAction = objectMapper.convertValue(messageData.get("body"), GroupAction.class);
+        Map<String, Object> body = (Map<String, Object>) messageData.get("body");
+        if (body.containsKey("groupAction")){
+            GroupAction groupAction = objectMapper.convertValue(body.get("groupAction"), GroupAction.class);
             if (groupAction.getAction().equals("addUsers")){
                 groupId = groupsService.addUsersToGroup(groupAction.getGroupId(), groupAction.getUserIds());
                 memberIds = groupsService.getGroupById(groupId).getMemberIds();
@@ -188,8 +189,8 @@ public class WebSocketController implements WebSocketHandler {
             broadcastToSubscribers("groupService", memberIds, message);
             return;
         }
-        if (messageData.get("body") != null){
-            Groups group = objectMapper.convertValue(messageData.get("body"), Groups.class);
+        else {
+            Groups group = objectMapper.convertValue(body, Groups.class);
             if (group.getGroupId() == null){
                 groupId = groupsService.createGroup(group, group.getCreatorId());
             } else {
