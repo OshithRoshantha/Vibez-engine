@@ -181,6 +181,9 @@ public class MessageImplement implements MessageService {
         int count = 0;
         for (String groupId : groups){
             Groups group = groupsService.getGroupById(groupId);
+            if (group == null){
+                continue;
+            }
             List <String> messageIds = group.getMessageIds();
             if(messageIds == null){
                 continue;
