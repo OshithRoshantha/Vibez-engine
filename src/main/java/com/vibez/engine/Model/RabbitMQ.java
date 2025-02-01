@@ -10,6 +10,15 @@ public class RabbitMQ {
     private List<String> relatedIds;
     private String chatId;
     private String groupId;
+    private MessageInfo payload;
+
+    public MessageInfo getPayload() {
+        return payload;
+    }
+
+    public void setPayload(MessageInfo payload) {
+        this.payload = payload;
+    }
 
     public String getChatId() {
         return chatId;

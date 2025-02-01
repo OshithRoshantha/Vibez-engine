@@ -1,5 +1,7 @@
 package com.vibez.engine.WebSocket;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +24,7 @@ import com.vibez.engine.Model.GroupAction;
 import com.vibez.engine.Model.Groups;
 import com.vibez.engine.Model.Marketplace;
 import com.vibez.engine.Model.Message;
+import com.vibez.engine.Model.MessageInfo;
 import com.vibez.engine.Model.RabbitMQ;
 import com.vibez.engine.Model.User;
 import com.vibez.engine.Model.UserUpdate;
@@ -81,6 +84,12 @@ public class WebSocketController implements WebSocketHandler {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    public static String formatTimestampToHHMM(String timestamp) {
+        LocalDateTime dateTime = LocalDateTime.parse(timestamp);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        return dateTime.format(formatter);
+    }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -202,6 +211,7 @@ public class WebSocketController implements WebSocketHandler {
         String uniqueId = "message_" + System.currentTimeMillis();
         String updatingId = messageService.sendMessage(sendMessage);
         String messageType = null;
+        String senderName = null;
         List <String> relatedIds = new ArrayList<>();
         Map<String, Object> message = new HashMap<>();
         if(sendMessage.getGroupId() != null){
@@ -210,6 +220,7 @@ public class WebSocketController implements WebSocketHandler {
             messageType = "group";
             Groups groupToSend = groupsService.getGroupById(updatingId);
             relatedIds.addAll(groupToSend.getMemberIds());
+            senderName = userService.getUserById(sendMessage.getSenderId()).getUserName();
         }
         else{
             relatedIds.clear();
@@ -223,6 +234,15 @@ public class WebSocketController implements WebSocketHandler {
         message.put("sender",sendMessage.getSenderId());
         message.put("type", messageType);
         message.put("relatedIds", relatedIds);
+
+        MessageInfo newMessage = new MessageInfo();
+        newMessage.setIsSendByMe(true);
+        newMessage.setMessage(sendMessage.getMessage());
+        newMessage.setTimestamp(formatTimestampToHHMM(sendMessage.getTimestamp().toString()));
+        newMessage.setSender(sendMessage.getSenderId());
+        newMessage.setSenderName(senderName);
+
+        message.put("payload", newMessage);
         rabbitMQProducer.send(toJson(message));
     }
 
