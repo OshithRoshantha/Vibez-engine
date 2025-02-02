@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 from flask import Blueprint, request, jsonify
-from services import get_auto_replies, fetch_chat_messages
+from .services import get_auto_replies, fetch_chat_messages
 
 load_dotenv()
 

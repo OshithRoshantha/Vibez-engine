@@ -1,1 +1,2 @@
-from routes import vibez_blueprint
+from .routes import vibez_blueprint
+

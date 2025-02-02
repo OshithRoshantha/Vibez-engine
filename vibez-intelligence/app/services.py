@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
-from database import db
+from .database import db
 
 load_dotenv()
 
