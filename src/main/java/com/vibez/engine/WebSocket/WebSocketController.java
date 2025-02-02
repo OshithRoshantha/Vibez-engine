@@ -1,11 +1,14 @@
 package com.vibez.engine.WebSocket;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -13,6 +16,7 @@ import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vibez.engine.Model.DirectChat;
 import com.vibez.engine.Model.Friendship;
@@ -20,8 +24,11 @@ import com.vibez.engine.Model.GroupAction;
 import com.vibez.engine.Model.Groups;
 import com.vibez.engine.Model.Marketplace;
 import com.vibez.engine.Model.Message;
+import com.vibez.engine.Model.MessageInfo;
+import com.vibez.engine.Model.RabbitMQ;
 import com.vibez.engine.Model.User;
 import com.vibez.engine.Model.UserUpdate;
+import com.vibez.engine.RabbitMQ.Producer.RabbitMQProducer;
 import com.vibez.engine.Repository.DirectChatRepo;
 import com.vibez.engine.Repository.FriendshipRepo;
 import com.vibez.engine.Repository.GroupRepo;
@@ -34,7 +41,6 @@ import com.vibez.engine.Service.MarketplaceService;
 import com.vibez.engine.Service.MessageService;
 import com.vibez.engine.Service.UserService;
 
-
 public class WebSocketController implements WebSocketHandler {
 
     private static final Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
@@ -42,6 +48,9 @@ public class WebSocketController implements WebSocketHandler {
     
     @Autowired
     private MessageService messageService;
+
+    @Autowired
+    private RabbitMQProducer rabbitMQProducer;
 
     @Autowired
     private UserService userService;
@@ -75,6 +84,12 @@ public class WebSocketController implements WebSocketHandler {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    public static String formatTimestampToHHMM(String timestamp) {
+        LocalDateTime dateTime = LocalDateTime.parse(timestamp);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        return dateTime.format(formatter);
+    }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -122,7 +137,7 @@ public class WebSocketController implements WebSocketHandler {
         subscriptions.computeIfAbsent(topicWithUserId, k -> new ArrayList<>()).add(session);
     }
 
-    private void broadcastToSubscribers(String topic, List<String> userIds, Object message) {
+    public void broadcastToSubscribers(String topic, List<String> userIds, Object message) {
         for (String userId : userIds) {
             String topicWithUserId = topic + "_" + userId;
             List<WebSocketSession> subscribers = subscriptions.get(topicWithUserId);
@@ -138,12 +153,25 @@ public class WebSocketController implements WebSocketHandler {
         }
     }
 
+    @RabbitListener(queues = "${rabbitmq.queue.name}")
+    public void consumeMessage(String message) {
+        RabbitMQ messageObj = null;
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            messageObj = objectMapper.readValue(message, RabbitMQ.class);
+            broadcastToSubscribers("messageService", messageObj.getRelatedIds(), messageObj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void handleGroups(Map<String, Object> messageData) {
         String uniqueId = "message_" + System.currentTimeMillis();
         String groupId = null;
         List <String> memberIds = new ArrayList<>();
-        if (messageData.get("groupAction") != null){
-            GroupAction groupAction = objectMapper.convertValue(messageData.get("groupAction"), GroupAction.class);
+        Map<String, Object> body = (Map<String, Object>) messageData.get("body");
+        if (body.containsKey("groupAction")){
+            GroupAction groupAction = objectMapper.convertValue(body.get("groupAction"), GroupAction.class);
             if (groupAction.getAction().equals("addUsers")){
                 groupId = groupsService.addUsersToGroup(groupAction.getGroupId(), groupAction.getUserIds());
                 memberIds = groupsService.getGroupById(groupId).getMemberIds();
@@ -161,8 +189,8 @@ public class WebSocketController implements WebSocketHandler {
             broadcastToSubscribers("groupService", memberIds, message);
             return;
         }
-        if (messageData.get("body") != null){
-            Groups group = objectMapper.convertValue(messageData.get("body"), Groups.class);
+        else {
+            Groups group = objectMapper.convertValue(body, Groups.class);
             if (group.getGroupId() == null){
                 groupId = groupsService.createGroup(group, group.getCreatorId());
             } else {
@@ -184,6 +212,7 @@ public class WebSocketController implements WebSocketHandler {
         String uniqueId = "message_" + System.currentTimeMillis();
         String updatingId = messageService.sendMessage(sendMessage);
         String messageType = null;
+        String senderName = userService.getUserById(sendMessage.getSenderId()).getUserName();
         List <String> relatedIds = new ArrayList<>();
         Map<String, Object> message = new HashMap<>();
         if(sendMessage.getGroupId() != null){
@@ -204,7 +233,17 @@ public class WebSocketController implements WebSocketHandler {
         message.put("id", uniqueId);
         message.put("sender",sendMessage.getSenderId());
         message.put("type", messageType);
-        broadcastToSubscribers("messageService", relatedIds, message);
+        message.put("relatedIds", relatedIds);
+
+        MessageInfo newMessage = new MessageInfo();
+        newMessage.setIsSendByMe(true);
+        newMessage.setMessage(sendMessage.getMessage());
+        newMessage.setTimestamp(formatTimestampToHHMM(sendMessage.getTimestamp().toString()));
+        newMessage.setSender(sendMessage.getSenderId());
+        newMessage.setSenderName(senderName);
+
+        message.put("payload", newMessage);
+        rabbitMQProducer.send(toJson(message));
     }
 
     private void handleFriendships(Map<String, Object> messageData) {
@@ -279,13 +318,12 @@ public class WebSocketController implements WebSocketHandler {
         String uniqeId = "message_" + System.currentTimeMillis();
         String productId = null;
         String productAction = null;
-
+        String sellerId = null;
         if (product.getProductAction().equals("ADD")){
             Marketplace newProduct = marketplaceService.addItem(product);
             productId = newProduct.getProductId();
             productAction = "ADDED";
-            userIds.clear();
-            userIds.add(product.getSellerId());
+            sellerId = product.getSellerId();
         }
         else if (product.getProductAction().equals("UPDATE")){
             Marketplace updatedProduct = marketplaceService.updateItem(product);
@@ -299,6 +337,7 @@ public class WebSocketController implements WebSocketHandler {
 
         Map<String, Object> message = new HashMap<>();
         message.put("id", uniqeId);
+        message.put("sellerId", sellerId);
         message.put("action", "marketplaceService");
         message.put("body", productId);
         message.put("productAction", productAction);
@@ -409,5 +448,13 @@ public class WebSocketController implements WebSocketHandler {
     @Override
     public boolean supportsPartialMessages() {
         return false;
+    }
+
+    private String toJson(Object object) {
+        try {
+            return objectMapper.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

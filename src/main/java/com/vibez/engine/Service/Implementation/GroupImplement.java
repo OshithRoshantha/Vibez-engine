@@ -118,20 +118,21 @@ public class GroupImplement implements GroupsService{
 
     public String changeGroup(Groups updatedGroup){
         Groups group = groupRepo.findByGroupId(updatedGroup.getGroupId());
-        String groupIcon = group.getGroupIcon();
         if (updatedGroup.getGroupIcon() != null){
             group.setGroupIcon(updatedGroup.getGroupIcon());
+            groupRepo.save(group);
         }
         if (updatedGroup.getGroupName() != null){
+            group.setGroupIcon(group.getGroupIcon());
             group.setGroupName(updatedGroup.getGroupName());
-            group.setGroupIcon(groupIcon);
+            groupRepo.save(group);
         }
         if (updatedGroup.getGroupDesc() != null){
+            group.setGroupIcon(group.getGroupIcon());
             group.setGroupDesc(updatedGroup.getGroupDesc());
-            group.setGroupIcon(groupIcon);
+            groupRepo.save(group);
         }
-        groupRepo.save(group);
-        return updatedGroup.getGroupId();
+        return group.getGroupId();
     }
 
     public boolean isAdmin(String groupId, String userId){
