@@ -1,8 +1,8 @@
 import os
+from dotenv import load_dotenv
 from pymongo import MongoClient
 
-MONGO_URI = os.getenv("MONGO_URI")  
-DB_NAME = os.getenv("DB_NAME")  
+load_dotenv()
 
-client = MongoClient(MONGO_URI)
-db = client["VibezAppDB"] 
+client = MongoClient(os.getenv("MONGO_URI") )
+db = client[os.getenv("DB_NAME")] 

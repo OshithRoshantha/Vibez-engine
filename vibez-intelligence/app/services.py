@@ -1,27 +1,23 @@
 import os
+from dotenv import load_dotenv
 from openai import OpenAI
 from database import db
 
-BASE_URL = os.getenv("BASE")
-API_KEY = os.getenv("KEY")
-SYSTEM_MESSAGE = os.getenv("SYSTEM_MESSAGE")
-SITE_URL = os.getenv("SITEURL")
-SITE_NAME = os.getenv("SITENAME")
-MODEL = os.getenv("MODEL")
+load_dotenv()
 
 client = OpenAI(
-    base_url=BASE_URL,
-    api_key=API_KEY,
+    base_url = os.getenv("BASE"),
+    api_key = os.getenv("KEY"),
 )
 
 def get_auto_replies(messages):
     try:
         completion = client.chat.completions.create(
             extra_headers={
-                "HTTP-Referer": SITE_URL,
-                "X-Title": SITE_NAME,
+                "HTTP-Referer": os.getenv("SITEURL"),
+                "X-Title": os.getenv("SITENAME"),
             },
-            model=MODEL,
+            model=os.getenv("MODEL"),
             messages=messages,
         )
         if completion and completion.choices:
