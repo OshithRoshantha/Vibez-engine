@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+from bson import ObjectId
 from openai import OpenAI
 from .database import db
 
@@ -29,12 +30,13 @@ def get_auto_replies(messages):
 
 def fetch_chat_messages(chat_id, user_id):
     try:
-        direct_chat = db.directChats.find_one({"chatId": chat_id}, {"messageIds": 1})
+        direct_chat = db.directChats.find_one({"_id": ObjectId(chat_id)})
         if not direct_chat or "messageIds" not in direct_chat:
             return []
-
         message_ids = direct_chat["messageIds"]
-        messages = db.messages.find({"messageId": {"$in": message_ids}}, {"senderId": 1, "message": 1})
+        recent_messages = message_ids[-15:]
+        recent_messages = [ObjectId(msg_id) for msg_id in recent_messages]
+        messages = db.messages.find({"_id": {"$in": recent_messages}}, {"senderId": 1, "message": 1})
         formatted_messages = [
             {
                 "role": "assistant" if message["senderId"] == user_id else "user",
