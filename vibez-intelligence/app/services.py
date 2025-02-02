@@ -27,9 +27,9 @@ def get_auto_replies(messages):
     except Exception as e:
         return "Hey, i'm a bit tired right now. Can we chat later? 🥲"
 
-def fetch_chat_messages(chat_id, user_id):
+def fetch_chat_messages(receiver_id, user_id):
     try:
-        direct_chat = db.directChats.find_one({"_id": ObjectId(chat_id)})
+        direct_chat = db.directChats.find_one({"memberIds": {"$all": [receiver_id, user_id]}})
         if not direct_chat or "messageIds" not in direct_chat:
             return []
         message_ids = direct_chat["messageIds"]

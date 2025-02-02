@@ -11,13 +11,13 @@ vibez_blueprint = Blueprint("vibez", __name__)
 def ai_reply_api():
     
     data = request.get_json()
-    if not data or "chatId" not in data or "userId" not in data:
-        return jsonify({"error": "chatId and userId are required"}), 400
+    if not data or "receiverId" not in data or "userId" not in data:
+        return jsonify({"error": "receiverId and userId are required"}), 400
 
-    chat_id = data["chatId"]
+    receiver_id = data["receiverId"]
     user_id = data["userId"]
 
-    messages = fetch_chat_messages(chat_id, user_id)
+    messages = fetch_chat_messages(receiver_id, user_id)
 
     if not isinstance(messages, list) or not all(
         isinstance(msg, dict) and "role" in msg and "content" in msg for msg in messages
