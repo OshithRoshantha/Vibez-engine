@@ -8,4 +8,4 @@ CORS(vibezApi, origins=["*"])
 vibezApi.register_blueprint(vibez_blueprint)
 
 if __name__ == "__main__":
-    vibezApi.run(debug=True)
+    vibezApi.run(host="0.0.0.0", port=5000, debug=True)
