@@ -1,68 +1,61 @@
 import re
 from flask import Flask, request, jsonify
-import requests
 import os
 from dotenv import load_dotenv
 from flask_cors import CORS
+from openai import OpenAI
 
 load_dotenv()
 
 vibezApi = Flask(__name__)
-CORS(vibezApi, origins=["http://localhost:5173"])
+CORS(vibezApi, origins=["*"])
 
-model = os.getenv("MODEL")
-hfToken = os.getenv("HF_TOKEN")
+client = OpenAI(
+    base_url=os.getenv("BASE"),
+    api_key=os.getenv("KEY"),
+)
 
-headers = {
-    "Authorization": f"Bearer {hfToken}"
-}
+SYSTEM_MESSAGE = os.getenv("SYSTEM_MESSAGE")
 
-def getAutoReplies(chatHistory):
-    chatInput = "".join(chatHistory)
-    payload = {
-        "inputs": chatInput,
-        "parameters": {
-            "max_length": 50, 
-            "num_return_sequences": 1,  
-            "no_repeat_ngram_size": 2,  
-            "temperature": 0.7  
-        }
-    }
-    
-    response = requests.post(model, headers=headers, json=payload)
-    
-    if response.status_code == 200:
-        reply = response.json()[0]["generated_text"].strip()
-        reply = reply.replace("\n", " ")
-        reply = refineReply(chatHistory, reply)
-        return reply
-    else:
-        return f"Error: {response.json()}"
+def getAutoReplies(messages):
+    try:
+        completion = client.chat.completions.create(
+            extra_headers={
+                "HTTP-Referer": os.getenv("SITEURL"),  
+                "X-Title": os.getenv("SITENAME"),  
+            },
+            model=os.getenv("MODEL"),
+            messages=messages,
+        )
+        
+        if completion and completion.choices:
+            reply = completion.choices[0].message.content
+            return reply
+        else:
+            return "Error: No valid response from the model."
 
-def refineReply(chatHistory, reply):
-    pattern = '|'.join([re.escape(sentence) for sentence in chatHistory])
-    cleanedReply = re.sub(pattern, '', reply)
-    cleanedReply = cleanedReply.strip()
-    match = re.match(r'^[^.?!]*[?.]?', cleanedReply)
-    if match:
-        return match.group(0).strip()
-    else:
-        return cleanedReply
+    except Exception as e:
+        print(f"OpenAI API Error: {e}")
+        return "Error: Unable to generate a reply. Please try again later."
 
 @vibezApi.route("/vibez/ai_reply", methods=["POST"])
 def aiReplyApi():
     data = request.get_json()
-    
-    if "chatHistory" not in data:
-        return jsonify({"error": "chatHistory not found"}), 400
-    
-    chatHistory = data["chatHistory"]
-    
-    if not isinstance(chatHistory, list) or not all(isinstance(chat, str) for chat in chatHistory):
-        return jsonify({"error": "chatHistory must be a list of strings"}), 400
-    
-    reply = getAutoReplies(chatHistory)
-    
+    if "messages" not in data:
+        return jsonify({"error": "messages not found"}), 400
+    messages = data["messages"]
+    if not isinstance(messages, list) or not all(
+        isinstance(msg, dict) and "role" in msg and "content" in msg for msg in messages
+    ):
+        return jsonify({"error": "Input not valid"}), 400
+
+    system_message = {
+        "role": "system",
+        "content": SYSTEM_MESSAGE  
+    }
+    messages_with_system = [system_message] + messages
+    reply = getAutoReplies(messages_with_system)
+
     return jsonify({"reply": reply})
 
 if __name__ == "__main__":
