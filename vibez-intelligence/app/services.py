@@ -25,8 +25,7 @@ def get_auto_replies(messages):
             return completion.choices[0].message.content
         return "Error: No valid response from the model."
     except Exception as e:
-        print(f"OpenAI API Error: {e}")
-        return "Error: Unable to generate a reply. Please try again later."
+        return "Hey, i'm a bit tired right now. Can we chat later? 🥲"
 
 def fetch_chat_messages(chat_id, user_id):
     try:
