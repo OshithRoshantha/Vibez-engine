@@ -25,3 +25,10 @@ public void setChatId(String chatId) {
 public List<String> getMemberIds() {
     return memberIds;
 }
+public String getGroupId() {
+    return groupId;
+}
+
+public void setGroupId(String groupId) {
+    this.groupId = groupId;
+}
