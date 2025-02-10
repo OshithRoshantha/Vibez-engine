@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "directChats")
-public class Chats {
+public class Chats 
     @Id
     private String chatId;
     private List<String> memberIds;
@@ -15,7 +15,6 @@ public class Chats {
     private String lastMessageSender;
     private List<String> messageIds;
     private List<String> favoritedBy;
-}
 public String getChatId() {
     return chatId;
 }
@@ -25,8 +24,4 @@ public void setChatId(String chatId) {
 }
 public List<String> getMemberIds() {
     return memberIds;
-}
-
-public void setMemberIds(List<String> memberIds) {
-    this.memberIds = memberIds;
 }
