@@ -26,9 +26,18 @@ public List<String> getMemberIds() {
     return memberIds;
 }
 public String getGroupId() {
-    return groupId;
+    String groupId;
+        return groupIdpId();
 }
 
 public void setGroupId(String groupId) {
     this.groupId = groupId;
 }
+public String getGroupIcon() {
+    return groupIcon;
+}
+
+public void setGroupIcon(String groupIcon) {
+    this.groupIcon = groupIcon;
+}
+
