@@ -14,125 +14,123 @@ public class MarketplaceV2 {
     private String productTitle;
     private String productDesc;
     private String condition;
-}
-private String price;
-private String location;
-private String listedDate;
-private List<String> productPhotos;
-private boolean visibleToFriends;
-}
-private String productAction;
+    private String price;
+    private String location;
+    private String listedDate;
+    private List<String> productPhotos;
+    private boolean visibleToFriends;
+    private String productAction;
     private Integer totalClicks;
-}
-public String getProductId() {
-    return productId;
-}
 
-public void setProductId(String productId) {
-    this.productId = productId;
-}
+    public String getProductId() {
+        return productId;
+    }
 
-public String getSellerId() {
-    return sellerId;
-}
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
 
-public void setSellerId(String sellerId) {
-    this.sellerId = sellerId;
-}
+    public String getSellerId() {
+        return sellerId;
+    }
 
-public String getSellerName() {
-    return sellerName;
-}
+    public void setSellerId(String sellerId) {
+        this.sellerId = sellerId;
+    }
 
-public void setSellerName(String sellerName) {
-    this.sellerName = sellerName;
-}
+    public String getSellerName() {
+        return sellerName;
+    }
 
-public String getSellerProfilePicture() {
-    return sellerProfilePicture;
-}
+    public void setSellerName(String sellerName) {
+        this.sellerName = sellerName;
+    }
 
-public void setSellerProfilePicture(String sellerProfilePicture) {
-    this.sellerProfilePicture = sellerProfilePicture;
-}
-}
-public String getProductTitle() {
-    return productTitle;
-}
+    public String getSellerProfilePicture() {
+        return sellerProfilePicture;
+    }
 
-public void setProductTitle(String productTitle) {
-    this.productTitle = productTitle;
-}
+    public void setSellerProfilePicture(String sellerProfilePicture) {
+        this.sellerProfilePicture = sellerProfilePicture;
+    }
 
-public String getProductDesc() {
-    return productDesc;
-}
+    public String getProductTitle() {
+        return productTitle;
+    }
 
-public void setProductDesc(String productDesc) {
-    this.productDesc = productDesc;
-}
+    public void setProductTitle(String productTitle) {
+        this.productTitle = productTitle;
+    }
 
-public String getCondition() {
-    return condition;
-}
+    public String getProductDesc() {
+        return productDesc;
+    }
 
-public void setCondition(String condition) {
-    this.condition = condition;
-}
-}
-public String getPrice() {
-    return price;
-}
+    public void setProductDesc(String productDesc) {
+        this.productDesc = productDesc;
+    }
 
-public void setPrice(String price) {
-    this.price = price;
-}
+    public String getCondition() {
+        return condition;
+    }
 
-public String getLocation() {
-    return location;
-}
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
 
-public void setLocation(String location) {
-    this.location = location;
-}
+    public String getPrice() {
+        return price;
+    }
 
-public String getListedDate() {
-    return listedDate;
-}
+    public void setPrice(String price) {
+        this.price = price;
+    }
 
-public void setListedDate(String listedDate) {
-    this.listedDate = listedDate;
-}
+    public String getLocation() {
+        return location;
+    }
 
-public List<String> getProductPhotos() {
-    return productPhotos;
-}
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
-public void setProductPhotos(List<String> productPhotos) {
-    this.productPhotos = productPhotos;
-}
+    public String getListedDate() {
+        return listedDate;
+    }
 
-public boolean isVisibleToFriends() {
-    return visibleToFriends;
-}
+    public void setListedDate(String listedDate) {
+        this.listedDate = listedDate;
+    }
 
-public void setVisibleToFriends(boolean visibleToFriends) {
-    this.visibleToFriends = visibleToFriends;
-}
-}
-public String getProductAction() {
-    return productAction;
-}
+    public List<String> getProductPhotos() {
+        return productPhotos;
+    }
 
-public void setProductAction(String productAction) {
-    this.productAction = productAction;
-}
+    public void setProductPhotos(List<String> productPhotos) {
+        this.productPhotos = productPhotos;
+    }
 
-public Integer getTotalClicks() {
-    return totalClicks;
-}
+    public boolean isVisibleToFriends() {
+        return visibleToFriends;
+    }
 
-public void setTotalClicks(Integer totalClicks) {
-    this.totalClicks = totalClicks;
-}
+    public void setVisibleToFriends(boolean visibleToFriends) {
+        this.visibleToFriends = visibleToFriends;
+    }
+
+    public String getProductAction() {
+        return productAction;
+    }
+
+    public void setProductAction(String productAction) {
+        this.productAction = productAction;
+    }
+
+    public Integer getTotalClicks() {
+        return totalClicks;
+    }
+
+    public void setTotalClicks(Integer totalClicks) {
+        this.totalClicks = totalClicks;
+    }
 }
