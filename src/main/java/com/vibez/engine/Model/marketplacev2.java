@@ -120,14 +120,5 @@ public class MarketplaceV2 {
 
     public String getProductAction() {
         return productAction;
-    }
-
-    public void setProductAction(String productAction) {
-        this.productAction = productAction;
-    }
-
-    public Integer getTotalClicks() {
-        return totalClicks;
-    }
-
+   
 
