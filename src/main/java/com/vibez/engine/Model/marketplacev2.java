@@ -130,7 +130,4 @@ public class MarketplaceV2 {
         return totalClicks;
     }
 
-    public void setTotalClicks(Integer totalClicks) {
-        this.totalClicks = totalClicks;
-    }
-}
+
