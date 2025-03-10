@@ -23,4 +23,7 @@ public class GroupActionv_2 {
     public List<String> getUserIds() {
         return userIds;
     }
+    public void setUserIds(List<String> userIds) {
+        this.userIds = userIds;
+    }
 }
