@@ -42,5 +42,16 @@ public class Marketplacev_2 {
     public String getProductDesc() {
         return productDesc;
     }
+    public void setProductDesc(String productDesc) {
+        this.productDesc = productDesc;
+    }
+
+    public String getCondition() {
+        return condition;
+    }
+
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
     
 }
