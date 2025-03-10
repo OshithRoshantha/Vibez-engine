@@ -72,5 +72,8 @@ public class Groupsv_2 {
     public void setLastUpdate(LocalDateTime lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
+    public String getLastMessage() {
+        return lastMessage;
+    }
     
 }
