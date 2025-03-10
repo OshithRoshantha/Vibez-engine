@@ -7,5 +7,7 @@ public class GroupActionv_2 {
     private String action;
     private List<String> userIds;
 
-    
+    public String getGroupId() {
+        return groupId;
+    }
 }
