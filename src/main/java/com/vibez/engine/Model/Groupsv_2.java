@@ -60,5 +60,8 @@ public class Groupsv_2 {
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
+    public List<String> getMessageIds() {
+        return messageIds;
+    }
     
 }
