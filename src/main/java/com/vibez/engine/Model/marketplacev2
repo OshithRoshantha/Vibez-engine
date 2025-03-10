@@ -24,3 +24,35 @@ private boolean visibleToFriends;
 private String productAction;
     private Integer totalClicks;
 }
+public String getProductId() {
+    return productId;
+}
+
+public void setProductId(String productId) {
+    this.productId = productId;
+}
+
+public String getSellerId() {
+    return sellerId;
+}
+
+public void setSellerId(String sellerId) {
+    this.sellerId = sellerId;
+}
+
+public String getSellerName() {
+    return sellerName;
+}
+
+public void setSellerName(String sellerName) {
+    this.sellerName = sellerName;
+}
+
+public String getSellerProfilePicture() {
+    return sellerProfilePicture;
+}
+
+public void setSellerProfilePicture(String sellerProfilePicture) {
+    this.sellerProfilePicture = sellerProfilePicture;
+}
+}
