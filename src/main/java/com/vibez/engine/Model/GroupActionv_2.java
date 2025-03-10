@@ -13,4 +13,7 @@ public class GroupActionv_2 {
     public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
+    public String getAction() {
+        return action;
+    }
 }
