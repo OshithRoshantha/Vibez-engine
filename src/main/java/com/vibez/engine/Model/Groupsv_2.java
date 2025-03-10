@@ -51,5 +51,8 @@ public class Groupsv_2 {
     public List<String> getMemberIds() {
         return memberIds;
     }
+    public void setMemberIds(List<String> memberIds) {
+        this.memberIds = memberIds;
+    }
     
 }
