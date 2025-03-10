@@ -10,4 +10,7 @@ public class GroupActionv_2 {
     public String getGroupId() {
         return groupId;
     }
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
 }
