@@ -45,5 +45,8 @@ public class Groupsv_2 {
     public String getCreatorId() {
         return creatorId;
     }
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
+    }
     
 }
