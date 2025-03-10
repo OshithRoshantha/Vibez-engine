@@ -54,5 +54,8 @@ public class Groupsv_2 {
     public void setMemberIds(List<String> memberIds) {
         this.memberIds = memberIds;
     }
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
     
 }
