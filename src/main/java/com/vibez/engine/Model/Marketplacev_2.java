@@ -76,5 +76,12 @@ public class Marketplacev_2 {
     public void setProductPhotos(List<String> productPhotos) {
         this.productPhotos = productPhotos;
     }
+    public boolean isVisibleToFriends() {
+        return visibleToFriends;
+    }
+
+    public void setVisibleToFriends(boolean visibleToFriends) {
+        this.visibleToFriends = visibleToFriends;
+    }
     
 }
