@@ -69,5 +69,8 @@ public class Groupsv_2 {
     public LocalDateTime getLastUpdate() {
         return lastUpdate;
     }
+    public void setLastUpdate(LocalDateTime lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
     
 }
