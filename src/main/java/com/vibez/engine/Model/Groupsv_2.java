@@ -76,4 +76,8 @@ public class Groupsv_2 {
         return lastMessage;
     }
     
+    public void setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
+    }
+    
 }
