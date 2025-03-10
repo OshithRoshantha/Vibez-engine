@@ -16,3 +16,17 @@ public class Chats {
     private List<String> messageIds;
     private List<String> favoritedBy;
 }
+public String getChatId() {
+    return chatId;
+}
+
+public void setChatId(String chatId) {
+    this.chatId = chatId;
+}
+public List<String> getMemberIds() {
+    return memberIds;
+}
+
+public void setMemberIds(List<String> memberIds) {
+    this.memberIds = memberIds;
+}
