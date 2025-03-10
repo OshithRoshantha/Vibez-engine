@@ -13,3 +13,9 @@ public class Friendship {
 }public String getFriendshipId() {
     return friendshipId;
 }
+public void setFriendshipId(String friendshipId) {
+    this.friendshipId = friendshipId;
+}
+}
+
+
