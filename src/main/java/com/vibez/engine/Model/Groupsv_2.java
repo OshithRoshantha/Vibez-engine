@@ -18,4 +18,8 @@ public class Groupsv_2 {
     private  String lastMessage;
     private List<String> messageIds;
     
+    public String getGroupId() {
+        return groupId;
+    }
+    
 }
