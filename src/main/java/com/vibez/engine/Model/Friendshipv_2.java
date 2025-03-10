@@ -28,6 +28,9 @@ public String getFriendId() {
 public void setFriendId(String friendId) {
     this.friendId = friendId;
 }
+public String getStatus() {
+    return status;
+}
 }
 
 
