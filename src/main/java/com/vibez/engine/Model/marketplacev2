@@ -15,3 +15,12 @@ public class MarketplaceV2 {
     private String productDesc;
     private String condition;
 }
+private String price;
+private String location;
+private String listedDate;
+private List<String> productPhotos;
+private boolean visibleToFriends;
+}
+private String productAction;
+    private Integer totalClicks;
+}
