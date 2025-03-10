@@ -22,6 +22,9 @@ public String getUserId() {
 public void setUserId(String userId) {
     this.userId = userId;
 }
+public String getFriendId() {
+    return friendId;
+}
 }
 
 
