@@ -31,5 +31,16 @@ public class Marketplacev_2 {
     public void setSellerId(ObjectId sellerId) {
         this.sellerId = sellerId;
     }
+    public String getProductTitle() {
+        return productTitle;
+    }
+
+    public void setProductTitle(String productTitle) {
+        this.productTitle = productTitle;
+    }
+
+    public String getProductDesc() {
+        return productDesc;
+    }
     
 }
