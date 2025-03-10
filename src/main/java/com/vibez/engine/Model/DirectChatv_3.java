@@ -18,5 +18,21 @@ public class DirectChatv_3 {
     public String getChatId() {
         return chatId;
     }
-    
+    public void setChatId(String chatId) {
+        this.chatId = chatId;
+    }
+    public List<String> getMemberIds() {
+        return memberIds;
+    }
+    public void setMemberIds(List<String> memberIds) {
+        this.memberIds = memberIds;
+    }
+
+    public LocalDateTime getLastUpdate() {
+        return lastUpdate;
+    }
+    public void setLastUpdate(LocalDateTime lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
 }
