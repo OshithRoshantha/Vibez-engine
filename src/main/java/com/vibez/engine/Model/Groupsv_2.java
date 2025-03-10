@@ -24,5 +24,8 @@ public class Groupsv_2 {
     public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
+    public String getGroupIcon() {
+        return groupIcon;
+    }
     
 }
