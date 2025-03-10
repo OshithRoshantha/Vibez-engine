@@ -2,6 +2,7 @@ package com.vibez.engine.Model;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.data.annotation.Id;
 
@@ -34,5 +35,31 @@ public class DirectChatv_3 {
     public void setLastUpdate(LocalDateTime lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
+    public String getLastMessage() {
+        return lastMessage;
+    }
+    public void setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
+    }
+    public void setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
 
 }
+public List<String> getMessageIds() {
+    return messageIds;
+}
+public void setMessageIds(List<String> messageIds) {
+    this.messageIds = messageIds;
+}
+public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DirectChat that = (DirectChat) o;
+        return Objects.equals(chatId, that.chatId) &&
+               Objects.equals(memberIds, that.memberIds) &&
+               Objects.equals(lastUpdate, that.lastUpdate) &&
+               Objects.equals(lastMessage, that.lastMessage) &&
+               Objects.equals(messageIds, that.messageIds);
+    }
+
+    }
