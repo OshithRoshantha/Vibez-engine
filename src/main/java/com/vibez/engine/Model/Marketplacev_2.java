@@ -53,5 +53,28 @@ public class Marketplacev_2 {
     public void setCondition(String condition) {
         this.condition = condition;
     }
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public List<String> getProductPhotos() {
+        return productPhotos;
+    }
+
+    public void setProductPhotos(List<String> productPhotos) {
+        this.productPhotos = productPhotos;
+    }
     
 }
