@@ -58,3 +58,33 @@ public class userv1 {
     public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
     }
+    public List<String> getBlockedUsers() {
+        return blockedUsers;
+    }
+    
+    public void setBlockedUsers(List<String> blockedUsers) {
+        this.blockedUsers = blockedUsers;
+    }
+    
+    public List<String> getDirectChatIds() {
+        return directChatIds;
+    }
+    
+    public void setDirectChatIds(List<String> directChatIds) {
+        this.directChatIds = directChatIds;
+    }
+    
+    public List<String> getFavoriteDirectChats() {
+        return favoriteDirectChats;
+    }
+    
+    public void setFavoriteDirectChats(List<String> favoriteDirectChats) {
+        this.favoriteDirectChats = favoriteDirectChats;
+    }
+    public List<String> getGroupIds() {
+        return groupIds;
+    }
+    
+    public void setGroupIds(List<String> groupIds) {
+        this.groupIds = groupIds;
+    }
