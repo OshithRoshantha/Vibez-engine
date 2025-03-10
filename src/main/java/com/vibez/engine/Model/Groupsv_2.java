@@ -66,5 +66,8 @@ public class Groupsv_2 {
     public void setMessageIds(List<String> messageIds) {
         this.messageIds = messageIds;
     }
+    public LocalDateTime getLastUpdate() {
+        return lastUpdate;
+    }
     
 }
