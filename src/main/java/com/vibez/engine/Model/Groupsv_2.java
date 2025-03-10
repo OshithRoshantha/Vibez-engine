@@ -30,5 +30,8 @@ public class Groupsv_2 {
     public void setGroupIcon(String groupIcon) {
         this.groupIcon = groupIcon;
     }
+    public String getGroupName() {
+        return groupName;
+    }
     
 }
