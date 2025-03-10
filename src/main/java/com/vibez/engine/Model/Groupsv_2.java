@@ -17,9 +17,12 @@ public class Groupsv_2 {
     private  LocalDateTime lastUpdate;
     private  String lastMessage;
     private List<String> messageIds;
-    
+
     public String getGroupId() {
         return groupId;
+    }
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
     
 }
