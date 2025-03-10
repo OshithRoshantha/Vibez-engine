@@ -64,5 +64,16 @@ public boolean equals(Object o) {
     public int hashCode() {
         return Objects.hash(chatId, memberIds, lastUpdate, lastMessage, messageIds);
     }
+    public String toString() {
+        return "DirectChat{" +
+               "chatId='" + chatId + '\'' +
+               ", memberIds=" + memberIds +
+               ", lastUpdate=" + lastUpdate +
+               ", lastMessage='" + lastMessage + '\'' +
+               ", messageIds=" + messageIds +
+               '}';
+    }
+}
+
 
     }
