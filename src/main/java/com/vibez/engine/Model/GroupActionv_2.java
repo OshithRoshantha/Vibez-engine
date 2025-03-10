@@ -16,4 +16,7 @@ public class GroupActionv_2 {
     public String getAction() {
         return action;
     }
+    public void setAction(String action) {
+        this.action = action;
+    }
 }
