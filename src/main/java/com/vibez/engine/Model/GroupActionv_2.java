@@ -19,4 +19,8 @@ public class GroupActionv_2 {
     public void setAction(String action) {
         this.action = action;
     }
+    
+    public List<String> getUserIds() {
+        return userIds;
+    }
 }
