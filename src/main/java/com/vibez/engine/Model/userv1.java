@@ -42,7 +42,7 @@ public class userv1 {
     public void setEmail(String email) {
         this.email = email;
     }
-    }
+    
     public String getPassword() {
         return password;
     }
@@ -88,3 +88,4 @@ public class userv1 {
     public void setGroupIds(List<String> groupIds) {
         this.groupIds = groupIds;
     }
+}
