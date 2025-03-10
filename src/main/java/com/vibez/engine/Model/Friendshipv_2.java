@@ -10,4 +10,6 @@ public class Friendship {
     private String status; 
     
     
+}public String getFriendshipId() {
+    return friendshipId;
 }
