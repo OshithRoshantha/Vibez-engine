@@ -61,5 +61,8 @@ public boolean equals(Object o) {
                Objects.equals(lastMessage, that.lastMessage) &&
                Objects.equals(messageIds, that.messageIds);
     }
+    public int hashCode() {
+        return Objects.hash(chatId, memberIds, lastUpdate, lastMessage, messageIds);
+    }
 
     }
