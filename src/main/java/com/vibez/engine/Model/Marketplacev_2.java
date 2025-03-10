@@ -17,9 +17,7 @@ public class Marketplacev_2 {
     private List<String> productPhotos;
     private boolean visibleToFriends;
 
-public String getMessageId() {
-        return messageId;
-    }
+
     public ObjectId getProductId() {
         return productId;
     }
