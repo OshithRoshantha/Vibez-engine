@@ -42,5 +42,8 @@ public class Groupsv_2 {
     public void setGroupDesc(String groupDesc) {
         this.groupDesc = groupDesc;
     }
+    public String getCreatorId() {
+        return creatorId;
+    }
     
 }
