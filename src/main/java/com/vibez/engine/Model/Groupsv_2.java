@@ -39,5 +39,8 @@ public class Groupsv_2 {
     public String getGroupDesc() {
         return groupDesc;
     }
+    public void setGroupDesc(String groupDesc) {
+        this.groupDesc = groupDesc;
+    }
     
 }
