@@ -24,5 +24,8 @@ public class Marketplacev_2 {
     public void setProductId(ObjectId productId) {
         this.productId = productId;
     }
+    public ObjectId getSellerId() {
+        return sellerId;
+    }
     
 }
