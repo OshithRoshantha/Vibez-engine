@@ -3,6 +3,7 @@ package com.vibez.engine.Model;
 import java.util.List;
 
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 
 public class Marketplacev_2 {
     @Id
@@ -15,6 +16,9 @@ public class Marketplacev_2 {
     private String location;
     private List<String> productPhotos;
     private boolean visibleToFriends;
-
+    
+public String getMessageId() {
+        return messageId;
+    }
     
 }
