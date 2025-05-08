@@ -19,8 +19,9 @@ import com.vibez.engine.Service.JwtService;
 import com.vibez.engine.Service.UserService;
 
 
-@CrossOrigin(origins = "*" , allowedHeaders = "*")
+//@CrossOrigin(origins = "*" , allowedHeaders = "*")
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/vibez")
 public class UserController {
 

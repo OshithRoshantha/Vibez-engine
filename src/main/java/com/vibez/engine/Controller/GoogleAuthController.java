@@ -1,7 +1,5 @@
 package com.vibez.engine.Controller;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,8 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.vibez.engine.Model.User;
 import com.vibez.engine.Service.GoogleAuthService;
 
-@CrossOrigin(origins = "*" , allowedHeaders = "*")
+//@CrossOrigin(origins = "*" , allowedHeaders = "*")
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/vibez")
 public class GoogleAuthController {
     @Autowired

@@ -16,8 +16,9 @@ import com.vibez.engine.Model.DirectChat;
 import com.vibez.engine.Model.DirectChatPreview;
 import com.vibez.engine.Service.DirectChatService;
 
-@CrossOrigin(origins = "*" , allowedHeaders = "*")
+//@CrossOrigin(origins = "*" , allowedHeaders = "*")
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/vibez")
 public class DirectChatController {
     

@@ -15,9 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.vibez.engine.Model.Marketplace;
 import com.vibez.engine.Service.MarketplaceService;
 
-@CrossOrigin(origins = "*" , allowedHeaders = "*")
+//@CrossOrigin(origins = "*" , allowedHeaders = "*")
 @RestController
 @RequestMapping("/vibez")
+@CrossOrigin(origins = "http://localhost:5173")
 public class MarketplaceController {
     
     @Autowired
