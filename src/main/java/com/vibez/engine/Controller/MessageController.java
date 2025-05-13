@@ -17,10 +17,10 @@ import com.vibez.engine.Model.Message;
 import com.vibez.engine.Model.MessageInfo;
 import com.vibez.engine.Service.MessageService;
 
-//@CrossOrigin(origins = "*" , allowedHeaders = "*")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/vibez")
-@CrossOrigin(origins = "http://localhost:5173")
+//@CrossOrigin(origins = "http://localhost:5173")
 public class MessageController {
 
     @Autowired

@@ -15,9 +15,9 @@ import com.vibez.engine.Model.Groups;
 import com.vibez.engine.Model.User;
 import com.vibez.engine.Service.GroupsService;
 
-//@CrossOrigin(origins = "*" , allowedHeaders = "*")
+@CrossOrigin(origins = "*")
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
+//@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/vibez")
 public class GroupController {
 

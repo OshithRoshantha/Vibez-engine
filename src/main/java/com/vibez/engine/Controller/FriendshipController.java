@@ -15,9 +15,9 @@ import com.vibez.engine.Model.FriendshipStatus;
 import com.vibez.engine.Model.LinkedProfile;
 import com.vibez.engine.Service.FriendshipService;
 
-//@CrossOrigin(origins = "*" , allowedHeaders = "*")
+@CrossOrigin(origins = "*")
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
+//@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/vibez")
 public class FriendshipController {
     
